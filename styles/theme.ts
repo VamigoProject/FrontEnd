@@ -25,6 +25,10 @@ export const light = {
     thirdPrimary: 'rgb(189, 210, 182)',
     ground: 'rgb(248, 237, 227)',
     background: 'rgb(250, 245, 240)',
+    getColor(primary: boolean) {
+      if (primary) return this.primary;
+      else return 'rgb(255, 255, 255)';
+    },
   },
   length: lengthObject,
 };

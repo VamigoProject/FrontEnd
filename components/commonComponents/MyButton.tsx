@@ -1,4 +1,3 @@
-import * as antd from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -7,9 +6,10 @@ import styled from 'styled-components';
 // }
 
 interface OptionalProps {
-  size: 'large' | 'medium' | 'small';
-  type: 'normal' | 'primary';
   children: React.ReactNode;
+  size: 'large' | 'medium' | 'small';
+  primary: boolean;
+  onClick: () => void;
 }
 
 // interface Props extends RequiredProps, OptionalProps {}
@@ -17,24 +17,45 @@ interface OptionalProps {
 type Props = OptionalProps;
 
 const defaultProps: OptionalProps = {
-  size: 'medium',
-  type: 'normal',
   children: '',
+  size: 'medium',
+  primary: false,
+  onClick: () => {
+    return;
+  },
 };
 
 interface ButtonProps {
-  height: string;
+  size: string;
+  primary: boolean;
 }
 
-const CustomButton = styled(antd.Button)<ButtonProps>`
-  height: ${(props) => props.theme.length.componentHeight(props.height)};
-  background-color: ${(props) => props.theme.colors.primary};
+const CustomButton = styled.button<ButtonProps>`
+  height: ${(props) => props.theme.length.componentHeight(props.size)};
+  background-color: ${(props) => props.theme.colors.getColor(props.primary)};
+  border-radius: 5%;
+  border: 0px;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+  border: 1px ${(props) => props.theme.colors.primary} solid;
+  color: ${(props) => (props.primary ? 'white' : 'black')};
+  font-size: small;
+
+  transition: border 0.5s, opacity 0.5s, background-color 0.5s, color 0.5s;
+
+  &:hover {
+    cursor: pointer;
+    border: 1px ${(props) => props.theme.colors.primary} solid;
+    color: ${(props) => (props.primary ? 'white' : props.theme.colors.primary)};
+    opacity: 0.8;
+  }
 `;
 
-const MyButton = ({ size, children, type }: Props) => {
+const MyButton = ({ children, size, primary, onClick }: Props) => {
   return (
     <>
-      <CustomButton height={size}>{children}</CustomButton>
+      <CustomButton size={size} primary={primary} onClick={onClick}>
+        {children}
+      </CustomButton>
     </>
   );
 };
