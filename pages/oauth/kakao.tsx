@@ -16,7 +16,7 @@ const kakao = () => {
 
   useEffect(() => {
     loginSequence(code);
-    location.href = '/';
+    // location.href = '/';
   });
 
   return (
