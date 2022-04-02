@@ -1,31 +1,28 @@
-import axios from 'axios';
-
-axios.defaults.baseURL =
-  process.env.NODE_ENV === 'development'
-    ? process.env.BACKEND
-    : process.env.BACKEND;
+import instance from './myAxios';
+import Axios from 'axios';
 
 interface LoginData {
+  nickname: string;
   accessToken: string;
   refreshToken: string;
 }
 
 const loginApi = async (code: string) => {
-  // const accessToken = `Test Access Token : ${code}`;
-  // const refreshToken = 'Test Refresh Token';
-
-  // return { accessToken, refreshToken };
   try {
-    const response = await axios.get<string>(`/oauth/kakao?code=${code}`);
-    console.log(response);
-    console.log(`data : ${response.data}`);
-
-    const accessToken = `Test Access Token : ${code}`;
-    const refreshToken = 'Test Refresh Token';
+    const response = await instance.get<string>(
+      `/api/oauth/kakao?code=${code}`,
+    );
+    alert(`response : ${response.data}`);
     // return response.data;
-    return { accessToken, refreshToken };
+
+    /* Test용 코드 */
+    const nickname = `My Nickname`;
+    const accessToken = `${code.slice(0, 8)}`;
+    const refreshToken = `${code.slice(8)}`;
+
+    return { nickname, accessToken, refreshToken };
   } catch (error) {
-    if (axios.isAxiosError(error)) {
+    if (Axios.isAxiosError(error)) {
       throw error;
     } else {
       throw 'Somethig Error';

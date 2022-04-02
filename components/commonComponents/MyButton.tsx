@@ -31,6 +31,7 @@ interface ButtonProps {
 }
 
 const CustomButton = styled.button<ButtonProps>`
+  display: inline-block;
   height: ${(props) => props.theme.length.componentHeight(props.size)};
   background-color: ${(props) => props.theme.colors.getColor(props.primary)};
   border-radius: 5%;
@@ -39,6 +40,8 @@ const CustomButton = styled.button<ButtonProps>`
   border: 1px ${(props) => props.theme.colors.primary} solid;
   color: ${(props) => (props.primary ? 'white' : 'black')};
   font-size: small;
+  vertical-align: middle;
+  white-space: nowrap;
 
   transition: border 0.5s, opacity 0.5s, background-color 0.5s, color 0.5s;
 
@@ -54,7 +57,7 @@ const MyButton = ({ children, size, primary, onClick }: Props) => {
   return (
     <>
       <CustomButton size={size} primary={primary} onClick={onClick}>
-        {children}
+        <span>{children}</span>
       </CustomButton>
     </>
   );

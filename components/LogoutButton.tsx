@@ -1,10 +1,12 @@
-import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/statics';
+import useUserStore from 'stores/user';
 import MyButton from './commonComponents/MyButton';
 
 const LogoutButton = () => {
+  const logoutAction = useUserStore((state) => state.logoutAction);
+
   const onClickLogout = () => {
-    localStorage.removeItem(ACCESS_TOKEN);
-    localStorage.removeItem(REFRESH_TOKEN);
+    logoutAction();
+    location.href = '/';
     alert('성공적으로 로그아웃 하였습니다.');
   };
 

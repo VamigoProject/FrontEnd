@@ -1,28 +1,36 @@
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { loginApi } from 'utils/api';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/statics';
+import useUserStore from '../../stores/user';
 
 const kakao = () => {
-  let code = '';
-  if (typeof window !== 'undefined') {
-    code = new URL(window.location.href).searchParams.get('code');
-  }
+  const loginAction = useUserStore((state) => state.loginAction);
 
-  const loginSequence = async (code: string) => {
-    const { accessToken, refreshToken } = await loginApi(code);
-    localStorage.setItem(ACCESS_TOKEN, accessToken);
-    localStorage.setItem(REFRESH_TOKEN, refreshToken);
+  const loginSequence = async () => {
+    const code = new URL(window.location.href).searchParams.get('code');
+    if (code === null || code === '' || code === undefined) {
+      alert('코드가 존재하지 않습니다');
+      return;
+    } else {
+      try {
+        const { nickname } = await loginApi(code.toString());
+        const accessToken = 'test';
+        const refreshToken = 'test refresh';
+        loginAction(nickname, accessToken, refreshToken);
+      } catch (err) {
+        alert(`Error ${err}`);
+      }
+    }
   };
 
   useEffect(() => {
-    loginSequence(code);
-    // location.href = '/';
-  });
+    loginSequence();
+    // location.href = '/home';
+  }, []);
 
   return (
     <div>
       <div>kakao 확인용</div>
-      <div>{`code : ${code}`}</div>
     </div>
   );
 };
