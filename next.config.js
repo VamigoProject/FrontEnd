@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
+const withAntdLess = require('next-plugin-antd-less');
+
 const nextConfig = {
   reactStrictMode: true,
+
   env: {
     REST_API_KEY: process.env.REST_API_KEY,
     REDIRECT_URL: process.env.REDIRECT_URL,
@@ -8,4 +11,10 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withAntdLess({
+  lessVarsFilePath: './styles/variables.less',
+  ...nextConfig,
+  webpack(config) {
+    return config;
+  },
+});

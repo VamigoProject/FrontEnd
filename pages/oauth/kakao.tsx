@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { loginApi } from 'utils/api';
 import useUserStore from '../../stores/user';
+import Router from 'next/router';
 
 const kakao = () => {
   const loginAction = useUserStore((state) => state.loginAction);
@@ -13,10 +13,13 @@ const kakao = () => {
       return;
     } else {
       try {
-        const { nickname } = await loginApi(code.toString());
-        const accessToken = 'test';
-        const refreshToken = 'test refresh';
-        loginAction(nickname, accessToken, refreshToken);
+        const { isJoined, nickname, accessToken, refreshToken } =
+          await loginApi(code.toString());
+        if (isJoined) {
+          loginAction(nickname, accessToken, refreshToken);
+        } else {
+          Router.push('/member/signup');
+        }
       } catch (err) {
         alert(`Error ${err}`);
       }
@@ -25,7 +28,7 @@ const kakao = () => {
 
   useEffect(() => {
     loginSequence();
-    // location.href = '/home';
+    location.href = '/home';
   }, []);
 
   return (

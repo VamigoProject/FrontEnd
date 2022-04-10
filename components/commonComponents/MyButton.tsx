@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 interface OptionalProps {
   children: React.ReactNode;
-  size: 'large' | 'medium' | 'small';
+  size: 'large' | 'middle' | 'small';
   primary: boolean;
   onClick: () => void;
 }
@@ -18,7 +18,7 @@ type Props = OptionalProps;
 
 const defaultProps: OptionalProps = {
   children: '',
-  size: 'medium',
+  size: 'middle',
   primary: false,
   onClick: () => {
     return;

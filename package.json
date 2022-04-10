@@ -9,12 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "antd": "^4.19.4",
+    "antd": "^4.19.5",
     "axios": "^0.26.1",
     "babel-plugin-styled-components": "^2.0.6",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-react-hooks": "^4.3.0",
     "next": "12.1.1",
+    "next-plugin-antd-less": "^1.8.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "styled-component": "^2.8.0",
@@ -28,6 +29,7 @@
     "@types/styled-components": "^5.1.24",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
+    "babel-plugin-import": "^1.13.3",
     "eslint": "^8.12.0",
     "eslint-config-next": "12.1.1",
     "eslint-config-prettier": "^8.5.0",

@@ -13,14 +13,14 @@ const lengthObject: Length = {
   smallComponentHeight: '1.7rem',
   componentHeight(this: Length, height: string) {
     if (height === 'large') return this.largeComponentHeight;
-    else if (height === 'medium') return this.mediumComponentHeight;
+    else if (height === 'middle') return this.mediumComponentHeight;
     else return this.smallComponentHeight;
   },
 };
 
 export const light = {
   colors: {
-    primary: 'rgb(121, 135, 119)',
+    primary: (opacity: number=1) => `rgba(121, 135, 119, ${opacity})`,
     secondPrimary: 'rgb(162, 178, 159)',
     thirdPrimary: 'rgb(189, 210, 182)',
     ground: 'rgb(248, 237, 227)',
