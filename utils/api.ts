@@ -8,13 +8,16 @@ interface LoginData {
   refreshToken: string;
 }
 
-const loginApi = async (mail: string, password: string): Promise<LoginData> => {
+const signinApi = async (
+  mail: string,
+  password: string,
+): Promise<LoginData> => {
   try {
-    // const response = await instance.get<string>(
-    //   `/oauth/kakao?code=${code}`,
-    // );
-    // alert(`response : ${response.data}`);
-    // return response.data;
+    // const body = {
+    //   mail,
+    //   password
+    // }
+    // const response = await instance.post<LoginData>("/member/signin", body)
 
     /* Test용 코드 */
 
@@ -64,4 +67,4 @@ const signupApi = async (
   }
 };
 
-export { loginApi, signupApi };
+export { signinApi, signupApi };

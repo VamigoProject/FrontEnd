@@ -1,19 +1,27 @@
 import { Button } from 'antd';
 import LogoutButton from 'components/LogoutButton';
 import useUserStore from 'stores/user';
-import { ACCESS_TOKEN, REFRESH_TOKEN, USER_STORE } from 'utils/statics';
+import styled from 'styled-components';
+
+const Background = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: blue;
+`;
 
 const Home = () => {
-  const { nickname } = useUserStore((state) => state);
+  const { nickname, accessToken, refreshToken } = useUserStore(
+    (state) => state,
+  );
 
   const onClickTest = () => {
     console.log(nickname);
-    console.log(localStorage.getItem(ACCESS_TOKEN));
-    console.log(localStorage.getItem(REFRESH_TOKEN));
+    console.log(accessToken);
+    console.log(refreshToken);
   };
 
   return (
-    <div>
+    <Background>
       <div>Home예정</div>
       <div>
         <Button onClick={onClickTest} type="primary">
@@ -23,7 +31,7 @@ const Home = () => {
           <LogoutButton />
         </div>
       </div>
-    </div>
+    </Background>
   );
 };
 

@@ -20,11 +20,11 @@ const lengthObject: Length = {
 
 export const light = {
   colors: {
-    primary: (opacity: number=1) => `rgba(121, 135, 119, ${opacity})`,
+    primary: (opacity = 1) => `rgba(121, 135, 119, ${opacity})`,
     secondPrimary: 'rgb(162, 178, 159)',
     thirdPrimary: 'rgb(189, 210, 182)',
-    ground: 'rgb(248, 237, 227)',
-    background: 'rgb(250, 245, 240)',
+    ground: (opacity = 1) => `rgba(248, 237, 227, ${opacity})`,
+    background: (opacity = 1) => `rgba(245, 245, 245, ${opacity})`,
     getColor(primary: boolean) {
       if (primary) return this.primary;
       else return 'rgb(255, 255, 255)';

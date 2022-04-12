@@ -7,13 +7,22 @@ import { dark, light } from 'styles/theme';
 import 'antd/dist/antd.css';
 import useUserStore from 'stores/user';
 import { useEffect } from 'react';
+import Loading from 'components/Loading';
+import AppLayout from 'components/AppLayout';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-  const themeMode = useSystemStore((state) => state.themeMode);
+  const { themeMode, isLoading } = useSystemStore((state) => state);
   const theme = themeMode === 'light' ? light : dark;
 
   const publicPath: Array<string> = [
+    '/',
+    '/member/signup',
+    '/member/password',
+    '/member/mailauth',
+  ];
+
+  const withoutAppLayoutPath: Array<string> = [
     '/',
     '/member/signup',
     '/member/password',
@@ -29,10 +38,21 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   });
 
+  if (withoutAppLayoutPath.includes(appProps.router.pathname)) {
+    return (
+      <ThemeProvider theme={theme}>
+        {isLoading && <Loading />}
+        <Component {...pageProps} />
+      </ThemeProvider>
+    );
+  }
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        {isLoading && <Loading />}
+        <AppLayout>
+          <Component {...pageProps} />
+        </AppLayout>
       </ThemeProvider>
     </>
   );

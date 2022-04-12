@@ -3,7 +3,7 @@ import useInput from 'hooks/useInput';
 import { useCallback } from 'react';
 import useUserStore from 'stores/user';
 import styled from 'styled-components';
-import { loginApi } from 'utils/api';
+import { signinApi } from 'utils/api';
 import Router from 'next/router';
 import Link from 'next/link';
 
@@ -16,7 +16,7 @@ const InputCustom = styled(Input)`
 `;
 
 const ButtonWrapper = styled(Button)`
-  width: 5rem;
+  width: 5.5rem;
 `;
 
 const ButtonRow = styled.div`
@@ -49,7 +49,7 @@ const LoginForm = () => {
 
   const onSubmitLogin = useCallback(async () => {
     try {
-      const { uid, nickname, accessToken, refreshToken } = await loginApi(
+      const { uid, nickname, accessToken, refreshToken } = await signinApi(
         mail,
         password,
       );

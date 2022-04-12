@@ -6,6 +6,7 @@ import { Button, Form, Input, Radio, Select } from 'antd';
 import { signupApi } from 'utils/api';
 import Router from 'next/router';
 import { useAuthStore } from 'stores/user';
+import useSystemStore from 'stores/system';
 
 const Background = styled.div`
   display: flex;
@@ -70,11 +71,14 @@ const { Option } = Select;
 
 const signup: NextPage = () => {
   const { setMailAction } = useAuthStore((state) => state);
+  const { startLoadingAction, endLoadingAction } = useSystemStore(
+    (state) => state,
+  );
 
-  const [mail, onChangeMail] = useInput('');
-  const [nickname, onChangeNickname] = useInput('');
-  const [password, onChangePassword] = useInput('');
-  const [passwordCheck, onChangePasswordCheck] = useInput('');
+  const [mail, onChangeMail] = useInput('test@test.com');
+  const [nickname, onChangeNickname] = useInput('nickname_test');
+  const [password, onChangePassword] = useInput('1q2w3e4r');
+  const [passwordCheck, onChangePasswordCheck] = useInput('1q2w3e4r');
 
   const [mbti, onChangeMbti] = useInput('None');
   const mbtiList: Array<string> = [
@@ -133,28 +137,21 @@ const signup: NextPage = () => {
     { value: 'racing', display: '레이싱' },
   ];
 
+  //회원가입 버튼을 누를 경우
   const onSubmit = async () => {
     try {
+      await startLoadingAction();
       await signupApi(mail, nickname, password, mbti, sex, year, work, genre);
 
       setMailAction(mail);
+      endLoadingAction();
       Router.push('/member/mailauth');
     } catch (error) {
+      endLoadingAction();
       alert(error);
     }
   };
 
-  const onClickTest = () => {
-    console.log(mail);
-    console.log(nickname);
-    console.log(password);
-    console.log(passwordCheck);
-    console.log(mbti);
-    console.log(sex);
-    console.log(year);
-    console.log(work);
-    console.log(genre);
-  };
   return (
     <Background>
       <Centering>
@@ -258,9 +255,6 @@ const signup: NextPage = () => {
               </Option>
             ))}
           </CustomSelect>
-          <br />
-          <br />
-          <Button onClick={onClickTest}>테스트용</Button>
           <br />
           <SubmitButton type="primary" htmlType="submit">
             회원가입
