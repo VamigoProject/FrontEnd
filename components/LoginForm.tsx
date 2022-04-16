@@ -71,6 +71,7 @@ const LoginForm = () => {
           value={mail}
           onChange={onChangeMail}
           size="small"
+          required
         />
         <CustomTextField
           id="password"
@@ -79,6 +80,7 @@ const LoginForm = () => {
           value={password}
           onChange={onChangePassword}
           size="small"
+          required
         />
         <br />
         <ButtonRow>
