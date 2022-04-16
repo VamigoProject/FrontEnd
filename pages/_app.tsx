@@ -2,18 +2,22 @@ import '../styles/globals.css';
 import '../styles/variables.less';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
+import * as mui from '@mui/material/styles';
 import useSystemStore from '../stores/system';
-import { dark, light } from 'styles/theme';
+import { lightTheme, darkTheme } from 'styles/muiTheme';
+import { light, dark } from 'styles/theme';
 import 'antd/dist/antd.css';
 import useUserStore from 'stores/user';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import Loading from 'components/Loading';
 import AppLayout from 'components/AppLayout';
+import { createTheme } from '@mui/system';
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const { themeMode, isLoading } = useSystemStore((state) => state);
-  const theme = themeMode === 'light' ? light : dark;
+  const styledtheme = themeMode === 'light' ? light : dark;
+  const theme = themeMode === 'light' ? lightTheme : darkTheme;
 
   const publicPath: Array<string> = [
     '/',
@@ -40,20 +44,24 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
 
   if (withoutAppLayoutPath.includes(appProps.router.pathname)) {
     return (
-      <ThemeProvider theme={theme}>
-        {isLoading && <Loading />}
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <mui.ThemeProvider theme={theme}>
+        <ThemeProvider theme={styledtheme}>
+          {isLoading && <Loading />}
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </mui.ThemeProvider>
     );
   }
   return (
     <>
-      <ThemeProvider theme={theme}>
-        {isLoading && <Loading />}
-        <AppLayout>
-          <Component {...pageProps} />
-        </AppLayout>
-      </ThemeProvider>
+      <mui.ThemeProvider theme={theme}>
+        <ThemeProvider theme={styledtheme}>
+          {isLoading && <Loading />}
+          <AppLayout>
+            <Component {...pageProps} />
+          </AppLayout>
+        </ThemeProvider>
+      </mui.ThemeProvider>
     </>
   );
 }

@@ -1,4 +1,3 @@
-import { Form, Input, Button } from 'antd';
 import useInput from 'hooks/useInput';
 import { useCallback } from 'react';
 import useUserStore from 'stores/user';
@@ -6,17 +5,15 @@ import styled from 'styled-components';
 import { signinApi } from 'utils/api';
 import Router from 'next/router';
 import Link from 'next/link';
+import { Button, Box, TextField } from '@mui/material';
 
-const FormWrapper = styled(Form)`
+const FormWrapper = styled(Box)`
   text-align: center;
+  width: 14rem;
 `;
 
-const InputCustom = styled(Input)`
-  margin-bottom: 1rem;
-`;
-
-const ButtonWrapper = styled(Button)`
-  width: 5.5rem;
+const CustomTextField = styled(TextField)`
+  margin-bottom: 0.5rem;
 `;
 
 const ButtonRow = styled.div`
@@ -24,6 +21,7 @@ const ButtonRow = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-bottom: 0.25rem;
 `;
 
 const Line = styled.div`
@@ -65,42 +63,38 @@ const LoginForm = () => {
   }, []);
 
   return (
-    <div>
-      <FormWrapper onFinish={onSubmitLogin}>
-        <InputCustom
-          name="mail"
+    <>
+      <FormWrapper component="form" onSubmit={onSubmitLogin}>
+        <CustomTextField
+          id="mail"
+          label="mail"
           value={mail}
           onChange={onChangeMail}
-          width="12rem"
-          type="email"
-          placeholder="vamigo@mail.com"
-          required
+          size="small"
         />
-        <br />
-        <InputCustom
-          name="password"
-          value={password}
+        <CustomTextField
+          id="password"
+          label="password"
           type="password"
+          value={password}
           onChange={onChangePassword}
-          width="12rem"
-          placeholder="password"
-          required
+          size="small"
         />
         <br />
         <ButtonRow>
-          <ButtonWrapper type="primary" loading={false} htmlType="submit">
+          <Button type="submit" color="primary" variant="contained">
             로 그 인
-          </ButtonWrapper>
-          <ButtonWrapper type="default" onClick={onSignupClick}>
+          </Button>
+          <Button variant="outlined" onClick={onSignupClick}>
             회원가입
-          </ButtonWrapper>
+          </Button>
         </ButtonRow>
         <Line></Line>
         <Link href="/member/password">
           <CustomA>비밀번호 찾기</CustomA>
         </Link>
       </FormWrapper>
-    </div>
+    </>
   );
 };
 

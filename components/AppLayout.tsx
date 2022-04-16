@@ -1,5 +1,4 @@
 import React from 'react';
-import { Row, Col } from 'antd';
 import styled from 'styled-components';
 import Navigation from './Navigation';
 import Trend from './Trend';
@@ -56,6 +55,7 @@ const LeftBottomSide = styled.div`
   position: sticky;
   top: 30.5rem;
   width: 100%;
+  margin-top: 1rem;
   @media screen and (max-width: 58rem) {
     display: inline-block;
   }

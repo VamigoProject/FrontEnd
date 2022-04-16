@@ -9,6 +9,7 @@ interface SystemStore {
 }
 
 const useSystemStore = create<SystemStore>((set) => ({
+  muiTheme: 'light',
   themeMode: 'light',
   switchTheme: () =>
     set((state) => ({
