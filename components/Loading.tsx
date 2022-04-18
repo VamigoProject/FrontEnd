@@ -1,4 +1,4 @@
-import { Spin } from 'antd';
+import CircularProgress from '@mui/material/CircularProgress';
 import styled from 'styled-components';
 
 const FullSize = styled.div`
@@ -8,7 +8,7 @@ const FullSize = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: ${(props) => props.theme.colors.ground(0.5)};
-  z-index: 9999;
+  z-index: 99999;
 `;
 
 const Centering = styled.div`
@@ -23,7 +23,7 @@ const Loading = () => {
   return (
     <FullSize>
       <Centering>
-        <Spin size="large" />
+        <CircularProgress />
       </Centering>
     </FullSize>
   );

@@ -1,7 +1,11 @@
+import ColorPicker from 'material-ui-color-picker';
+import useInput from 'hooks/useInput';
+
 import React from 'react';
 import styled from 'styled-components';
 import Navigation from './Navigation';
 import Trend from './Trend';
+import Header from 'components/Header';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,7 +16,6 @@ const Background = styled.div`
   height: 100%;
   min-width: 43.5rem;
   min-height: 100vh;
-  background-color: ${(props) => props.theme.colors.background};
 `;
 
 const HeaderDiv = styled.div`
@@ -20,7 +23,6 @@ const HeaderDiv = styled.div`
   top: 0px;
   height: 3.5rem;
   width: 100%;
-  background-color: ${(props) => props.theme.colors.ground()};
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 4px 6px rgb(0, 0, 0, 0.05);
   z-index: 100;
 `;
@@ -30,76 +32,106 @@ const BodyRow = styled.div`
   flex-wrap: wrap;
   min-height: calc(200vh - 3.5rem);
   width: 100%;
-  padding-top: 1rem;
-  background-color: ${(props) => props.theme.colors.background()};
+  padding-top: 0.5rem;
+  background-color: ${(props) => props.color};
 `;
 
-const SideBox = styled.div`
+const LeftSide = styled.div`
+  position: sticky;
+  top: 4rem;
   display: inline-block;
-  width: 12.5rem;
-  height: 100%;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  margin-bottom: 1rem;
+  width: 13rem;
+  height: calc(100vh - 4rem);
   padding: 0.5rem;
-  background-color: red;
+  background-color: ${(props) => props.color};
 `;
-
-const LeftSide = styled(SideBox)`
+const RightSide = styled.div`
   position: sticky;
-  top: 4.5rem;
-`;
-
-const LeftBottomSide = styled.div`
-  display: none;
-  position: sticky;
-  top: 30.5rem;
-  width: 100%;
-  margin-top: 1rem;
-  @media screen and (max-width: 58rem) {
-    display: inline-block;
-  }
-`;
-
-const RightSide = styled(SideBox)`
-  position: sticky;
-  top: 4.5rem;
-  @media screen and (max-width: 58rem) {
+  top: 4rem;
+  display: inline-block;
+  width: 13rem;
+  height: calc(100vh - 4rem);
+  padding: 0.5rem;
+  @media screen and (max-width: 65rem) {
     display: none;
   }
+  background-color: ${(props) => props.color};
 `;
 
 const ContentSide = styled.div`
   display: inline-block;
-  padding: 0.5rem;
   min-width: 30rem;
-  width: calc(100vw - 28.25rem);
+  width: calc(100vw - 27rem);
   height: 100%;
-
-  @media screen and (max-width: 58rem) {
-    width: calc(100vw - 15.5rem);
+  margin: 0;
+  padding: 0.5rem;
+  @media screen and (max-width: 65rem) {
+    width: calc(100vw - 14rem);
   }
 `;
 
+const AppendArea = styled.div`
+  display: none;
+  width: 100%;
+  @media screen and (max-width: 65rem) {
+    display: inline-block;
+  }
+`;
+
+const SideBox = styled.div`
+  width: 12rem;
+  height: 100%;
+  margin-bottom: 0.5rem;
+`;
+
+const TestColor = styled.div`
+  width: 100%;
+  height: 5rem;
+  border: 1px solid black;
+`;
+
 const AppLayout = ({ children }: LayoutProps) => {
+  const [bodyColor, onChangeBodyColor] = useInput('#F1E9DE');
+  const [sideColor, onChangeSideColor] = useInput('#f1f8e9');
+
   return (
     <Background>
-      <HeaderDiv>안녕하세요</HeaderDiv>
-      <BodyRow>
-        <LeftSide>
-          <Navigation />
-          <LeftBottomSide>
-            <Trend />
-          </LeftBottomSide>
+      <HeaderDiv>
+        <Header />
+      </HeaderDiv>
+      <BodyRow color={bodyColor}>
+        <LeftSide color={sideColor}>
+          <SideBox>
+            <Navigation />
+          </SideBox>
+          <AppendArea>
+            <SideBox>
+              <Trend />
+            </SideBox>
+          </AppendArea>
         </LeftSide>
-        <ContentSide>{children}</ContentSide>
-        <RightSide>
-          <Trend />
-        </RightSide>
-
-        {/* <Col span={18} md={14} xl={16} xxl={18}>
+        <ContentSide>
+          <TestColor>
+            <ColorPicker
+              label="background색깔"
+              name="body"
+              value={bodyColor}
+              onChange={(e) => onChangeBodyColor(e)}
+            />
+            <ColorPicker
+              label="side색깔"
+              name="sidebox"
+              value={sideColor}
+              onChange={(e) => onChangeSideColor(e)}
+            />
+          </TestColor>
           {children}
-        </Col> */}
+        </ContentSide>
+        <RightSide color={sideColor}>
+          <SideBox>
+            <Trend />
+          </SideBox>
+        </RightSide>
       </BodyRow>
     </Background>
   );

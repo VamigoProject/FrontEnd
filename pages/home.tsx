@@ -1,4 +1,3 @@
-import { Button } from 'antd';
 import LogoutButton from 'components/LogoutButton';
 import useUserStore from 'stores/user';
 import styled from 'styled-components';
@@ -24,9 +23,7 @@ const Home = () => {
     <Background>
       <div>Home예정</div>
       <div>
-        <Button onClick={onClickTest} type="primary">
-          테스트용
-        </Button>
+        <button onClick={onClickTest}>테스트용</button>
         <div>
           <LogoutButton />
         </div>

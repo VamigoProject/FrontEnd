@@ -8,6 +8,9 @@ interface LoginData {
   refreshToken: string;
 }
 
+const wait = (delay: number) =>
+  new Promise((resolve) => setTimeout(resolve, delay));
+
 const signinApi = async (
   mail: string,
   password: string,
@@ -25,6 +28,7 @@ const signinApi = async (
     const nickname = `My Nickname`;
     const accessToken = `accessToken`;
     const refreshToken = `refreshToken`;
+    await wait(1000);
 
     return { uid, nickname, accessToken, refreshToken };
   } catch (error) {

@@ -1,17 +1,14 @@
 import '../styles/globals.css';
-import '../styles/variables.less';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import * as mui from '@mui/material/styles';
 import useSystemStore from '../stores/system';
 import { lightTheme, darkTheme } from 'styles/muiTheme';
 import { light, dark } from 'styles/theme';
-import 'antd/dist/antd.css';
 import useUserStore from 'stores/user';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import Loading from 'components/Loading';
 import AppLayout from 'components/AppLayout';
-import { createTheme } from '@mui/system';
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
@@ -34,6 +31,7 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   ];
 
   useEffect(() => {
+    console.log(isLoading);
     if (publicPath.indexOf(window.location.pathname) === -1) {
       //public이 아닌 경우
       if (!isLoggedIn) {

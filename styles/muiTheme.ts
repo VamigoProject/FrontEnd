@@ -19,7 +19,29 @@ declare module '@mui/material/styles' {
 const lightTheme = createTheme({
   palette: {
     primary: {
-      main: blue[500],
+      main: green[500],
+    },
+  },
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        sx: {
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          input: {
+            color: 'black',
+          },
+        },
+      },
+    },
+    MuiSelect: {
+      defaultProps: {
+        sx: {
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          input: {
+            color: green[500],
+          },
+        },
+      },
     },
   },
 });
@@ -27,7 +49,7 @@ const lightTheme = createTheme({
 const darkTheme = createTheme({
   palette: {
     primary: {
-      main: blue[800],
+      main: green[800],
     },
   },
 });

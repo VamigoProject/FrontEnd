@@ -1,8 +1,17 @@
+import React from 'react';
 import type { NextPage } from 'next';
 import useInput from 'hooks/useInput';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { Button, Form, Input, Radio, Select } from 'antd';
+import {
+  TextField,
+  Select,
+  InputLabel,
+  MenuItem,
+  Button,
+  Checkbox,
+  ListItemText,
+} from '@mui/material';
 import { signupApi } from 'utils/api';
 import Router from 'next/router';
 import { useAuthStore } from 'stores/user';
@@ -16,7 +25,7 @@ const Background = styled.div`
   height: 100%;
   min-width: 100vw;
   min-height: 100vh;
-  background-color: rgb(230, 230, 230);
+  background-color: rgb(245, 245, 245);
   padding-top: 1rem;
 `;
 
@@ -30,44 +39,31 @@ const Logo = styled.h1`
   margin-bottom: 3rem;
 `;
 
-const FormWrapper = styled(Form)`
+const Form = styled.form`
   width: 100%;
   height: 100%;
 `;
 
-const CustomLabel = styled.label`
-  font-weight: bold;
-`;
-
-const CustomInput = styled(Input)`
-  height: 2.5rem;
+const CustomTextField = styled(TextField)`
   margin-bottom: 1.5rem;
-`;
-
-const CustomRadio = styled(Radio.Button)`
-  margin-bottom: 1.5rem;
-  margin-right: 0.25rem;
+  width: 100%;
 `;
 
 const CustomSelect = styled(Select)`
-  width: 100%;
-  height: 2.5rem;
   margin-bottom: 1.5rem;
+  width: 100%;
 `;
 
-const SubmitButton = styled(Button)`
-  position: relative;
+const SignupButton = styled(Button)`
+  display: relative;
   left: 100%;
   transform: translate(-100%, 0);
-  margin-bottom: 2rem;
 `;
 
 interface Item {
   value: string;
   display: string;
 }
-
-const { Option } = Select;
 
 const signup: NextPage = () => {
   const { setMailAction } = useAuthStore((state) => state);
@@ -138,7 +134,8 @@ const signup: NextPage = () => {
   ];
 
   //회원가입 버튼을 누를 경우
-  const onSubmit = async () => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       await startLoadingAction();
       await signupApi(mail, nickname, password, mbti, sex, year, work, genre);
@@ -160,106 +157,136 @@ const signup: NextPage = () => {
             <Logo>Vamigo</Logo>
           </a>
         </Link>
-        <FormWrapper onFinish={onSubmit}>
-          <CustomLabel htmlFor="mail">이메일</CustomLabel>
-          <CustomInput
-            name="mail"
-            placeholder="vamigo@vamigo.com"
+        <Form onSubmit={onSubmit} noValidate>
+          <CustomTextField
+            id="mail"
+            helperText="사용가능한 이메일을 입력해주세요"
+            label="메일"
             value={mail}
             onChange={onChangeMail}
-            maxLength={25}
-            type="mail"
+            type="email"
+            size="small"
             required
+            variant="outlined"
           />
-          <CustomLabel htmlFor="nickname">닉네임</CustomLabel>
-          <CustomInput
-            name="nickname"
-            placeholder="nickname"
+          <br />
+          <CustomTextField
+            id="nickname"
+            helperText="표출될 닉네임을 설정해주세요"
+            label="닉네임"
             value={nickname}
             onChange={onChangeNickname}
-            maxLength={15}
+            inputProps={{ maxLength: 15 }}
+            size="small"
             required
+            variant="outlined"
           />
-          <CustomLabel htmlFor="password">패스워드</CustomLabel>
-          <CustomInput
-            name="password"
-            placeholder="password"
+          <br />
+          <CustomTextField
+            id="password"
+            label="패스워드"
             value={password}
             onChange={onChangePassword}
-            maxLength={20}
+            inputProps={{ maxLength: 20 }}
+            size="small"
             type="password"
             required
+            variant="outlined"
           />
-          <CustomLabel htmlFor="passwordCheck">패스워드 확인</CustomLabel>
-          <CustomInput
-            name="passwordCheck"
-            placeholder="password check"
+          <br />
+          <CustomTextField
+            id="passwordCheck"
+            label="패스워드확인"
+            helperText="패스워드와 일치하여야합니다"
             value={passwordCheck}
             onChange={onChangePasswordCheck}
-            maxLength={20}
+            inputProps={{ maxLength: 20 }}
+            size="small"
             type="password"
             required
+            variant="outlined"
           />
-          <CustomLabel>MBTI</CustomLabel>
           <br />
-          <CustomSelect defaultValue={'None'} onChange={onChangeMbti}>
+          <InputLabel id="mbti">MBTI</InputLabel>
+          <CustomSelect
+            labelId="mbti"
+            onChange={onChangeMbti}
+            value={mbti}
+            size="small"
+            required
+          >
             {mbtiList.map((mbti) => (
-              <Option key={mbti} value={mbti}>
+              <MenuItem key={mbti} value={mbti}>
                 {mbti}
-              </Option>
+              </MenuItem>
             ))}
           </CustomSelect>
           <br />
-          <CustomLabel htmlFor="sex">성별</CustomLabel>
-          <br />
-          <Radio.Group
-            name="sex"
+          <InputLabel id="sex">성별</InputLabel>
+          <CustomSelect
+            labelId="sex"
             value={sex}
             onChange={onChangeSex}
-            buttonStyle="solid"
-            defaultValue="secret"
+            size="small"
+            required
           >
             {sexList.map((sex) => (
-              <CustomRadio key={sex.value} value={sex.value}>
+              <MenuItem key={sex.value} value={sex.value}>
                 {sex.display}
-              </CustomRadio>
+              </MenuItem>
             ))}
-          </Radio.Group>
+          </CustomSelect>
           <br />
-          <CustomLabel>출생년도</CustomLabel>
-          <br />
-          <CustomSelect defaultValue={currentYear - 1} onChange={onChangeYear}>
+          <InputLabel id="year">출생년도</InputLabel>
+          <CustomSelect
+            labelId="year"
+            value={year}
+            onChange={onChangeYear}
+            size="small"
+            required
+          >
             {yearList.map((year) => (
-              <Option key={year} value={year}>
+              <MenuItem key={year} value={year}>
                 {year}년
-              </Option>
+              </MenuItem>
             ))}
           </CustomSelect>
           <br />
-          <CustomLabel>선호작품</CustomLabel>
-          <br />
-          <CustomSelect onChange={onChangeWork} mode="multiple">
-            {workList.map((work) => (
-              <Option key={work.value} value={work.value}>
-                {work.display}
-              </Option>
+          <InputLabel id="work">선호작품</InputLabel>
+          <CustomSelect
+            labelId="work"
+            value={work}
+            onChange={onChangeWork}
+            size="small"
+            multiple
+          >
+            {workList.map((w) => (
+              <MenuItem key={w.value} value={w.value}>
+                {w.display}
+              </MenuItem>
             ))}
           </CustomSelect>
           <br />
-          <CustomLabel>선호장르</CustomLabel>
-          <br />
-          <CustomSelect onChange={onChangeGenre} mode="multiple">
-            {genreList.map((genre) => (
-              <Option key={genre.value} value={genre.value}>
-                {genre.display}
-              </Option>
+          <InputLabel id="genre">선호장르</InputLabel>
+          <CustomSelect
+            labelId="genre"
+            value={genre}
+            onChange={onChangeGenre}
+            size="small"
+            multiple
+          >
+            {genreList.map((g) => (
+              <MenuItem key={g.value} value={g.value}>
+                {g.display}
+              </MenuItem>
             ))}
           </CustomSelect>
           <br />
-          <SubmitButton type="primary" htmlType="submit">
+          <br />
+          <SignupButton type="submit" color="primary" variant="contained">
             회원가입
-          </SubmitButton>
-        </FormWrapper>
+          </SignupButton>
+        </Form>
       </Centering>
     </Background>
   );

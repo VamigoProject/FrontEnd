@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const TrendWrapper = styled.div`
   width: 100%;
   height: 20rem;
-  background-color: ${(props) => props.theme.colors.ground()};
+  border: 1px black solid;
 `;
 
 const Trend = () => {

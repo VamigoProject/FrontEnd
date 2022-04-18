@@ -1,3 +1,4 @@
+import React from 'react';
 import useInput from 'hooks/useInput';
 import { useCallback } from 'react';
 import useUserStore from 'stores/user';
@@ -6,6 +7,7 @@ import { signinApi } from 'utils/api';
 import Router from 'next/router';
 import Link from 'next/link';
 import { Button, Box, TextField } from '@mui/material';
+import useSystemStore from 'stores/system';
 
 const FormWrapper = styled(Box)`
   text-align: center;
@@ -40,23 +42,33 @@ const CustomA = styled.a`
 `;
 
 const LoginForm = () => {
+  const { startLoadingAction, endLoadingAction } = useSystemStore(
+    (state) => state,
+  );
   const loginAction = useUserStore((state) => state.loginAction);
 
-  const [mail, onChangeMail] = useInput('');
-  const [password, onChangePassword] = useInput('');
+  const [mail, onChangeMail] = useInput('test@test.com');
+  const [password, onChangePassword] = useInput('1q2w3e4r');
 
-  const onSubmitLogin = useCallback(async () => {
-    try {
-      const { uid, nickname, accessToken, refreshToken } = await signinApi(
-        mail,
-        password,
-      );
-      loginAction(uid, nickname, accessToken, refreshToken);
-      Router.push('/home');
-    } catch (err) {
-      alert(err);
-    }
-  }, [mail, password]);
+  const onSubmitLogin = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      startLoadingAction();
+      try {
+        const { uid, nickname, accessToken, refreshToken } = await signinApi(
+          mail,
+          password,
+        );
+        loginAction(uid, nickname, accessToken, refreshToken);
+        endLoadingAction();
+        Router.push('/home');
+      } catch (err) {
+        endLoadingAction();
+        alert(err);
+      }
+    },
+    [mail, password],
+  );
 
   const onSignupClick = useCallback(() => {
     Router.push('/member/signup');
