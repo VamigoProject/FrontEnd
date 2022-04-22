@@ -21,6 +21,7 @@
     "emotion": "^11.0.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "immer": "^9.0.12",
     "material-components-web": "^13.0.0",
     "material-ui-color-picker": "^3.5.1",
     "next": "12.1.1",

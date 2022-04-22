@@ -1,6 +1,7 @@
-import LogoutButton from 'components/LogoutButton';
 import useUserStore from 'stores/user';
 import styled from 'styled-components';
+import Empty from 'components/Empty';
+import { Review } from 'utils/types';
 
 const Background = styled.div`
   width: 100%;
@@ -8,26 +9,17 @@ const Background = styled.div`
   background-color: blue;
 `;
 
+const Reviews: Array<Review> = [{}];
+
 const Home = () => {
   const { nickname, accessToken, refreshToken } = useUserStore(
     (state) => state,
   );
 
-  const onClickTest = () => {
-    console.log(nickname);
-    console.log(accessToken);
-    console.log(refreshToken);
-  };
-
   return (
     <Background>
-      <div>Home예정</div>
-      <div>
-        <button onClick={onClickTest}>테스트용</button>
-        <div>
-          <LogoutButton />
-        </div>
-      </div>
+      {Reviews.length === 0 && <Empty></Empty>}
+      {Reviews.length !== 0 && Reviews.map((review) => <div>리뷰</div>)}
     </Background>
   );
 };

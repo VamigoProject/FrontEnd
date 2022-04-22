@@ -1,9 +1,9 @@
 import instance from './myAxios';
-import Axios from 'axios';
+import Axios, { AxiosError } from 'axios';
 
 interface LoginData {
-  uid: number;
   nickname: string;
+  profile: string;
   accessToken: string;
   refreshToken: string;
 }
@@ -24,13 +24,13 @@ const signinApi = async (
 
     /* Test용 코드 */
 
-    const uid = 98;
     const nickname = `My Nickname`;
+    const profile = 'None';
     const accessToken = `accessToken`;
     const refreshToken = `refreshToken`;
     await wait(1000);
 
-    return { uid, nickname, accessToken, refreshToken };
+    return { nickname, profile, accessToken, refreshToken };
   } catch (error) {
     if (Axios.isAxiosError(error)) {
       throw error;
@@ -42,33 +42,48 @@ const signinApi = async (
 
 const signupApi = async (
   mail: string,
+  code: string,
   nickname: string,
   password: string,
   mbti: string,
   sex: string,
   year: string,
-  work: Array<string>,
+  category: Array<string>,
   genre: Array<string>,
 ) => {
   try {
     const body = {
       mail,
+      code,
       nickname,
       password,
       mbti,
       sex,
       year,
-      work,
+      category,
       genre,
     };
     await instance.post('/member/signup', body);
   } catch (error) {
     if (Axios.isAxiosError(error)) {
-      throw error;
+      throw `${error.response.data}`;
     } else {
       throw 'Something Error';
     }
   }
 };
 
-export { signinApi, signupApi };
+const requestMailApi = async (mail: string) => {
+  try {
+    const body = { mail };
+    await instance.post('/member/mailauth', body);
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      throw `${error.response.data}`;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
+export { signinApi, signupApi, requestMailApi };

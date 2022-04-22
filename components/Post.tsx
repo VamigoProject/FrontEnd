@@ -1,8 +1,11 @@
+import ContentBox from 'components/ContentBox';
+
+
 const Post = () => {
   return (
-    <div>
+    <ContentBox>
       <div>여기에 포스팅이 들어갑니다.</div>
-    </div>
+    </ContentBox>
   );
 };
 

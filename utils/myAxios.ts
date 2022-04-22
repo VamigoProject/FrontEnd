@@ -6,7 +6,7 @@ const instance = axios.create({
     process.env.NODE_ENV === 'development'
       ? process.env.BACKEND
       : process.env.BACKEND,
-  timeout: 5000,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },

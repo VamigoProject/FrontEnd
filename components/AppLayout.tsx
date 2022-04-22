@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Navigation from './Navigation';
 import Trend from './Trend';
 import Header from 'components/Header';
+import ContentBox from 'components/ContentBox';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -18,6 +19,7 @@ const Background = styled.div`
   min-height: 100vh;
 `;
 
+//Header가 들어갈 부분
 const HeaderDiv = styled.div`
   position: sticky;
   top: 0px;
@@ -27,6 +29,7 @@ const HeaderDiv = styled.div`
   z-index: 100;
 `;
 
+//Header를 제외한 전체
 const BodyRow = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -36,6 +39,7 @@ const BodyRow = styled.div`
   background-color: ${(props) => props.color};
 `;
 
+//왼쪽 영역 전체
 const LeftSide = styled.div`
   position: sticky;
   top: 4rem;
@@ -45,6 +49,7 @@ const LeftSide = styled.div`
   padding: 0.5rem;
   background-color: ${(props) => props.color};
 `;
+//오른쪽 영역(창이 줄어들 경우 display:none)
 const RightSide = styled.div`
   position: sticky;
   top: 4rem;
@@ -57,19 +62,20 @@ const RightSide = styled.div`
   }
   background-color: ${(props) => props.color};
 `;
-
+//content들이 들어갈 영역
 const ContentSide = styled.div`
   display: inline-block;
   min-width: 30rem;
-  width: calc(100vw - 27rem);
+  width: calc(100vw - 27.5rem);
+  min-height: calc(100vh - 4rem);
   height: 100%;
   margin: 0;
   padding: 0.5rem;
   @media screen and (max-width: 65rem) {
-    width: calc(100vw - 14rem);
+    width: calc(100vw - 14.5rem);
   }
 `;
-
+//창이 줄어듦에 따라 왼쪽에 보여지는 부분
 const AppendArea = styled.div`
   display: none;
   width: 100%;
@@ -80,18 +86,11 @@ const AppendArea = styled.div`
 
 const SideBox = styled.div`
   width: 12rem;
-  height: 100%;
   margin-bottom: 0.5rem;
 `;
 
-const TestColor = styled.div`
-  width: 100%;
-  height: 5rem;
-  border: 1px solid black;
-`;
-
 const AppLayout = ({ children }: LayoutProps) => {
-  const [bodyColor, onChangeBodyColor] = useInput('#F1E9DE');
+  const [bodyColor, onChangeBodyColor] = useInput('#F7F0E6');
   const [sideColor, onChangeSideColor] = useInput('#f1f8e9');
 
   return (
@@ -111,7 +110,7 @@ const AppLayout = ({ children }: LayoutProps) => {
           </AppendArea>
         </LeftSide>
         <ContentSide>
-          <TestColor>
+          <ContentBox>
             <ColorPicker
               label="background색깔"
               name="body"
@@ -124,7 +123,7 @@ const AppLayout = ({ children }: LayoutProps) => {
               value={sideColor}
               onChange={(e) => onChangeSideColor(e)}
             />
-          </TestColor>
+          </ContentBox>
           {children}
         </ContentSide>
         <RightSide color={sideColor}>

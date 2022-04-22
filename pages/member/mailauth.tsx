@@ -1,11 +1,12 @@
-import { Button, Form, Input } from 'antd';
 import styled from 'styled-components';
-import { MailTwoTone } from '@ant-design/icons';
-import { COLOR_PRIMARY } from 'utils/statics';
 import { useAuthStore } from 'stores/user';
 import { useRef, useState, useEffect, useCallback } from 'react';
 import useInput from 'hooks/useInput';
 import Router from 'next/router';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import { Button, Box, TextField } from '@mui/material';
+import useSystemStore from 'stores/system';
+import { mailAuthApi } from 'utils/api';
 
 const Background = styled.div`
   display: flex;
@@ -33,9 +34,9 @@ const Centering = styled.div`
   padding: 1rem;
 `;
 
-const MailIcon = styled(MailTwoTone)`
-  font-size: 4rem;
-`;
+// const MailIcon = styled(MailTwoTone)`
+//   font-size: 4rem;
+// `;
 
 const Line = styled.div`
   width: 100%;
@@ -45,12 +46,12 @@ const Line = styled.div`
   margin-bottom: 1.5rem;
 `;
 
-const BottomForm = styled(Form)`
+const BottomForm = styled(Box)`
   width: 100%;
   height: 100%;
 `;
 
-const CustomInput = styled(Input)`
+const CustomInput = styled(TextField)`
   width: 15rem;
   height: 1.5rem;
 `;
@@ -60,7 +61,11 @@ const SubmitButton = styled(Button)`
 `;
 
 const mailauth = () => {
-  const mail = useAuthStore((state) => state.mail);
+  const mail = 'lwc421@gmail.com';
+  // const mail = useAuthStore((state) => state.mail);
+  const { startLoadingAction, endLoadingAction } = useSystemStore(
+    (state) => state,
+  );
   const [code, onChangeCode] = useInput('');
   const [time, setTime] = useState(300);
   const timerId = useRef<any>(null);
@@ -86,26 +91,38 @@ const mailauth = () => {
     }, 1000);
   }, []);
 
-  const onSubmit = () => {
-    alert('확인되었습니다');
-    Router.push('/');
+  const onSubmit = async () => {
+    alert('메일인증시작');
+    startLoadingAction();
+    try {
+      await mailAuthApi(mail, code);
+      endLoadingAction();
+      alert('확인되었습니다');
+      Router.push('/');
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
     <Background>
       <Centering>
-        <MailIcon twoToneColor={COLOR_PRIMARY} />
+        <DraftsIcon sx={{ fontSize: 50 }} />
         <Line />
-        <BottomForm onFinish={onSubmit}>
+        <BottomForm component="form" onSubmit={onSubmit}>
           <strong>{mail}</strong>로 인증메일을 발송하였습니다.
           <br />
-          <CustomInput value={code} onChange={onChangeCode} />
+          <CustomInput size="small" value={code} onChange={onChangeCode} />
           <span> {time}초 </span>
-          <Button onClick={onClickResend} disabled={time > 280}>
+          <Button
+            onClick={onClickResend}
+            variant="outlined"
+            disabled={time > 280}
+          >
             재전송
           </Button>
           <br />
-          <SubmitButton type="primary" htmlType="submit">
+          <SubmitButton type="submit" color="primary" variant="contained">
             인증하기
           </SubmitButton>
         </BottomForm>

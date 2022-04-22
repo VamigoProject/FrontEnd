@@ -1,36 +1,39 @@
 import { USER_STORE } from 'utils/statics';
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
+import { User } from 'utils/types';
 
-interface User {
+interface UserStore {
   isLoggedIn: boolean; //로그인 되어있는지 여부
-  uid: number | null; //user id
+  User: User | null;
   nickname: string | null; //로그인되어 있을 경우 유저의 nickname
+  profile: string | null; //base64로 인코딩 된 사용자 프로필 이미지
   accessToken: string | null;
   refreshToken: string | null;
   loginAction: (
-    uid: number,
     nickname: string,
+    profile: string | null,
     accessToken: string,
     refreshToken: string,
   ) => void; //로그인 액션
   logoutAction: () => void; //로그아웃 액션
 }
 
-const useUserStore = create<User>(
+const useUserStore = create<UserStore>(
   persist(
     (set, get) => ({
       isLoggedIn: false,
-      uid: null,
+      User: null,
       nickname: null,
+      profile: null,
       accessToken: null,
       refreshToken: null,
 
-      loginAction: (uid, nickname, accessToken, refreshToken) => {
+      loginAction: (nickname, profile, accessToken, refreshToken) => {
         set({
           isLoggedIn: true,
-          uid,
           nickname,
+          profile,
           accessToken,
           refreshToken,
         });
@@ -39,8 +42,8 @@ const useUserStore = create<User>(
       logoutAction: () => {
         set({
           isLoggedIn: false,
-          uid: null,
           nickname: null,
+          profile: null,
           accessToken: null,
           refreshToken: null,
         });

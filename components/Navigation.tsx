@@ -5,6 +5,7 @@ import useSystemStore from 'stores/system';
 import Router from 'next/router';
 
 import HomeIcon from '@mui/icons-material/Home';
+import EditIcon from '@mui/icons-material/Edit';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -48,11 +49,12 @@ const Navigation = () => {
   const onClickHome = () => {
     Router.push('/home');
   };
-
+  const onClickReview = () => {
+    Router.push('/review/new');
+  };
   const onClickProfile = () => {
     Router.push('/profile');
   };
-
   const onClickSetting = () => {
     Router.push('/setting');
   };
@@ -70,6 +72,10 @@ const Navigation = () => {
       <NavigationWrapper>
         <NavigationRow onClick={onClickHome}>
           <HomeIcon className="icon" />홈
+        </NavigationRow>
+        <NavigationRow onClick={onClickReview}>
+          <EditIcon className="icon" />
+          리뷰작성
         </NavigationRow>
         <NavigationRow onClick={onClickProfile}>
           <AccountBoxIcon className="icon" />

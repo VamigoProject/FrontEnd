@@ -55,11 +55,14 @@ const LoginForm = () => {
       e.preventDefault();
       startLoadingAction();
       try {
-        const { uid, nickname, accessToken, refreshToken } = await signinApi(
-          mail,
-          password,
-        );
-        loginAction(uid, nickname, accessToken, refreshToken);
+        const { nickname, profile, accessToken, refreshToken } =
+          await signinApi(mail, password);
+        if (profile === 'None') {
+          //profile이미지가 없을 경우
+          loginAction(nickname, null, accessToken, refreshToken);
+        } else {
+          loginAction(nickname, profile, accessToken, refreshToken);
+        }
         endLoadingAction();
         Router.push('/home');
       } catch (err) {
@@ -81,6 +84,7 @@ const LoginForm = () => {
           id="mail"
           label="mail"
           value={mail}
+          type="email"
           onChange={onChangeMail}
           size="small"
           required

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { NextPage } from 'next';
 import useInput from 'hooks/useInput';
 import styled from 'styled-components';
@@ -12,7 +12,7 @@ import {
   Checkbox,
   ListItemText,
 } from '@mui/material';
-import { signupApi } from 'utils/api';
+import { requestMailApi, signupApi } from 'utils/api';
 import Router from 'next/router';
 import { useAuthStore } from 'stores/user';
 import useSystemStore from 'stores/system';
@@ -66,12 +66,48 @@ interface Item {
 }
 
 const signup: NextPage = () => {
+  const clearTimer = () => {
+    clearTimeout(timerId.current);
+    clearInterval(intervalId.current);
+  };
+
+  useEffect(() => {
+    return clearTimer();
+  }, []);
+
   const { setMailAction } = useAuthStore((state) => state);
   const { startLoadingAction, endLoadingAction } = useSystemStore(
     (state) => state,
   );
 
   const [mail, onChangeMail] = useInput('test@test.com');
+  const regEmail =
+    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+
+  const [code, onChangeCode] = useInput('');
+  const [codeButton, setCodeButton] = useState<string | number>('코드요청');
+  const timerId = useRef<any>();
+  const intervalId = useRef<any>();
+
+  const onClickCode = async () => {
+    await startLoadingAction();
+    try {
+      await requestMailApi(mail);
+      alert(`${mail}로 인증코드를 발송하였습니다`);
+      timerId.current = setTimeout(() => {
+        clearTimer();
+        setCodeButton('코드요청');
+      }, 61000);
+      setCodeButton(60);
+      intervalId.current = setInterval(() => {
+        setCodeButton((prev) => prev - 1);
+      }, 1000);
+    } catch (error) {
+      alert(error);
+    }
+    await endLoadingAction();
+  };
+
   const [nickname, onChangeNickname] = useInput('nickname_test');
   const [password, onChangePassword] = useInput('1q2w3e4r');
   const [passwordCheck, onChangePasswordCheck] = useInput('1q2w3e4r');
@@ -111,8 +147,8 @@ const signup: NextPage = () => {
     (_, index) => currentYear - index - 1,
   );
 
-  const [work, onChangeWork] = useInput([]);
-  const workList: Array<Item> = [
+  const [category, onChangeCategory] = useInput([]);
+  const categoryList: Array<Item> = [
     { value: 'movie', display: '영화' },
     { value: 'book', display: '책' },
     { value: 'game', display: '게임' },
@@ -136,13 +172,28 @@ const signup: NextPage = () => {
   //회원가입 버튼을 누를 경우
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!regEmail.test(mail) || password !== passwordCheck) {
+      alert('메일 또는 패스워드를 확인해주세요');
+      return;
+    }
     try {
       await startLoadingAction();
-      await signupApi(mail, nickname, password, mbti, sex, year, work, genre);
+      await signupApi(
+        mail,
+        code,
+        nickname,
+        password,
+        mbti,
+        sex,
+        year,
+        category,
+        genre,
+      );
 
       setMailAction(mail);
       endLoadingAction();
-      Router.push('/member/mailauth');
+      alert('회원가입을 축하합니다');
+      Router.push('/');
     } catch (error) {
       endLoadingAction();
       alert(error);
@@ -164,11 +215,35 @@ const signup: NextPage = () => {
             label="메일"
             value={mail}
             onChange={onChangeMail}
+            error={!regEmail.test(mail)}
             type="email"
             size="small"
             required
             variant="outlined"
           />
+          <br />
+          <div>
+            <CustomTextField
+              style={{ width: '77%' }}
+              id="code"
+              label="인증코드"
+              value={code}
+              onChange={onChangeCode}
+              size="small"
+              required
+              variant="outlined"
+              autoComplete="off"
+            />
+            <Button
+              style={{ width: '23%' }}
+              variant="outlined"
+              onClick={onClickCode}
+              disabled={codeButton !== '코드요청' || !regEmail.test(mail)}
+            >
+              {codeButton !== '코드요청' && codeButton}
+              {codeButton === '코드요청' && '코드요청'}
+            </Button>
+          </div>
           <br />
           <CustomTextField
             id="nickname"
@@ -180,6 +255,7 @@ const signup: NextPage = () => {
             size="small"
             required
             variant="outlined"
+            autoComplete="off"
           />
           <br />
           <CustomTextField
@@ -192,6 +268,7 @@ const signup: NextPage = () => {
             type="password"
             required
             variant="outlined"
+            autoComplete="off"
           />
           <br />
           <CustomTextField
@@ -205,6 +282,8 @@ const signup: NextPage = () => {
             type="password"
             required
             variant="outlined"
+            error={password !== passwordCheck}
+            autoComplete="off"
           />
           <br />
           <InputLabel id="mbti">MBTI</InputLabel>
@@ -252,15 +331,15 @@ const signup: NextPage = () => {
             ))}
           </CustomSelect>
           <br />
-          <InputLabel id="work">선호작품</InputLabel>
+          <InputLabel id="category">선호작품</InputLabel>
           <CustomSelect
-            labelId="work"
-            value={work}
-            onChange={onChangeWork}
+            labelId="category"
+            value={category}
+            onChange={onChangeCategory}
             size="small"
             multiple
           >
-            {workList.map((w) => (
+            {categoryList.map((w) => (
               <MenuItem key={w.value} value={w.value}>
                 {w.display}
               </MenuItem>
