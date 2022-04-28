@@ -1,7 +1,5 @@
-import ColorPicker from 'material-ui-color-picker';
-import useInput from 'hooks/useInput';
-
 import styled from 'styled-components';
+import useColorSotre from 'stores/color';
 
 const HeaderWrapper = styled.div`
   width: 100%;
@@ -10,20 +8,10 @@ const HeaderWrapper = styled.div`
 `;
 
 const Header = () => {
-  const [color, onChangeColor] = useInput('#4CAF50');
+  // const { headerColor } = useColorSotre((state) => state);
+  const headerColor = '#4CAF50';
 
-  return (
-    <HeaderWrapper color={color}>
-      <span>
-        <ColorPicker
-          label="Header색깔"
-          name="color"
-          value={color}
-          onChange={(e) => onChangeColor(e)}
-        />
-      </span>
-    </HeaderWrapper>
-  );
+  return <HeaderWrapper color={headerColor}></HeaderWrapper>;
 };
 
 export default Header;

@@ -28,10 +28,10 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
     '/member/signup',
     '/member/password',
     '/member/mailauth',
+    '/404',
   ];
 
   useEffect(() => {
-    console.log(isLoading);
     if (publicPath.indexOf(window.location.pathname) === -1) {
       //public이 아닌 경우
       if (!isLoggedIn) {

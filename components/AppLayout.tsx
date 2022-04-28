@@ -1,12 +1,10 @@
-import ColorPicker from 'material-ui-color-picker';
-import useInput from 'hooks/useInput';
+import useColorStore from 'stores/color';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Navigation from './Navigation';
 import Trend from './Trend';
 import Header from 'components/Header';
-import ContentBox from 'components/ContentBox';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -90,8 +88,9 @@ const SideBox = styled.div`
 `;
 
 const AppLayout = ({ children }: LayoutProps) => {
-  const [bodyColor, onChangeBodyColor] = useInput('#F7F0E6');
-  const [sideColor, onChangeSideColor] = useInput('#f1f8e9');
+  // const { bodyColor, sideColor } = useColorStore((state) => state);
+  const bodyColor = '#F7F0E6';
+  const sideColor = '#F1F8E9';
 
   return (
     <Background>
@@ -109,23 +108,7 @@ const AppLayout = ({ children }: LayoutProps) => {
             </SideBox>
           </AppendArea>
         </LeftSide>
-        <ContentSide>
-          <ContentBox>
-            <ColorPicker
-              label="background색깔"
-              name="body"
-              value={bodyColor}
-              onChange={(e) => onChangeBodyColor(e)}
-            />
-            <ColorPicker
-              label="side색깔"
-              name="sidebox"
-              value={sideColor}
-              onChange={(e) => onChangeSideColor(e)}
-            />
-          </ContentBox>
-          {children}
-        </ContentSide>
+        <ContentSide>{children}</ContentSide>
         <RightSide color={sideColor}>
           <SideBox>
             <Trend />

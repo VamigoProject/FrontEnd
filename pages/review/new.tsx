@@ -10,10 +10,11 @@ import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import AnimationIcon from '@mui/icons-material/Animation';
+import ProfileWithNickname from 'components/ProfileWithNickname';
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 20rem;
+  height: 24rem;
 `;
 const Form = styled(Box)`
   width: 100%;
@@ -21,14 +22,6 @@ const Form = styled(Box)`
   padding: 1rem;
 `;
 
-const ProfileWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 15rem;
-  height: 3rem;
-  margin-bottom: 0.5rem;
-`;
 const CommentWrapper = styled.div`
   position: relative;
   left: 50%;
@@ -61,6 +54,7 @@ const Circle = styled.div`
   &:hover {
     cursor: pointer;
   }
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 4px 6px rgb(0, 0, 0, 0.05);
 `;
 
 const WorkList = [
@@ -93,10 +87,7 @@ const newReview = () => {
     <Wrapper>
       <ContentBox>
         <Form component="form">
-          <ProfileWrapper>
-            <ProfileAvatar nickname={nickname!} profile={profile} />
-            <span style={{ marginLeft: '0.5rem' }}>{nickname}</span>
-          </ProfileWrapper>
+          <ProfileWithNickname nickname={nickname!} profile={profile} />
           <CommentWrapper>
             <CommentField
               id="comment"

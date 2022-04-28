@@ -66,7 +66,8 @@ const signupApi = async (
     await instance.post('/member/signup', body);
   } catch (error) {
     if (Axios.isAxiosError(error)) {
-      throw `${error.response.data}`;
+      const err = error as AxiosError;
+      throw `${error.response?.data}`;
     } else {
       throw 'Something Error';
     }
@@ -79,7 +80,8 @@ const requestMailApi = async (mail: string) => {
     await instance.post('/member/mailauth', body);
   } catch (error) {
     if (Axios.isAxiosError(error)) {
-      throw `${error.response.data}`;
+      const err = error as AxiosError;
+      throw `${err.response?.data}`;
     } else {
       throw 'Something Error';
     }

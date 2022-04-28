@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import LinearProgress from '@mui/material/LinearProgress';
 import Router from 'next/router';
+import useColorStore from 'stores/color';
 
 const Wrapper = styled.div`
   width: 100%;

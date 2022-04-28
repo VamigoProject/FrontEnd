@@ -3,15 +3,7 @@ import type { NextPage } from 'next';
 import useInput from 'hooks/useInput';
 import styled from 'styled-components';
 import Link from 'next/link';
-import {
-  TextField,
-  Select,
-  InputLabel,
-  MenuItem,
-  Button,
-  Checkbox,
-  ListItemText,
-} from '@mui/material';
+import { TextField, Select, InputLabel, MenuItem, Button } from '@mui/material';
 import { requestMailApi, signupApi } from 'utils/api';
 import Router from 'next/router';
 import { useAuthStore } from 'stores/user';
