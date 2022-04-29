@@ -4,12 +4,14 @@ export interface User {
 }
 
 export interface Reply {
+  replyId: number;
   time: Date; //댓글 작성한 시간
   User: User; //작성한 유저 정보
   comment: string; //댓글 내용
 }
 
 export interface Review {
+  reviewId: number; //리뷰의 id
   time: Date; //리뷰를 작성한 시간
   User: User; //리뷰를 작성한 유저의 정보
   workName: string; //작품 제목

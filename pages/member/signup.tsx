@@ -74,6 +74,7 @@ const signup: NextPage = () => {
 
   const [mail, onChangeMail] = useInput('test@test.com');
   const regEmail =
+    // eslint-disable-next-line no-useless-escape
     /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 
   const [code, onChangeCode] = useInput('');

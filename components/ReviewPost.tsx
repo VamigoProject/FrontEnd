@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import ProfileWithNickname from 'components/ProfileWithNickname';
-import { Rating, Chip } from '@mui/material';
-import { Review, User, Reply } from 'utils/types';
+import { Rating, Chip, IconButton } from '@mui/material';
+import { Review } from 'utils/types';
 import ContentBox from 'components/ContentBox';
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -10,15 +10,38 @@ import AnimationIcon from '@mui/icons-material/Animation';
 import ReplyIcon from '@mui/icons-material/Reply';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import { useEffect, useState } from 'react';
+import ReviewReply from 'components/ReviewReply';
+import { useRef } from 'react';
 
 interface Props {
   review: Review;
 }
 
+const GlobalStyle = createGlobalStyle`
+  @keyframes smoothAppear{
+    from{
+      opacity: 0;
+      transform: translateX(25%);
+    }
+    to{
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+`;
+
+const Container = styled.div`
+  margin-bottom: 1.5rem;
+  animation: smoothAppear 1s;
+  animation-timing-function: ease-in-out;
+`;
+
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 `;
 
 const Padder = styled.div`
@@ -75,6 +98,7 @@ const RightSpan = styled.span`
 
 const ReviewPost = ({ review }: Props) => {
   const {
+    reviewId,
     time,
     User,
     workName,
@@ -86,6 +110,33 @@ const ReviewPost = ({ review }: Props) => {
     isLiked,
   } = review;
 
+  const [isReplyOpened, setIsReplyOpened] = useState<boolean>(false);
+
+  const timerId = useRef();
+  const [index, setIndex] = useState<number>(0);
+
+  const onClickReply = () => {
+    if (isReplyOpened === false) {
+      setIsReplyOpened(true);
+      timerId.current = setInterval(() => {
+        if (index < Reply.length) {
+          setIndex((prev) => prev + 1);
+        } else {
+          clearInterval(timerId.current);
+        }
+      }, 100);
+    } else {
+      setIsReplyOpened(false);
+      clearInterval(timerId.current);
+      setIndex(0);
+    }
+  };
+
+  useEffect(() => {
+    return () => clearInterval(timerId.current);
+  }, []);
+
+  // const onClickLike = () => {};
   const { nickname, profile } = User;
 
   let icon;
@@ -105,12 +156,17 @@ const ReviewPost = ({ review }: Props) => {
   }
 
   return (
-    <div style={{ marginBottom: '1.5rem' }}>
+    <Container>
+      <GlobalStyle />
       <ContentBox>
         <Wrapper>
           <Padder>
             <HeaderLine>
-              <ProfileWithNickname nickname={nickname} profile={profile} />
+              <ProfileWithNickname
+                nickname={nickname}
+                profile={profile}
+                size="large"
+              />
               <TimeSpan>
                 {[
                   time.getFullYear(),
@@ -132,13 +188,20 @@ const ReviewPost = ({ review }: Props) => {
           </Padder>
           <FooterWrapper>
             <IconWrapper>
-              <ReplyIcon fontSize="large" />
+              <IconButton onClick={onClickReply}>
+                {!isReplyOpened && <ReplyIcon fontSize="large" />}
+                {isReplyOpened && (
+                  <ReplyIcon fontSize="large" color="primary" />
+                )}
+              </IconButton>
               {Reply.length <= 9999 && Reply.length}
               {Reply.length > 9999 && '9999+'}
             </IconWrapper>
             <IconWrapper>
-              {!isLiked && <ThumbUpIcon fontSize="large" />}
-              {isLiked && <ThumbUpIcon fontSize="large" color="primary" />}
+              <IconButton>
+                {!isLiked && <ThumbUpIcon fontSize="medium" />}
+                {isLiked && <ThumbUpIcon fontSize="medium" color="primary" />}
+              </IconButton>
               {like <= 9999 && like}
               {like > 9999 && '9999+'}
             </IconWrapper>
@@ -146,9 +209,14 @@ const ReviewPost = ({ review }: Props) => {
               <FormatListBulletedIcon fontSize="large" />
             </RightSpan>
           </FooterWrapper>
+          <Padder>
+            {isReplyOpened && (
+              <ReviewReply reviewId={reviewId} Reply={Reply.slice(0, index)} />
+            )}
+          </Padder>
         </Wrapper>
       </ContentBox>
-    </div>
+    </Container>
   );
 };
 

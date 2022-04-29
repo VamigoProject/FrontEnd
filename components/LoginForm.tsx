@@ -9,11 +9,6 @@ import Link from 'next/link';
 import { Button, Box, TextField } from '@mui/material';
 import useSystemStore from 'stores/system';
 
-const FormWrapper = styled(Box)`
-  text-align: center;
-  width: 14rem;
-`;
-
 const CustomTextField = styled(TextField)`
   margin-bottom: 0.5rem;
 `;
@@ -79,7 +74,11 @@ const LoginForm = () => {
 
   return (
     <>
-      <FormWrapper component="form" onSubmit={onSubmitLogin}>
+      <Box
+        style={{ textAlign: 'center', width: '14rem' }}
+        component="form"
+        onSubmit={onSubmitLogin}
+      >
         <CustomTextField
           id="mail"
           label="mail"
@@ -111,7 +110,7 @@ const LoginForm = () => {
         <Link href="/member/password">
           <CustomA>비밀번호 찾기</CustomA>
         </Link>
-      </FormWrapper>
+      </Box>
     </>
   );
 };

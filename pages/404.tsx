@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import LinearProgress from '@mui/material/LinearProgress';
 import Router from 'next/router';
-import useColorStore from 'stores/color';
+import Link from 'next/link';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -22,11 +22,12 @@ const Centering = styled.div`
 `;
 
 const Custom404 = () => {
-  const [progress, setProgress] = useState<number>(0);
+  const [progress, setProgress] = useState<number | undefined>(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setProgress((prev: number) => {
+      setProgress((prev) => {
+        prev = prev as number;
         if (prev === 100) {
           Router.push('/home');
         } else {
@@ -47,6 +48,9 @@ const Custom404 = () => {
         <br />
         페이지를 찾을 수 없습니다
         <LinearProgress variant="determinate" value={progress} />
+        <Link href="/home">
+          <a style={{ color: 'blue' }}>홈으로</a>
+        </Link>
       </Centering>
     </Wrapper>
   );

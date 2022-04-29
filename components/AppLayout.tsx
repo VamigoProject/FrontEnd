@@ -31,29 +31,28 @@ const HeaderDiv = styled.div`
 const BodyRow = styled.div`
   display: flex;
   flex-wrap: wrap;
-  min-height: calc(200vh - 3.5rem);
+  min-height: calc(100vh - 3.5rem);
   width: 100%;
-  padding-top: 0.5rem;
   background-color: ${(props) => props.color};
 `;
 
 //왼쪽 영역 전체
 const LeftSide = styled.div`
-  position: sticky;
-  top: 4rem;
-  display: inline-block;
-  width: 13rem;
-  height: calc(100vh - 4rem);
+  position: fixed;
+  left: 0;
+  top: 3.5rem;
+  width: 16rem;
+  height: calc(100vh - 3.5rem);
   padding: 0.5rem;
   background-color: ${(props) => props.color};
 `;
 //오른쪽 영역(창이 줄어들 경우 display:none)
 const RightSide = styled.div`
-  position: sticky;
-  top: 4rem;
-  display: inline-block;
-  width: 13rem;
-  height: calc(100vh - 4rem);
+  position: fixed;
+  right: 0;
+  top: 3.5rem;
+  width: 16rem;
+  height: calc(100vh - 3.5rem);
   padding: 0.5rem;
   @media screen and (max-width: 65rem) {
     display: none;
@@ -62,16 +61,15 @@ const RightSide = styled.div`
 `;
 //content들이 들어갈 영역
 const ContentSide = styled.div`
-  display: inline-block;
-  min-width: 30rem;
-  width: calc(100vw - 27.5rem);
-  min-height: calc(100vh - 4rem);
-  height: 100%;
-  margin: 0;
+  position: absolute;
+  left: 16rem;
+  width: calc(100vw - 32rem);
+  min-height: calc(100vh - 3.5rem);
   padding: 0.5rem;
   @media screen and (max-width: 65rem) {
-    width: calc(100vw - 14.5rem);
+    width: calc(100vw - 16rem);
   }
+  background-color: ${(props) => props.color};
 `;
 //창이 줄어듦에 따라 왼쪽에 보여지는 부분
 const AppendArea = styled.div`
@@ -83,7 +81,7 @@ const AppendArea = styled.div`
 `;
 
 const SideBox = styled.div`
-  width: 12rem;
+  width: 15rem;
   margin-bottom: 0.5rem;
 `;
 
@@ -97,7 +95,7 @@ const AppLayout = ({ children }: LayoutProps) => {
       <HeaderDiv>
         <Header />
       </HeaderDiv>
-      <BodyRow color={bodyColor}>
+      <BodyRow>
         <LeftSide color={sideColor}>
           <SideBox>
             <Navigation />
@@ -108,7 +106,7 @@ const AppLayout = ({ children }: LayoutProps) => {
             </SideBox>
           </AppendArea>
         </LeftSide>
-        <ContentSide>{children}</ContentSide>
+        <ContentSide color={bodyColor}>{children}</ContentSide>
         <RightSide color={sideColor}>
           <SideBox>
             <Trend />

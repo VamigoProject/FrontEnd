@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import React from 'react';
 
 interface Props {
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactNode;
 }
 
 const Box = styled.div`
