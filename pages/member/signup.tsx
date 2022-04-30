@@ -72,7 +72,7 @@ const signup: NextPage = () => {
     (state) => state,
   );
 
-  const [mail, onChangeMail] = useInput('test@test.com');
+  const [mail, onChangeMail] = useInput('wc421@naver.com');
   const regEmail =
     // eslint-disable-next-line no-useless-escape
     /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
@@ -101,9 +101,9 @@ const signup: NextPage = () => {
     await endLoadingAction();
   };
 
-  const [nickname, onChangeNickname] = useInput('nickname_test');
-  const [password, onChangePassword] = useInput('1q2w3e4r');
-  const [passwordCheck, onChangePasswordCheck] = useInput('1q2w3e4r');
+  const [nickname, onChangeNickname] = useInput('LWC421');
+  const [password, onChangePassword] = useInput('123');
+  const [passwordCheck, onChangePasswordCheck] = useInput('123');
 
   const [mbti, onChangeMbti] = useInput('None');
   const mbtiList: Array<string> = [

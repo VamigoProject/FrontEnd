@@ -1,7 +1,13 @@
 import ContentBox from 'components/ContentBox';
 import useInput from 'hooks/useInput';
-import ProfileAvatar from 'components/ProfileAvatar';
-import { Autocomplete, Box, Rating, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  Rating,
+  TextField,
+  IconButton,
+  Button,
+} from '@mui/material';
 import { green } from '@mui/material/colors';
 import styled from 'styled-components';
 import useUserStore from 'stores/user';
@@ -11,6 +17,11 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import AnimationIcon from '@mui/icons-material/Animation';
 import ProfileWithNickname from 'components/ProfileWithNickname';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import { useState } from 'react';
+import { createReviewApi } from 'utils/api';
+import useSystemStore from 'stores/system';
+import Router from 'next/router';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -18,7 +29,7 @@ const Wrapper = styled.div`
 `;
 const Form = styled(Box)`
   width: 100%;
-  height: 20rem;
+  height: 100%;
   padding: 1rem;
 `;
 
@@ -27,6 +38,7 @@ const CommentWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, 0);
   width: 100%;
+  margin-top: 0.5rem;
 `;
 
 const CommentField = styled(TextField)`
@@ -40,10 +52,13 @@ const WorkWrapper = styled.div`
   height: 4rem;
 `;
 
-const Circle = styled.div`
+const CircleButton = styled(IconButton)`
   position: relative;
   left: 100%;
-  transform: translate(-125%, -125%);
+  transform: translate(-100%, -100%);
+`;
+
+const Circle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,36 +73,74 @@ const Circle = styled.div`
 `;
 
 const WorkList = [
-  { label: '인터스텔라', work: 'movie' },
-  { label: '인터누텔라', work: 'movie' },
-  { label: '인터폰', work: 'movie' },
-  { label: '인터라텔라', work: 'movie' },
-  { label: '안티스텔라', work: 'movie' },
-  { label: '잉테스텔라', work: 'movie' },
-  { label: '누텔라', work: 'movie' },
-  { label: '해리포터 : 마법사의 돌', work: 'movie' },
-  { label: '해리포터 : 비밀의 방', work: 'book' },
-  { label: '해리포터 : 아즈카반의 죄수', work: 'book' },
-  { label: '해리포터 : 불의 잔', work: 'animation' },
-  { label: '해리포터 : 불사조 기사단', work: 'drama' },
-  { label: '해리포터 : 혼혈 왕자', work: 'drama' },
-  { label: '해리포터 : 죽음의 성물', work: 'movie' },
-  { label: '해리포터 : 저주받은 아이', work: 'animation' },
-  { label: '해리포터 : ', work: 'drama' },
-  { label: '해리포터 : ', work: 'book' },
+  { name: '인터스텔라', category: 'movie' },
+  { name: '인터누텔라', category: 'game' },
+  { name: '인터폰', category: 'animation' },
+  { name: '인터라텔라', category: 'movie' },
+  { name: '안티스텔라', category: 'game' },
+  { name: '잉테스텔라', category: 'movie' },
+  { name: '누텔라', category: 'movie' },
+  { name: '해리포터 : 마법사의 돌', category: 'movie' },
+  { name: '해리포터 : 비밀의 방', category: 'book' },
+  { name: '해리포터 : 아즈카반의 죄수', category: 'book' },
+  { name: '해리포터 : 불의 잔', category: 'animation' },
+  { name: '해리포터 : 불사조 기사단', category: 'drama' },
+  { name: '해리포터 : 혼혈 왕자', category: 'drama' },
+  { name: '해리포터 : 죽음의 성물', category: 'movie' },
+  { name: '해리포터 : 저주받은 아이', category: 'animation' },
+  { name: '해리포터 : ', category: 'drama' },
+  { name: '해리포터 : ', category: 'book' },
+  { name: '원신', category: 'game' },
 ];
 
 const newReview = () => {
-  const { nickname, profile } = useUserStore((state) => state);
+  const { startLoadingAction, endLoadingAction } = useSystemStore(
+    (state) => state,
+  );
+  const { uid, nickname, profile } = useUserStore((state) => state);
 
   const [comment, onChangeComment] = useInput('');
+  const [workName, setWorkName] = useState<string | null>('');
+  const [workCategory, setWorkCategory] = useState<string | null>('');
   const [rating, onChangeRating] = useInput(0);
 
+  const onChangeWork = (e: React.FormEvent<HTMLFormElement>, value: any) => {
+    console.log(value);
+    if (value === null) {
+      setWorkName(null);
+      setWorkCategory(null);
+    } else {
+      setWorkName(value.name);
+      setWorkCategory(value.category);
+    }
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    startLoadingAction();
+    try {
+      await createReviewApi(uid!, comment, workName!, workCategory!, rating!);
+      endLoadingAction();
+      alert('리뷰가 성공적으로 등록되었습니다');
+      Router.push('/home');
+    } catch (error) {
+      endLoadingAction();
+      alert(error);
+    }
+  };
+
+  const onClickTest = () => {
+    console.log(uid, comment, workName, workCategory, rating);
+  };
   return (
     <Wrapper>
-      <ContentBox>
-        <Form component="form">
-          <ProfileWithNickname nickname={nickname!} profile={profile} />
+      <ContentBox opacity={0.1}>
+        <Form component="form" onSubmit={onSubmit}>
+          <ProfileWithNickname
+            nickname={nickname!}
+            profile={profile}
+            size="large"
+          />
           <CommentWrapper>
             <CommentField
               id="comment"
@@ -107,6 +160,7 @@ const newReview = () => {
                   padding: '0.25rem',
                 },
               }}
+              spellCheck={false}
             />
           </CommentWrapper>
           <br />
@@ -117,14 +171,20 @@ const newReview = () => {
               size="medium"
               autoHighlight
               options={WorkList}
-              getOptionLabel={(option) => option.label}
+              getOptionLabel={(option) => option.name}
+              onChange={onChangeWork}
               renderOption={(props, option) => (
-                <Box component="li" {...props}>
-                  {option.label}
-                  {option.work === 'movie' && <LocalMoviesIcon />}
-                  {option.work === 'book' && <MenuBookIcon />}
-                  {option.work === 'drama' && <LiveTvIcon />}
-                  {option.work === 'animation' && <AnimationIcon />}
+                <Box
+                  key={option.category + '_' + option.name}
+                  component="li"
+                  {...props}
+                >
+                  {option.name}
+                  {option.category === 'movie' && <LocalMoviesIcon />}
+                  {option.category === 'book' && <MenuBookIcon />}
+                  {option.category === 'drama' && <LiveTvIcon />}
+                  {option.category === 'animation' && <AnimationIcon />}
+                  {option.category === 'game' && <SportsEsportsIcon />}
                 </Box>
               )}
               renderInput={(params) => <TextField {...params} label="작품" />}
@@ -136,9 +196,12 @@ const newReview = () => {
             value={rating}
             onChange={onChangeRating}
           />
-          <Circle>
-            <EditIcon color="primary" fontSize="large" />
-          </Circle>
+          <br />
+          <CircleButton type="submit">
+            <Circle>
+              <EditIcon color="primary" fontSize="large" />
+            </Circle>
+          </CircleButton>
         </Form>
       </ContentBox>
     </Wrapper>

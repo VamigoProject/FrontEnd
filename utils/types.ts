@@ -1,4 +1,5 @@
 export interface User {
+  uid: number; //유저의 id
   nickname: string; //유저의 닉네임
   profile: string | null; //Base64로 인코딩 된 이미지
 }
@@ -17,7 +18,8 @@ export interface Review {
   workName: string; //작품 제목
   workCategory: string; //작품의 종류(book, animation, movie, drama ...)
   comment: string; //리뷰의 코멘트
-  rate: number; //별점
+  rating: number; //별점
+  image: Array<string>; //이미지
   Reply: Array<Reply>; //댓글
   like: number; //좋아요 횟수
   isLiked: boolean; //사용자가 좋아요 누른 게시물 인지 아닌지

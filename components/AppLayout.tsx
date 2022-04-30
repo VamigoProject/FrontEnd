@@ -12,9 +12,8 @@ interface LayoutProps {
 
 const Background = styled.div`
   width: 100%;
-  height: 100%;
-  min-width: 43.5rem;
-  min-height: 100vh;
+  min-height: calc(100vh + 1rem);
+  background-color: ${(props) => props.color};
 `;
 
 //Header가 들어갈 부분
@@ -33,13 +32,11 @@ const BodyRow = styled.div`
   flex-wrap: wrap;
   min-height: calc(100vh - 3.5rem);
   width: 100%;
-  background-color: ${(props) => props.color};
 `;
 
 //왼쪽 영역 전체
 const LeftSide = styled.div`
   position: fixed;
-  left: 0;
   top: 3.5rem;
   width: 16rem;
   height: calc(100vh - 3.5rem);
@@ -63,11 +60,11 @@ const RightSide = styled.div`
 const ContentSide = styled.div`
   position: absolute;
   left: 16rem;
-  width: calc(100vw - 32rem);
+  width: calc(100vw - 33rem);
   min-height: calc(100vh - 3.5rem);
   padding: 0.5rem;
   @media screen and (max-width: 65rem) {
-    width: calc(100vw - 16rem);
+    width: calc(100vw - 17rem);
   }
   background-color: ${(props) => props.color};
 `;
@@ -91,7 +88,7 @@ const AppLayout = ({ children }: LayoutProps) => {
   const sideColor = '#F1F8E9';
 
   return (
-    <Background>
+    <Background color={bodyColor}>
       <HeaderDiv>
         <Header />
       </HeaderDiv>

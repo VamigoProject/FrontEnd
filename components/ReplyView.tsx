@@ -9,7 +9,7 @@ interface Props {
 }
 
 const GlobalStyle = createGlobalStyle`
-  @keyframes smoothAppear{
+  @keyframes replyAppear{
     from{
       opacity: 0;
       transform: translateY(25%);
@@ -22,8 +22,14 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Wrapper = styled.div`
-  animation: smoothAppear 0.5s;
+  animation: replyAppear 0.5s;
   animation-timing-function: ease-in-out;
+`;
+
+const Padder = styled.div`
+  padding: 0.5rem;
+  width: 100%;
+  height: 100%;
 `;
 
 const ReplyView = ({ reviewId, reply }: Props) => {
@@ -33,13 +39,15 @@ const ReplyView = ({ reviewId, reply }: Props) => {
     <>
       <GlobalStyle />
       <Wrapper>
-        <ContentBox>
-          <ProfileWithNickname
-            nickname={nickname}
-            profile={profile}
-            size="small"
-          />
-          {reply.comment}
+        <ContentBox opacity={0.3}>
+          <Padder>
+            <ProfileWithNickname
+              nickname={nickname}
+              profile={profile}
+              size="small"
+            />
+            {reply.comment}
+          </Padder>
         </ContentBox>
       </Wrapper>
     </>

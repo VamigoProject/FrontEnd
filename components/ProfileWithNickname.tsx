@@ -6,8 +6,8 @@ const ProfileWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   width: 15rem;
-  height: 3rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
 `;
 
 interface Props {

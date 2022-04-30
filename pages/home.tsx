@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import Empty from 'components/Empty';
 import { Review, User } from 'utils/types';
 import ReviewPost from 'components/ReviewPost';
-import { testImage } from 'utils/statics';
 import { useEffect, useRef, useState } from 'react';
 
-const user1: User = { nickname: 'Parkjun', profile: null };
-const user2: User = { nickname: 'DongHo Ryu', profile: null };
-const user3: User = { nickname: 'KyungHwan Lee', profile: testImage };
-const user4: User = { nickname: 'UCheol Lee', profile: null };
+import { kleeImage, testImage } from 'utils/statics';
+
+const user1: User = { uid: 1, nickname: 'Parkjun', profile: null };
+const user2: User = { uid: 2, nickname: 'DongHo Ryu', profile: null };
+const user3: User = { uid: 3, nickname: 'KyungHwan Lee', profile: testImage };
+const user4: User = { uid: 4, nickname: 'UCheol Lee', profile: null };
 
 const now = new Date();
 
@@ -22,7 +23,8 @@ const ReviewData: Array<Review> = [
     workCategory: 'movie',
     comment:
       '인터스텔라는 ㄹㅇ 신이다. 내가 알던 그 영화가 맞냐? 가슴이 웅장해진다',
-    rate: 5,
+    rating: 5,
+    image: [kleeImage, testImage],
     Reply: [
       { replyId: 1, time: now, User: user2, comment: '인정합니다' },
       { replyId: 2, time: now, User: user3, comment: '솔직히 노인정' },
@@ -38,7 +40,8 @@ const ReviewData: Array<Review> = [
     workCategory: 'book',
     comment:
       '마법사의 돌이 훨씬 재밌음 불의 잔 이거는 왜 만든거임? 그래도 3점은 준다, 이거 볼 바에 마법사의 돌 ~ 아즈카반의 죄수 다시 정주행 하는게 훨씬 나을듯?',
-    rate: 3,
+    rating: 3,
+    image: [],
     Reply: [
       {
         replyId: 1,
@@ -57,15 +60,9 @@ const ReviewData: Array<Review> = [
     workName: '해리포터: 마법사의 돌',
     workCategory: 'animation',
     comment: '마법사의 돌은 ㅇㅈ이지',
-    rate: 4,
-    Reply: [
-      {
-        replyId: 1,
-        time: new Date(2022, 4, 25, 20, 40, 0),
-        User: user1,
-        comment: '그렇긴 해',
-      },
-    ],
+    rating: 4,
+    image: [],
+    Reply: [],
     like: 50,
     isLiked: false,
   },

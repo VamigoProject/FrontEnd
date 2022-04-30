@@ -4,19 +4,20 @@ import { green } from '@mui/material/colors';
 interface Props {
   nickname: string;
   profile: string | null;
-  size: 'small' | 'medium' | 'large';
+  size: 'small' | 'medium' | 'large' | 'xLarge';
 }
 
 const ProfileAvatar = ({ nickname, profile, size = 'medium' }: Props) => {
   const small = { width: 24, height: 24 };
   const medium = { width: 30, height: 30 };
   const large = { width: 36, height: 36 };
+  const xLarge = { width: 100, height: 100 };
 
   let sizeObject;
   if (size === 'small') sizeObject = small;
   else if (size === 'medium') sizeObject = medium;
   else if (size === 'large') sizeObject = large;
-
+  else if (size === 'xLarge') sizeObject = xLarge;
   if (nickname === null) {
     nickname = 'Nickname';
   }
@@ -31,7 +32,7 @@ const ProfileAvatar = ({ nickname, profile, size = 'medium' }: Props) => {
   } else {
     return (
       <>
-        <Avatar src={`data:image/png;base64, ${profile}`} />
+        <Avatar sx={sizeObject} src={`data:image/png;base64, ${profile}`} />
       </>
     );
   }

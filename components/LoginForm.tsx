@@ -42,21 +42,21 @@ const LoginForm = () => {
   );
   const loginAction = useUserStore((state) => state.loginAction);
 
-  const [mail, onChangeMail] = useInput('test@test.com');
-  const [password, onChangePassword] = useInput('1q2w3e4r');
+  const [mail, onChangeMail] = useInput('');
+  const [password, onChangePassword] = useInput('');
 
   const onSubmitLogin = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       startLoadingAction();
       try {
-        const { nickname, profile, accessToken, refreshToken } =
+        const { uid, nickname, profile, accessToken, refreshToken } =
           await signinApi(mail, password);
-        if (profile === 'None') {
+        if (profile === 'NoImage') {
           //profile이미지가 없을 경우
-          loginAction(nickname, null, accessToken, refreshToken);
+          loginAction(uid, nickname, null, accessToken, refreshToken);
         } else {
-          loginAction(nickname, profile, accessToken, refreshToken);
+          loginAction(uid, nickname, profile, accessToken, refreshToken);
         }
         endLoadingAction();
         Router.push('/home');

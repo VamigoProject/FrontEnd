@@ -6,11 +6,13 @@ import { User } from 'utils/types';
 interface UserStore {
   isLoggedIn: boolean; //로그인 되어있는지 여부
   User: User | null;
+  uid: number | null;
   nickname: string | null; //로그인되어 있을 경우 유저의 nickname
   profile: string | null; //base64로 인코딩 된 사용자 프로필 이미지
   accessToken: string | null;
   refreshToken: string | null;
   loginAction: (
+    uid: number,
     nickname: string,
     profile: string | null,
     accessToken: string,
@@ -24,14 +26,16 @@ const useUserStore = create<UserStore>(
     (set, get) => ({
       isLoggedIn: false,
       User: null,
+      uid: null,
       nickname: null,
       profile: null,
       accessToken: null,
       refreshToken: null,
 
-      loginAction: (nickname, profile, accessToken, refreshToken) => {
+      loginAction: (uid, nickname, profile, accessToken, refreshToken) => {
         set({
           isLoggedIn: true,
+          uid,
           nickname,
           profile,
           accessToken,
@@ -42,6 +46,7 @@ const useUserStore = create<UserStore>(
       logoutAction: () => {
         set({
           isLoggedIn: false,
+          uid: null,
           nickname: null,
           profile: null,
           accessToken: null,

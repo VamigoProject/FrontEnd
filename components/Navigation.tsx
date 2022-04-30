@@ -23,7 +23,7 @@ const NavigationWrapper = styled.div`
 
 const NavigationRow = styled.div`
   display: flex;
-  align-item: center;
+  align-items: center;
   padding: 0.25rem;
   margin-bottom: 0.25rem;
   border-radius: 0.1rem;
@@ -53,7 +53,7 @@ const Navigation = () => {
     Router.push('/review/new');
   };
   const onClickProfile = () => {
-    Router.push('/profile');
+    Router.push('/member/profile');
   };
   const onClickSetting = () => {
     Router.push('/setting');
@@ -71,22 +71,22 @@ const Navigation = () => {
       <GlobalStyle />
       <NavigationWrapper>
         <NavigationRow onClick={onClickHome}>
-          <HomeIcon className="icon" />홈
+          <HomeIcon className="icon" sx={{ fontSize: 32 }} />홈
         </NavigationRow>
         <NavigationRow onClick={onClickReview}>
-          <EditIcon className="icon" />
+          <EditIcon className="icon" sx={{ fontSize: 32 }} />
           리뷰작성
         </NavigationRow>
         <NavigationRow onClick={onClickProfile}>
-          <AccountBoxIcon className="icon" />
+          <AccountBoxIcon className="icon" sx={{ fontSize: 32 }} />
           프로필
         </NavigationRow>
         <NavigationRow onClick={onClickSetting}>
-          <SettingsIcon className="icon" />
+          <SettingsIcon className="icon" sx={{ fontSize: 32 }} />
           설정
         </NavigationRow>
         <NavigationRow onClick={onClickLogout}>
-          <LogoutIcon className="icon" />
+          <LogoutIcon className="icon" sx={{ fontSize: 32 }} />
           로그아웃
         </NavigationRow>
       </NavigationWrapper>

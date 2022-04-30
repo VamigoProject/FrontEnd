@@ -13,6 +13,8 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { useEffect, useState } from 'react';
 import ReviewReply from 'components/ReviewReply';
 import { useRef } from 'react';
+import EmptyReply from 'components/EmptyReply';
+import ImageView from 'components/ImageView';
 
 interface Props {
   review: Review;
@@ -104,7 +106,8 @@ const ReviewPost = ({ review }: Props) => {
     workName,
     workCategory,
     comment,
-    rate,
+    rating,
+    image,
     Reply,
     like,
     isLiked,
@@ -112,7 +115,7 @@ const ReviewPost = ({ review }: Props) => {
 
   const [isReplyOpened, setIsReplyOpened] = useState<boolean>(false);
 
-  const timerId = useRef();
+  const timerId = useRef<any>();
   const [index, setIndex] = useState<number>(0);
 
   const onClickReply = () => {
@@ -158,7 +161,7 @@ const ReviewPost = ({ review }: Props) => {
   return (
     <Container>
       <GlobalStyle />
-      <ContentBox>
+      <ContentBox opacity={0.1}>
         <Wrapper>
           <Padder>
             <HeaderLine>
@@ -182,7 +185,7 @@ const ReviewPost = ({ review }: Props) => {
             </HeaderLine>
             <Line />
             <CommentWrapper>{comment}</CommentWrapper>
-            <Rating name="rate" value={rate} readOnly />
+            <Rating name="rating" value={rating} readOnly />
             <br />
             <Chip label={workName} size="small" icon={icon} />
           </Padder>
@@ -210,9 +213,10 @@ const ReviewPost = ({ review }: Props) => {
             </RightSpan>
           </FooterWrapper>
           <Padder>
-            {isReplyOpened && (
+            {isReplyOpened && Reply.length !== 0 && (
               <ReviewReply reviewId={reviewId} Reply={Reply.slice(0, index)} />
             )}
+            {isReplyOpened && Reply.length === 0 && <EmptyReply />}
           </Padder>
         </Wrapper>
       </ContentBox>
