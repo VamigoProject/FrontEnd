@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Badge, TextField } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState } from 'react';
-import useInput from 'hooks/useInput';
+import EditProfile from 'components/EditProfile';
 import Dialog from 'components/Dialog';
 
 const Wrapper = styled.div`
@@ -44,14 +44,6 @@ const Introduce = styled.span`
   font-size: 0.8rem;
 `;
 
-interface DialogProps {
-  open: boolean;
-  onClose: () => void;
-  nickname: string;
-  profile: string;
-  introduce: string;
-}
-
 const profile = () => {
   const [open, setOpen] = useState<boolean>(false);
   const onClickOpen = () => {
@@ -70,8 +62,7 @@ const profile = () => {
     );
   };
 
-  const { nickname, profile } = useUserStore((state) => state);
-  const introduce = '물고기 폭파용이 아니라 화력 강화형을 사용했어';
+  const { nickname, profile, introduce } = useUserStore((state) => state);
 
   return (
     <>
@@ -98,7 +89,14 @@ const profile = () => {
         </ContentBox>
       </Wrapper>
       {open && (
-        <Dialog onClose={onClickClose} width="20rem" height="10rem"></Dialog>
+        <Dialog
+          onClose={onClickClose}
+          width="25rem"
+          height="25rem"
+          title="되나"
+        >
+          <EditProfile />
+        </Dialog>
       )}
     </>
   );

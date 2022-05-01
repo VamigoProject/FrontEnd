@@ -50,13 +50,27 @@ const LoginForm = () => {
       e.preventDefault();
       startLoadingAction();
       try {
-        const { uid, nickname, profile, accessToken, refreshToken } =
+        const { uid, nickname, profile, introduce, accessToken, refreshToken } =
           await signinApi(mail, password);
         if (profile === 'NoImage') {
           //profile이미지가 없을 경우
-          loginAction(uid, nickname, null, accessToken, refreshToken);
+          loginAction(
+            uid,
+            nickname,
+            null,
+            introduce,
+            accessToken,
+            refreshToken,
+          );
         } else {
-          loginAction(uid, nickname, profile, accessToken, refreshToken);
+          loginAction(
+            uid,
+            nickname,
+            profile,
+            introduce,
+            accessToken,
+            refreshToken,
+          );
         }
         endLoadingAction();
         Router.push('/home');

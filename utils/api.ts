@@ -6,6 +6,7 @@ interface LoginData {
   uid: number;
   nickname: string;
   profile: string;
+  introduce: string;
   accessToken: string;
   refreshToken: string;
 }
@@ -23,7 +24,8 @@ const signinApi = async (
       password,
     };
     const response = await instance.post<LoginData>('/member/signin', body);
-    const { uid, nickname, profile, accessToken, refreshToken } = response.data;
+    const { uid, nickname, profile, introduce, accessToken, refreshToken } =
+      response.data;
 
     // /* Test용 코드 */
     // const nickname = `클레`;
@@ -32,7 +34,7 @@ const signinApi = async (
     // const refreshToken = `refreshToken`;
     // await wait(1000);
 
-    return { uid, nickname, profile, accessToken, refreshToken };
+    return { uid, nickname, profile, introduce, accessToken, refreshToken };
   } catch (error) {
     if (Axios.isAxiosError(error)) {
       const err = error as AxiosError;
@@ -117,4 +119,34 @@ const createReviewApi = async (
   }
 };
 
-export { createReviewApi, signinApi, signupApi, requestMailApi };
+const updateProfileApi = async (
+  uid: number,
+  nickname: string,
+  profile: string | null,
+  introduce: string,
+) => {
+  try {
+    const body = {
+      uid,
+      nickname,
+      profile,
+      introduce,
+    };
+    await instance.post('/member/profile/update', body);
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
+export {
+  createReviewApi,
+  signinApi,
+  signupApi,
+  requestMailApi,
+  updateProfileApi,
+};
