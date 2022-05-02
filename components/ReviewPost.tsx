@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react';
 import ReviewReply from 'components/ReviewReply';
 import { useRef } from 'react';
 import EmptyReply from 'components/EmptyReply';
-import ImageView from 'components/ImageView';
 
 interface Props {
   review: Review;
@@ -68,6 +67,20 @@ const Line = styled.div`
   margin-bottom: 0.5rem;
 `;
 
+const Spoiler = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 3rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.5rem;
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+`;
+
 const CommentWrapper = styled.div`
   width: 100%;
   margin-top: 1rem;
@@ -102,15 +115,18 @@ const ReviewPost = ({ review }: Props) => {
   const {
     reviewId,
     time,
-    User,
+    uid,
+    nickname,
+    profile,
     workName,
     workCategory,
     comment,
     rating,
     image,
-    Reply,
-    like,
+    reply,
+    likes,
     isLiked,
+    spoiler,
   } = review;
 
   const [isReplyOpened, setIsReplyOpened] = useState<boolean>(false);
@@ -118,11 +134,17 @@ const ReviewPost = ({ review }: Props) => {
   const timerId = useRef<any>();
   const [index, setIndex] = useState<number>(0);
 
+  const [isSpoiler, setIsSpoiler] = useState<boolean>(spoiler);
+
+  const onClickSpoiler = () => {
+    setIsSpoiler(false);
+  };
+
   const onClickReply = () => {
     if (isReplyOpened === false) {
       setIsReplyOpened(true);
       timerId.current = setInterval(() => {
-        if (index < Reply.length) {
+        if (index < reply.length) {
           setIndex((prev) => prev + 1);
         } else {
           clearInterval(timerId.current);
@@ -138,9 +160,6 @@ const ReviewPost = ({ review }: Props) => {
   useEffect(() => {
     return () => clearInterval(timerId.current);
   }, []);
-
-  // const onClickLike = () => {};
-  const { nickname, profile } = User;
 
   let icon;
   switch (workCategory) {
@@ -168,7 +187,7 @@ const ReviewPost = ({ review }: Props) => {
               <ProfileWithNickname
                 nickname={nickname}
                 profile={profile}
-                size="large"
+                size="medium"
               />
               <TimeSpan>
                 {[
@@ -184,9 +203,18 @@ const ReviewPost = ({ review }: Props) => {
               </TimeSpan>
             </HeaderLine>
             <Line />
-            <CommentWrapper>{comment}</CommentWrapper>
-            <Rating name="rating" value={rating} readOnly />
-            <br />
+            {isSpoiler && (
+              <Spoiler onClick={onClickSpoiler}>
+                스포일러가 존재할 수 있습니다
+              </Spoiler>
+            )}
+            {!isSpoiler && (
+              <>
+                <CommentWrapper>{comment}</CommentWrapper>
+                <Rating name="rating" value={rating} readOnly />
+                <br />
+              </>
+            )}
             <Chip label={workName} size="small" icon={icon} />
           </Padder>
           <FooterWrapper>
@@ -197,26 +225,27 @@ const ReviewPost = ({ review }: Props) => {
                   <ReplyIcon fontSize="large" color="primary" />
                 )}
               </IconButton>
-              {Reply.length <= 9999 && Reply.length}
-              {Reply.length > 9999 && '9999+'}
+              {reply.length <= 9999 && reply.length}
+              {reply.length > 9999 && '9999+'}
             </IconWrapper>
             <IconWrapper>
               <IconButton>
                 {!isLiked && <ThumbUpIcon fontSize="medium" />}
                 {isLiked && <ThumbUpIcon fontSize="medium" color="primary" />}
               </IconButton>
-              {like <= 9999 && like}
-              {like > 9999 && '9999+'}
+              {likes <= 9999 && likes}
+              {likes > 9999 && '9999+'}
             </IconWrapper>
             <RightSpan>
               <FormatListBulletedIcon fontSize="large" />
             </RightSpan>
           </FooterWrapper>
           <Padder>
-            {isReplyOpened && Reply.length !== 0 && (
-              <ReviewReply reviewId={reviewId} Reply={Reply.slice(0, index)} />
+            {isReplyOpened && reply?.length !== 0 && (
+              <ReviewReply reviewId={reviewId} reply={reply.slice(0, index)} />
             )}
-            {isReplyOpened && Reply.length === 0 && <EmptyReply />}
+            {isReplyOpened && reply?.length === 0 && <EmptyReply />}
+            {isReplyOpened && reply === null && <EmptyReply />}
           </Padder>
         </Wrapper>
       </ContentBox>

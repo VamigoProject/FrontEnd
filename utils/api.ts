@@ -1,6 +1,6 @@
 import instance from './myAxios';
 import Axios, { AxiosError } from 'axios';
-import { kleeImage } from 'utils/statics';
+import { Review } from 'utils/types';
 
 interface LoginData {
   uid: number;
@@ -99,6 +99,7 @@ const createReviewApi = async (
   workName: string,
   workCategory: string,
   rating: number,
+  spoiler: boolean,
 ) => {
   try {
     const body = {
@@ -107,6 +108,7 @@ const createReviewApi = async (
       workName,
       workCategory,
       rating,
+      spoiler,
     };
     await instance.post('/review/create', body);
   } catch (error) {
@@ -143,10 +145,33 @@ const updateProfileApi = async (
   }
 };
 
+const myreviewApi = async (uid: number): Promise<Array<Review>> => {
+  try {
+    const body = {
+      uid,
+    };
+    const response = await instance.post('/member/profile/myreview', body);
+    console.log(response.data);
+    if (response.data === 'None') {
+      return [];
+    } else {
+      return response.data;
+    }
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
 export {
   createReviewApi,
   signinApi,
   signupApi,
   requestMailApi,
   updateProfileApi,
+  myreviewApi,
 };

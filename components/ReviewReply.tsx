@@ -4,19 +4,19 @@ import ReplyView from 'components/ReplyView';
 
 interface Props {
   reviewId: number;
-  Reply: Array<Reply>;
+  reply: Array<Reply>;
 }
 
-const ReviewPost = ({ reviewId, Reply }: Props) => {
+const ReviewPost = ({ reviewId, reply }: Props) => {
   return (
     <>
       <div>
         <AddReply />
-        {Reply.map((reply) => (
+        {reply.map((r) => (
           <ReplyView
-            key={reviewId + '_' + reply.replyId}
+            key={reviewId + '_' + r.replyId}
             reviewId={reviewId}
-            reply={reply}
+            reply={r}
           />
         ))}
       </div>

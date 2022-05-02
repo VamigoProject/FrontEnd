@@ -82,11 +82,10 @@ const signup: NextPage = () => {
   const timerId = useRef<any>();
   const intervalId = useRef<any>();
 
-  const onClickCode = async () => {
-    await startLoadingAction();
+  const onClickCode = () => {
     try {
-      await requestMailApi(mail);
-      alert(`${mail}로 인증코드를 발송하였습니다`);
+      requestMailApi(mail);
+      alert(`${mail}로 메일이 도착하기까지 시간이 걸릴 수 있습니다`);
       timerId.current = setTimeout(() => {
         clearTimer();
         setCodeButton('코드요청');
@@ -98,7 +97,6 @@ const signup: NextPage = () => {
     } catch (error) {
       alert(error);
     }
-    await endLoadingAction();
   };
 
   const [nickname, onChangeNickname] = useInput('LWC421');

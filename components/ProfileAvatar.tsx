@@ -9,8 +9,8 @@ interface Props {
 
 const ProfileAvatar = ({ nickname, profile, size = 'medium' }: Props) => {
   const small = { width: 24, height: 24 };
-  const medium = { width: 30, height: 30 };
-  const large = { width: 36, height: 36 };
+  const medium = { width: 42, height: 42 };
+  const large = { width: 64, height: 64 };
   const xLarge = { width: 100, height: 100 };
 
   let sizeObject;

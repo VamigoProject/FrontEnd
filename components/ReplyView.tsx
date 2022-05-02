@@ -33,8 +33,8 @@ const Padder = styled.div`
 `;
 
 const ReplyView = ({ reviewId, reply }: Props) => {
-  const { replyId, time, User, comment } = reply;
-  const { nickname, profile } = User;
+  const { replyId, time, user, comment } = reply;
+  const { nickname, profile } = user;
   return (
     <>
       <GlobalStyle />
