@@ -2,4 +2,4 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 
 ## 사용 기술
-<img src="https://img.shields.io/badge/black?style=flat-square&logo=Next.js&logoColor=white"/>ddd</a>&nbsp 
+NEXT.js / mui / axios / styled-components
