@@ -3,12 +3,13 @@ import useUserStore from 'stores/user';
 import ContentBox from 'components/ContentBox';
 import ProfileAvatar from 'components/ProfileAvatar';
 import styled from 'styled-components';
-import { Badge } from '@mui/material';
+import { Badge, Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState } from 'react';
 import EditProfile from 'components/EditProfile';
 import Dialog from 'components/Dialog';
 import Router from 'next/router';
+import { searchWorkApi } from 'utils/api';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -104,6 +105,14 @@ const ProfileLayout = ({ children }: Props) => {
     Router.push('/member/profile/friend');
   };
 
+  const onClickTest = async () => {
+    try {
+      await searchWorkApi('인터스텔라');
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -136,6 +145,7 @@ const ProfileLayout = ({ children }: Props) => {
               <h4>좋아요</h4>
             </NavigationMenu>
           </Navigation>
+          <Button onClick={onClickTest}>테스트</Button>
         </ContentBox>
       </Wrapper>
       <Body>{children}</Body>
@@ -144,7 +154,7 @@ const ProfileLayout = ({ children }: Props) => {
           onClose={onClickClose}
           width="25rem"
           height="25rem"
-          title="되나"
+          title="프로필 수정"
         >
           <EditProfile />
         </Dialog>

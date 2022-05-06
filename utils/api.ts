@@ -93,6 +93,21 @@ const requestMailApi = async (mail: string) => {
   }
 };
 
+const searchWorkApi = async (name: string) => {
+  try {
+    const body = { fileds: ['name'], searchTerm: name, size: 10 };
+    const response = await instance.post('/api/movie/search', body);
+    console.log(response.data);
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw `${err.response?.data}`;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
 const createReviewApi = async (
   uid: number,
   comment: string,
@@ -111,6 +126,41 @@ const createReviewApi = async (
       spoiler,
     };
     await instance.post('/review/create', body);
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
+const deleteReviewApi = async (uid: number, reviewId: number) => {
+  try {
+    const body = { uid, reviewId };
+    await instance.post('/review/delete', body);
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
+const updateReviewApi = async (
+  uid: number,
+  reviewId: number,
+  rating: number,
+  comment: number,
+  image: Array<string>,
+  spoiler: boolean,
+) => {
+  try {
+    const body = { uid, reviewId, rating, comment, image, spoiler };
+    await instance.post('/review/update', body);
   } catch (error) {
     if (Axios.isAxiosError(error)) {
       const err = error as AxiosError;
@@ -151,7 +201,6 @@ const myreviewApi = async (uid: number): Promise<Array<Review>> => {
       uid,
     };
     const response = await instance.post('/member/profile/myreview', body);
-    console.log(response.data);
     if (response.data === 'None') {
       return [];
     } else {
@@ -168,7 +217,10 @@ const myreviewApi = async (uid: number): Promise<Array<Review>> => {
 };
 
 export {
+  searchWorkApi,
   createReviewApi,
+  deleteReviewApi,
+  updateReviewApi,
   signinApi,
   signupApi,
   requestMailApi,

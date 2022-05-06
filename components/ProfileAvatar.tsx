@@ -1,5 +1,5 @@
 import { Avatar } from '@mui/material';
-import { green } from '@mui/material/colors';
+import { red, green, blue } from '@mui/material/colors';
 
 interface Props {
   nickname: string;
@@ -22,9 +22,22 @@ const ProfileAvatar = ({ nickname, profile, size = 'medium' }: Props) => {
     nickname = 'Nickname';
   }
   if (profile === null) {
+    let color;
+    switch (nickname.charCodeAt(0) % 3) {
+      case 0:
+        color = red[500];
+        break;
+      case 1:
+        color = green[500];
+        break;
+      case 2:
+        color = blue[500];
+        break;
+    }
+
     return (
       <>
-        <Avatar sx={Object.assign(sizeObject, { bgcolor: green[500] })}>
+        <Avatar sx={Object.assign(sizeObject, { bgcolor: color })}>
           {nickname.slice(0, 1)}
         </Avatar>
       </>

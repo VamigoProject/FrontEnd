@@ -85,22 +85,22 @@ const Home = () => {
   const timerId = useRef<any>();
   const [index, setIndex] = useState<number>(0);
 
-  useEffect(() => {
-    timerId.current = setInterval(() => {
-      if (index < ReviewData.length) {
-        setIndex((prev) => prev + 1);
-      } else {
-        clearInterval(timerId.current);
-      }
-    }, 250);
-    return () => clearInterval(timerId.current);
-  }, [ReviewData]);
+  // useEffect(() => {
+  //   timerId.current = setInterval(() => {
+  //     if (index < ReviewData.length) {
+  //       setIndex((prev) => prev + 1);
+  //     } else {
+  //       clearInterval(timerId.current);
+  //     }
+  //   }, 250);
+  //   return () => clearInterval(timerId.current);
+  // }, [ReviewData]);
 
   return (
     <>
       {ReviewData.length === 0 && <Empty></Empty>}
       {ReviewData.length !== 0 &&
-        ReviewData.slice(0, index).map((review) => (
+        ReviewData.map((review) => (
           <ReviewPost key={review.reviewId} review={review} />
         ))}
     </>

@@ -1,3 +1,11 @@
+interface Props {
+  reviewId: number;
+  rating: number;
+  comment: string;
+  image: Array<string>;
+  spoiler: boolean;
+}
+
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import ContentBox from 'components/ContentBox';
 import useInput from 'hooks/useInput';
@@ -21,7 +29,7 @@ import AnimationIcon from '@mui/icons-material/Animation';
 import ProfileWithNickname from 'components/ProfileWithNickname';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { SyntheticEvent, useState } from 'react';
-import { createReviewApi } from 'utils/api';
+import { updateReviewApi } from 'utils/api';
 import useSystemStore from 'stores/system';
 import Router from 'next/router';
 
@@ -96,50 +104,35 @@ const WorkList: Array<WorkProps> = [
   { name: '원신', category: 'game' },
 ];
 
-const newReview = () => {
+const update = ({ reviewId, rating, comment, image, spoiler }: Props) => {
   const { startLoadingAction, endLoadingAction } = useSystemStore(
     (state) => state,
   );
   const { uid, nickname, profile } = useUserStore((state) => state);
 
-  const [comment, onChangeComment] = useInput('');
-  const [workName, setWorkName] = useState<string | null>('');
-  const [workCategory, setWorkCategory] = useState<string | null>('');
-  const [rating, onChangeRating] = useInput(0);
-  const [spoiler, setSpoiler] = useInput(false);
+  const [afterComment, onChangeComment] = useInput(comment);
+  const [afterRating, onChangeRating] = useInput(rating);
+  const [afterImage, onChangeImage] = useInput(image);
+  const [afterSpoiler, setSpoiler] = useInput(spoiler);
 
   const onChangeSpoiler = () => {
     setSpoiler((prev: boolean) => !prev);
-  };
-
-  const onChangeWork = (
-    e: SyntheticEvent<Element, Event>,
-    value: WorkProps | null,
-  ) => {
-    if (value === null) {
-      setWorkName(null);
-      setWorkCategory(null);
-    } else {
-      setWorkName(value.name);
-      setWorkCategory(value.category);
-    }
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     startLoadingAction();
     try {
-      await createReviewApi(
+      await updateReviewApi(
         uid!,
-        comment,
-        workName!,
-        workCategory!,
-        rating!,
-        spoiler,
+        reviewId,
+        afterRating!,
+        afterComment,
+        afterImage,
+        afterSpoiler,
       );
       endLoadingAction();
-      alert('리뷰가 성공적으로 등록되었습니다');
-      Router.push('/home');
+      alert('리뷰가 성공적으로 수정되었습니다.');
     } catch (error) {
       endLoadingAction();
       alert(error);
@@ -181,34 +174,6 @@ const newReview = () => {
               spellCheck={false}
             />
           </CommentWrapper>
-          <br />
-          <WorkWrapper>
-            <Autocomplete
-              disablePortal
-              id="work"
-              size="medium"
-              autoHighlight
-              options={WorkList}
-              getOptionLabel={(option) => option.name}
-              onChange={(e, value) => onChangeWork(e, value)}
-              renderOption={(props, option) => (
-                <Box
-                  key={option.category + '_' + option.name}
-                  component="li"
-                  {...props}
-                >
-                  {option.name}
-                  {option.category === 'movie' && <LocalMoviesIcon />}
-                  {option.category === 'book' && <MenuBookIcon />}
-                  {option.category === 'drama' && <LiveTvIcon />}
-                  {option.category === 'animation' && <AnimationIcon />}
-                  {option.category === 'game' && <SportsEsportsIcon />}
-                </Box>
-              )}
-              renderInput={(params) => <TextField {...params} label="작품" />}
-            />
-          </WorkWrapper>
-          <br />
           <Row>
             <span
               style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
@@ -239,4 +204,4 @@ const newReview = () => {
   );
 };
 
-export default newReview;
+export default update;

@@ -6,6 +6,7 @@ import useUserStore from 'stores/user';
 
 const Wrapper = styled.div`
   margin-bottom: 1rem;
+  margin-top: 1rem;
 `;
 
 const Form = styled(Box)`
@@ -26,7 +27,7 @@ const AddReply = () => {
   return (
     <Wrapper>
       <ProfileWithNickname
-        size="medium"
+        size="small"
         nickname={nickname!}
         profile={profile}
       />

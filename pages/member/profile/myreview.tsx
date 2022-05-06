@@ -15,13 +15,16 @@ const myreview = () => {
 
   const [reviewData, setReviewData] = useState<Array<Review>>([]);
 
-  const timerId = useRef<any>();
-  const [index, setIndex] = useState<number>(0);
+  // const [isLoadingDone, setIsLoadingDone] = useState<boolean>(false);
+  // const [index, setIndex] = useState<number>(0);
+
+  // const timerId = useRef<any>();
 
   const fetch = async () => {
     try {
       const response = await myreviewApi(uid!);
-      setReviewData(response);
+      setReviewData(response.reverse());
+      // setIsLoadingDone(true);
     } catch (err) {
       alert(err);
     }
@@ -31,33 +34,37 @@ const myreview = () => {
     startLoadingAction();
     try {
       fetch();
-      timerId.current = setInterval(() => {
-        if (index < reviewData.length) {
-          setIndex((prev) => prev + 1);
-        } else {
-          clearInterval(timerId.current);
-        }
-      }, 250);
     } catch (err) {
       alert(err);
     }
     endLoadingAction();
+  }, []);
 
-    return () => {
-      clearInterval(timerId.current);
-      endLoadingAction();
-    };
-  }, [reviewData]);
+  // useEffect(() => {
+  //   if (reviewData.length !== 0 || timerId.current !== null) {
+  //     timerId.current = setInterval(() => {
+  //       if (index < reviewData.length) {
+  //         setIndex(index + 1);
+  //       } else {
+  //         console.log('cleared');
+  //         clearInterval(timerId.current);
+  //       }
+  //     }, 250);
+  //   }
+
+  //   return () => {
+  //     clearInterval(timerId.current);
+  //     endLoadingAction();
+  //   };
+  // }, [isLoadingDone]);
 
   return (
     <ProfileLayout>
       {reviewData.length === 0 && <Empty />}
       {reviewData.length !== 0 &&
-        reviewData
-          .slice(0, index)
-          .map((review) => (
-            <ReviewPost key={review.reviewId} review={review} />
-          ))}
+        reviewData.map((review) => (
+          <ReviewPost key={review.reviewId} review={review} />
+        ))}
     </ProfileLayout>
   );
 };

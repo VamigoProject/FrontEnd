@@ -1,6 +1,7 @@
+/* eslint-disable prefer-const */
 import styled, { createGlobalStyle } from 'styled-components';
 import ProfileWithNickname from 'components/ProfileWithNickname';
-import { Rating, Chip, IconButton } from '@mui/material';
+import { Rating, Chip, IconButton, Menu, MenuItem } from '@mui/material';
 import { Review } from 'utils/types';
 import ContentBox from 'components/ContentBox';
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
@@ -10,10 +11,14 @@ import AnimationIcon from '@mui/icons-material/Animation';
 import ReplyIcon from '@mui/icons-material/Reply';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ReviewReply from 'components/ReviewReply';
-import { useRef } from 'react';
 import EmptyReply from 'components/EmptyReply';
+import useUserStore from 'stores/user';
+import ReportIcon from '@mui/icons-material/Report';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { deleteReviewApi } from 'utils/api';
 
 interface Props {
   review: Review;
@@ -34,7 +39,7 @@ const GlobalStyle = createGlobalStyle`
 
 const Container = styled.div`
   margin-bottom: 1.5rem;
-  animation: smoothAppear 1s;
+  animation: smoothAppear 0.75s;
   animation-timing-function: ease-in-out;
 `;
 
@@ -112,7 +117,7 @@ const RightSpan = styled.span`
 `;
 
 const ReviewPost = ({ review }: Props) => {
-  const {
+  let {
     reviewId,
     time,
     uid,
@@ -129,10 +134,46 @@ const ReviewPost = ({ review }: Props) => {
     spoiler,
   } = review;
 
-  const [isReplyOpened, setIsReplyOpened] = useState<boolean>(false);
+  try {
+    time = new Date(time);
+  } catch {
+    // eslint-disable-next-line no-self-assign
+    time = time;
+  }
 
-  const timerId = useRef<any>();
-  const [index, setIndex] = useState<number>(0);
+  if (reply === null) {
+    reply = [];
+  }
+
+  if (profile === 'NoImage') {
+    profile = null;
+  }
+
+  const myUid = useUserStore((state) => state.uid);
+
+  const [isReplyOpened, setIsReplyOpened] = useState<boolean>(false);
+  const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const onClickList = (event: React.MouseEvent<HTMLElement>) => {
+    console.log('??');
+    setAnchorElement(event.currentTarget);
+    setOpen(true);
+  };
+  const onClose = () => {
+    console.log('닫기', open);
+    setAnchorElement(null);
+    setOpen(false);
+  };
+
+  const onClickDeleteReview = async () => {
+    try {
+      await deleteReviewApi(myUid!, reviewId);
+      alert('리뷰를 성공적으로 삭제했습니다');
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   const [isSpoiler, setIsSpoiler] = useState<boolean>(spoiler);
 
@@ -143,23 +184,10 @@ const ReviewPost = ({ review }: Props) => {
   const onClickReply = () => {
     if (isReplyOpened === false) {
       setIsReplyOpened(true);
-      timerId.current = setInterval(() => {
-        if (index < reply.length) {
-          setIndex((prev) => prev + 1);
-        } else {
-          clearInterval(timerId.current);
-        }
-      }, 100);
     } else {
       setIsReplyOpened(false);
-      clearInterval(timerId.current);
-      setIndex(0);
     }
   };
-
-  useEffect(() => {
-    return () => clearInterval(timerId.current);
-  }, []);
 
   let icon;
   switch (workCategory) {
@@ -237,12 +265,47 @@ const ReviewPost = ({ review }: Props) => {
               {likes > 9999 && '9999+'}
             </IconWrapper>
             <RightSpan>
-              <FormatListBulletedIcon fontSize="large" />
+              <IconButton
+                id="list-button"
+                aria-controls={open ? 'list-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={onClickList}
+              >
+                <FormatListBulletedIcon fontSize="large" />
+              </IconButton>
+              <Menu
+                id="list-menu"
+                anchorEl={anchorElement}
+                aria-labelledby="list-button"
+                open={open}
+                onClose={onClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                disableScrollLock={true}
+              >
+                <MenuItem>
+                  <ReportIcon style={{ marginRight: '0.5rem' }} />
+                  신고
+                </MenuItem>
+                {uid === myUid && (
+                  <MenuItem>
+                    <EditIcon style={{ marginRight: '0.5rem' }} />
+                    수정
+                  </MenuItem>
+                )}
+                {uid === myUid && (
+                  <MenuItem onClick={onClickDeleteReview}>
+                    <DeleteIcon style={{ marginRight: '0.5rem' }} />
+                    삭제
+                  </MenuItem>
+                )}
+              </Menu>
             </RightSpan>
           </FooterWrapper>
           <Padder>
             {isReplyOpened && reply?.length !== 0 && (
-              <ReviewReply reviewId={reviewId} reply={reply.slice(0, index)} />
+              <ReviewReply reviewId={reviewId} reply={reply} />
             )}
             {isReplyOpened && reply?.length === 0 && <EmptyReply />}
             {isReplyOpened && reply === null && <EmptyReply />}
