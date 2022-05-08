@@ -18,7 +18,10 @@ import useUserStore from 'stores/user';
 import ReportIcon from '@mui/icons-material/Report';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { deleteReviewApi } from 'utils/api';
+import { deleteReviewApi, likeApi, unlikeApi } from 'utils/api';
+import Dialog from 'components/Dialog';
+import EditReview from 'components/EditReview';
+import useReviewStore from 'stores/review';
 
 interface Props {
   review: Review;
@@ -150,25 +153,35 @@ const ReviewPost = ({ review }: Props) => {
   }
 
   const myUid = useUserStore((state) => state.uid);
+  const { likeAction, unLikeAction, deleteReviewAction } = useReviewStore(
+    (state) => state,
+  );
 
   const [isReplyOpened, setIsReplyOpened] = useState<boolean>(false);
   const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState<boolean>(false);
 
   const onClickList = (event: React.MouseEvent<HTMLElement>) => {
-    console.log('??');
     setAnchorElement(event.currentTarget);
     setOpen(true);
   };
   const onClose = () => {
-    console.log('닫기', open);
     setAnchorElement(null);
     setOpen(false);
+  };
+
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const onClickEdit = () => {
+    setIsEditOpen(true);
+  };
+  const onCloseEdit = () => {
+    setIsEditOpen(false);
   };
 
   const onClickDeleteReview = async () => {
     try {
       await deleteReviewApi(myUid!, reviewId);
+      deleteReviewAction(reviewId);
       alert('리뷰를 성공적으로 삭제했습니다');
     } catch (error) {
       alert(error);
@@ -186,6 +199,20 @@ const ReviewPost = ({ review }: Props) => {
       setIsReplyOpened(true);
     } else {
       setIsReplyOpened(false);
+    }
+  };
+
+  const onClickLike = async () => {
+    try {
+      if (isLiked) {
+        await unlikeApi(reviewId, uid);
+        unLikeAction(reviewId);
+      } else {
+        await likeApi(reviewId, uid);
+        likeAction(reviewId);
+      }
+    } catch (error) {
+      alert(error);
     }
   };
 
@@ -220,7 +247,7 @@ const ReviewPost = ({ review }: Props) => {
               <TimeSpan>
                 {[
                   time.getFullYear(),
-                  time.getMonth().toString().padStart(2, '0'),
+                  (time.getMonth() + 1).toString().padStart(2, '0'),
                   time.getDate().toString().padStart(2, '0'),
                 ].join('-')}
                 <br />
@@ -257,12 +284,13 @@ const ReviewPost = ({ review }: Props) => {
               {reply.length > 9999 && '9999+'}
             </IconWrapper>
             <IconWrapper>
-              <IconButton>
+              <IconButton onClick={onClickLike}>
                 {!isLiked && <ThumbUpIcon fontSize="medium" />}
                 {isLiked && <ThumbUpIcon fontSize="medium" color="primary" />}
               </IconButton>
               {likes <= 9999 && likes}
               {likes > 9999 && '9999+'}
+              {likes === null && '0'}
             </IconWrapper>
             <RightSpan>
               <IconButton
@@ -289,11 +317,29 @@ const ReviewPost = ({ review }: Props) => {
                   신고
                 </MenuItem>
                 {uid === myUid && (
-                  <MenuItem>
+                  <MenuItem onClick={onClickEdit}>
                     <EditIcon style={{ marginRight: '0.5rem' }} />
                     수정
                   </MenuItem>
                 )}
+                {isEditOpen && (
+                  <Dialog
+                    onClose={onCloseEdit}
+                    width="40rem"
+                    height="25rem"
+                    title="리뷰수정"
+                  >
+                    <EditReview
+                      reviewId={reviewId}
+                      rating={rating}
+                      comment={comment}
+                      image={image}
+                      spoiler={spoiler}
+                      onClose={onCloseEdit}
+                    />
+                  </Dialog>
+                )}
+
                 {uid === myUid && (
                   <MenuItem onClick={onClickDeleteReview}>
                     <DeleteIcon style={{ marginRight: '0.5rem' }} />
@@ -307,8 +353,12 @@ const ReviewPost = ({ review }: Props) => {
             {isReplyOpened && reply?.length !== 0 && (
               <ReviewReply reviewId={reviewId} reply={reply} />
             )}
-            {isReplyOpened && reply?.length === 0 && <EmptyReply />}
-            {isReplyOpened && reply === null && <EmptyReply />}
+            {isReplyOpened && reply?.length === 0 && (
+              <EmptyReply reviewId={reviewId} />
+            )}
+            {isReplyOpened && reply === null && (
+              <EmptyReply reviewId={reviewId} />
+            )}
           </Padder>
         </Wrapper>
       </ContentBox>

@@ -4,13 +4,14 @@ interface Props {
   comment: string;
   image: Array<string>;
   spoiler: boolean;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  onClose: Function;
 }
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import ContentBox from 'components/ContentBox';
 import useInput from 'hooks/useInput';
 import {
-  Autocomplete,
   Box,
   Rating,
   TextField,
@@ -31,6 +32,7 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { SyntheticEvent, useState } from 'react';
 import { updateReviewApi } from 'utils/api';
 import useSystemStore from 'stores/system';
+import useReviewStore from 'stores/review';
 import Router from 'next/router';
 
 const Wrapper = styled.div`
@@ -78,36 +80,19 @@ const Circle = styled.div`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 4px 6px rgb(0, 0, 0, 0.05);
 `;
 
-interface WorkProps {
-  name: string;
-  category: string;
-}
-
-const WorkList: Array<WorkProps> = [
-  { name: '인터스텔라', category: 'movie' },
-  { name: '인터누텔라', category: 'game' },
-  { name: '인터폰', category: 'animation' },
-  { name: '인터라텔라', category: 'movie' },
-  { name: '안티스텔라', category: 'game' },
-  { name: '잉테스텔라', category: 'movie' },
-  { name: '누텔라', category: 'movie' },
-  { name: '해리포터 : 마법사의 돌', category: 'movie' },
-  { name: '해리포터 : 비밀의 방', category: 'book' },
-  { name: '해리포터 : 아즈카반의 죄수', category: 'book' },
-  { name: '해리포터 : 불의 잔', category: 'animation' },
-  { name: '해리포터 : 불사조 기사단', category: 'drama' },
-  { name: '해리포터 : 혼혈 왕자', category: 'drama' },
-  { name: '해리포터 : 죽음의 성물', category: 'movie' },
-  { name: '해리포터 : 저주받은 아이', category: 'animation' },
-  { name: '해리포터 : ', category: 'drama' },
-  { name: '해리포터 : ', category: 'book' },
-  { name: '원신', category: 'game' },
-];
-
-const update = ({ reviewId, rating, comment, image, spoiler }: Props) => {
+const EditReview = ({
+  reviewId,
+  rating,
+  comment,
+  image,
+  spoiler,
+  onClose,
+}: Props) => {
   const { startLoadingAction, endLoadingAction } = useSystemStore(
     (state) => state,
   );
+  const { updateReviewAction } = useReviewStore((state) => state);
+
   const { uid, nickname, profile } = useUserStore((state) => state);
 
   const [afterComment, onChangeComment] = useInput(comment);
@@ -119,7 +104,7 @@ const update = ({ reviewId, rating, comment, image, spoiler }: Props) => {
     setSpoiler((prev: boolean) => !prev);
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
     startLoadingAction();
     try {
@@ -131,12 +116,21 @@ const update = ({ reviewId, rating, comment, image, spoiler }: Props) => {
         afterImage,
         afterSpoiler,
       );
-      endLoadingAction();
+
+      updateReviewAction(
+        reviewId,
+        afterRating,
+        afterComment,
+        afterImage,
+        afterSpoiler,
+      );
+
       alert('리뷰가 성공적으로 수정되었습니다.');
+      onClose();
     } catch (error) {
-      endLoadingAction();
       alert(error);
     }
+    endLoadingAction();
   };
 
   return (
@@ -145,7 +139,7 @@ const update = ({ reviewId, rating, comment, image, spoiler }: Props) => {
         <Box
           style={{ padding: '1rem', width: '100%', height: '100%' }}
           component="form"
-          onSubmit={onSubmit}
+          // onSubmit={onSubmit}
         >
           <ProfileWithNickname
             nickname={nickname!}
@@ -158,7 +152,7 @@ const update = ({ reviewId, rating, comment, image, spoiler }: Props) => {
               label="Comment"
               multiline
               rows={6}
-              value={comment}
+              value={afterComment}
               onChange={onChangeComment}
               required
               sx={{
@@ -180,18 +174,18 @@ const update = ({ reviewId, rating, comment, image, spoiler }: Props) => {
             >
               <Rating
                 name="review-rating"
-                value={rating}
+                value={afterRating}
                 onChange={onChangeRating}
               />
               <FormControlLabel
                 label="스포일러"
                 control={
-                  <Checkbox checked={spoiler} onChange={onChangeSpoiler} />
+                  <Checkbox checked={afterSpoiler} onChange={onChangeSpoiler} />
                 }
               />
             </span>
             <span>
-              <IconButton type="submit">
+              <IconButton onClick={(e) => onSubmit(e)}>
                 <Circle>
                   <EditIcon color="primary" fontSize="large" />
                 </Circle>
@@ -204,4 +198,4 @@ const update = ({ reviewId, rating, comment, image, spoiler }: Props) => {
   );
 };
 
-export default update;
+export default EditReview;

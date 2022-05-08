@@ -1,28 +1,24 @@
 import { Reply } from 'utils/types';
 import AddReply from 'components/AddReply';
 import ReplyView from 'components/ReplyView';
-import styled from 'styled-components';
+import { useEffect } from 'react';
 
 interface Props {
   reviewId: number;
   reply: Array<Reply>;
 }
 
-const ReviewPost = ({ reviewId, reply }: Props) => {
+const ReviewReply = ({ reviewId, reply }: Props) => {
   return (
     <>
       <div>
-        <AddReply />
+        <AddReply reviewId={reviewId} />
         {reply.map((r) => (
-          <ReplyView
-            key={reviewId + '_' + r.replyId}
-            reviewId={reviewId}
-            reply={r}
-          />
+          <ReplyView key={r.replyId} reviewId={reviewId} reply={r} />
         ))}
       </div>
     </>
   );
 };
 
-export default ReviewPost;
+export default ReviewReply;

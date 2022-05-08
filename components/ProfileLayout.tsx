@@ -9,6 +9,7 @@ import { useState } from 'react';
 import EditProfile from 'components/EditProfile';
 import Dialog from 'components/Dialog';
 import Router from 'next/router';
+import useReviewStore from 'stores/review';
 import { searchWorkApi } from 'utils/api';
 
 const Wrapper = styled.div`
@@ -77,6 +78,8 @@ interface Props {
 }
 
 const ProfileLayout = ({ children }: Props) => {
+  const { resetReviewAction } = useReviewStore((state) => state);
+
   const [open, setOpen] = useState<boolean>(false);
   const onClickOpen = () => {
     setOpen(true);
@@ -105,14 +108,6 @@ const ProfileLayout = ({ children }: Props) => {
     Router.push('/member/profile/friend');
   };
 
-  const onClickTest = async () => {
-    try {
-      await searchWorkApi('인터스텔라');
-    } catch (error) {
-      alert(error);
-    }
-  };
-
   return (
     <>
       <Wrapper>
@@ -125,6 +120,7 @@ const ProfileLayout = ({ children }: Props) => {
             >
               <ProfileAvatar
                 size="xLarge"
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 nickname={nickname!}
                 profile={profile}
               />
@@ -145,7 +141,6 @@ const ProfileLayout = ({ children }: Props) => {
               <h4>좋아요</h4>
             </NavigationMenu>
           </Navigation>
-          <Button onClick={onClickTest}>테스트</Button>
         </ContentBox>
       </Wrapper>
       <Body>{children}</Body>

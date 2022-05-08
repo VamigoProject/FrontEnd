@@ -1,11 +1,12 @@
 import ProfileLayout from 'components/ProfileLayout';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import useUserStore from 'stores/user';
-import { Review } from 'utils/types';
 import { myreviewApi } from 'utils/api';
 import ReviewPost from 'components/ReviewPost';
 import Empty from 'components/Empty';
 import useSystemStore from 'stores/system';
+import useReviewStore from 'stores/review';
+import { Review, User } from 'utils/types';
 
 const myreview = () => {
   const uid = useUserStore((state) => state.uid);
@@ -13,50 +14,34 @@ const myreview = () => {
     (state) => state,
   );
 
-  const [reviewData, setReviewData] = useState<Array<Review>>([]);
-
-  // const [isLoadingDone, setIsLoadingDone] = useState<boolean>(false);
-  // const [index, setIndex] = useState<number>(0);
-
-  // const timerId = useRef<any>();
+  const { reviewData, setReviewAction } = useReviewStore((state) => state);
 
   const fetch = async () => {
+    startLoadingAction();
     try {
       const response = await myreviewApi(uid!);
-      setReviewData(response.reverse());
-      // setIsLoadingDone(true);
+      setReviewAction(response.reverse());
     } catch (err) {
       alert(err);
     }
+    endLoadingAction();
   };
 
   useEffect(() => {
-    startLoadingAction();
     try {
       fetch();
     } catch (err) {
       alert(err);
     }
-    endLoadingAction();
   }, []);
 
-  // useEffect(() => {
-  //   if (reviewData.length !== 0 || timerId.current !== null) {
-  //     timerId.current = setInterval(() => {
-  //       if (index < reviewData.length) {
-  //         setIndex(index + 1);
-  //       } else {
-  //         console.log('cleared');
-  //         clearInterval(timerId.current);
-  //       }
-  //     }, 250);
-  //   }
-
-  //   return () => {
-  //     clearInterval(timerId.current);
-  //     endLoadingAction();
-  //   };
-  // }, [isLoadingDone]);
+  if (!reviewData) {
+    return (
+      <ProfileLayout>
+        <Empty />
+      </ProfileLayout>
+    );
+  }
 
   return (
     <ProfileLayout>

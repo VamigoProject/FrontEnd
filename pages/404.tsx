@@ -36,10 +36,8 @@ const Custom404 = () => {
       });
     }, 200);
 
-    return () => {
-      clearInterval(timer);
-    };
-  });
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <Wrapper>

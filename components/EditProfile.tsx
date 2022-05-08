@@ -19,7 +19,8 @@ const resizeFile = (file: any, setAfterProfile: any) => {
       100,
       0,
       (uri) => {
-        setAfterProfile(uri.replace(/^data:image\/[a-z]+;base64,/, ''));
+        if (typeof uri === 'string')
+          setAfterProfile(uri.replace(/^data:image\/[a-z]+;base64,/, ''));
       },
       'base64',
     );
@@ -58,16 +59,12 @@ const EditProfile = () => {
   const [afterProfile, setAfterProfile] = useState(profile);
   const [afterIntroduce, onChangeAfterIntroduce] = useInput(introduce);
 
-  const onChangeFile = async (f) => {
+  const onChangeFile = async (f: any) => {
     await resizeFile(f, setAfterProfile);
   };
 
   const onClickUpdate = async () => {
     startLoadingAction();
-    console.log(uid);
-    console.log(afterNickname);
-    console.log(afterProfile);
-    console.log(afterIntroduce);
     try {
       await updateProfileApi(uid!, afterNickname, afterProfile, afterIntroduce);
       updateAction(afterNickname, afterProfile, afterIntroduce);

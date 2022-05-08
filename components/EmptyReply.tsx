@@ -7,10 +7,14 @@ const Row = styled.div`
   align-item: center;
 `;
 
-const EmptyReply = () => {
+interface Props {
+  reviewId: number;
+}
+
+const EmptyReply = ({ reviewId }: Props) => {
   return (
     <div>
-      <AddReply />
+      <AddReply reviewId={reviewId} />
       <Row>
         <DraftsIcon sx={{ fontSize: 25 }} />
         <span>댓글이 존재하지 않습니다</span>

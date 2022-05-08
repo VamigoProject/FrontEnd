@@ -3,26 +3,49 @@ import styled from 'styled-components';
 import useInput from 'hooks/useInput';
 import ProfileWithNickname from 'components/ProfileWithNickname';
 import useUserStore from 'stores/user';
+import { createReplyApi } from 'utils/api';
+import { User } from 'utils/types';
+import useReviewStore from 'stores/review';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   margin-bottom: 1rem;
   margin-top: 1rem;
 `;
 
-const Form = styled(Box)`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
 const ReplyField = styled(TextField)`
   width: calc(100% - 5rem);
 `;
 
-const AddReply = () => {
+interface Props {
+  reviewId: number;
+}
+
+const AddReply = ({ reviewId }: Props) => {
+  const createReplyAction = useReviewStore((state) => state.createReplyAction);
+
   const { profile, nickname } = useUserStore((state) => state);
-  const [reply, onChangeReply] = useInput('');
+  const myId = useUserStore((state) => state.uid);
+
+  const [comment, setComment] = useState<string>('');
+  const onChangeComment = (e: any) => {
+    setComment(e.target.value);
+  };
+
+  const onSubmit = () => {
+    try {
+      //const replyId =  await createReplyApi(reviewId, uid!, comment);
+      createReplyAction(
+        reviewId,
+        Math.floor(Math.random() * 100000 + 1),
+        { uid: myId!, nickname: nickname!, profile: profile },
+        comment,
+      );
+      setComment('');
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   return (
     <Wrapper>
@@ -31,12 +54,21 @@ const AddReply = () => {
         nickname={nickname!}
         profile={profile}
       />
-      <Form component="form">
+      <Box
+        component="form"
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+        // onSubmit={onSubmit}
+      >
         <ReplyField
           variant="outlined"
-          value={reply}
+          value={comment}
           placeholder="댓글"
-          onChange={onChangeReply}
+          onChange={onChangeComment}
           size="small"
           sx={{
             bgcolor: 'white',
@@ -44,8 +76,10 @@ const AddReply = () => {
           }}
           spellCheck={false}
         />
-        <Button variant="contained">입력</Button>
-      </Form>
+        <Button variant="contained" onClick={onSubmit}>
+          입력
+        </Button>
+      </Box>
     </Wrapper>
   );
 };

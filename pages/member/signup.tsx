@@ -64,7 +64,7 @@ const signup: NextPage = () => {
   };
 
   useEffect(() => {
-    return clearTimer();
+    return clearTimer;
   }, []);
 
   const { setMailAction } = useAuthStore((state) => state);
@@ -78,21 +78,21 @@ const signup: NextPage = () => {
     /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 
   const [code, onChangeCode] = useInput('');
-  const [codeButton, setCodeButton] = useState<string | number>('코드요청');
+  const [codeButton, setCodeButton] = useState<string>('코드요청');
   const timerId = useRef<any>();
   const intervalId = useRef<any>();
 
-  const onClickCode = () => {
+  const onClickCode = async() => {
     try {
-      requestMailApi(mail);
+      await requestMailApi(mail);
       alert(`${mail}로 메일이 도착하기까지 시간이 걸릴 수 있습니다`);
       timerId.current = setTimeout(() => {
         clearTimer();
         setCodeButton('코드요청');
       }, 61000);
-      setCodeButton(60);
+      setCodeButton("60");
       intervalId.current = setInterval(() => {
-        setCodeButton((prev) => prev - 1);
+        setCodeButton((prev) => String(parseInt(prev) - 1));
       }, 1000);
     } catch (error) {
       alert(error);

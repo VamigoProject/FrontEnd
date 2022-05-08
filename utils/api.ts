@@ -11,6 +11,7 @@ interface LoginData {
   refreshToken: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const wait = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay));
 
@@ -93,11 +94,27 @@ const requestMailApi = async (mail: string) => {
   }
 };
 
+interface SearchWorkProps {
+  id: number;
+  name: string;
+  category: string;
+}
 const searchWorkApi = async (name: string) => {
   try {
-    const body = { fileds: ['name'], searchTerm: name, size: 10 };
+    const body = { fields: ['name'], searchTerm: name, size: 10 };
     const response = await instance.post('/api/movie/search', body);
-    console.log(response.data);
+    const result: Array<SearchWorkProps> = response.data.map((value: any) =>
+      Object.create({
+        id: value.id,
+        name: value.name,
+        category: value.category,
+      }),
+    );
+
+    const filteredResult = result.filter((element, index) => {
+      return index === result.findIndex((v) => v.id === element.id);
+    });
+    return filteredResult;
   } catch (error) {
     if (Axios.isAxiosError(error)) {
       const err = error as AxiosError;
@@ -125,7 +142,8 @@ const createReviewApi = async (
       rating,
       spoiler,
     };
-    await instance.post('/review/create', body);
+    const response = await instance.post('/review/create', body);
+    return response.data;
   } catch (error) {
     if (Axios.isAxiosError(error)) {
       const err = error as AxiosError;
@@ -161,6 +179,76 @@ const updateReviewApi = async (
   try {
     const body = { uid, reviewId, rating, comment, image, spoiler };
     await instance.post('/review/update', body);
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
+const createReplyApi = async (
+  reviewId: number,
+  uid: number,
+  comment: string,
+) => {
+  try {
+    const body = { reviewId, uid, comment };
+    console.log(body);
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
+const deleteReplyApi = async (
+  reviewId: number,
+  uid: number,
+  replyId: number,
+) => {
+  try {
+    const body = { reviewId, uid, replyId };
+    console.log(body);
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
+const likeApi = async (reviewId: number, uid: number) => {
+  try {
+    const body = {
+      reviewId,
+      uid,
+    };
+    await instance.post('review/like', body);
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
+const unlikeApi = async (reviewId: number, uid: number) => {
+  try {
+    const body = {
+      reviewId,
+      uid,
+    };
+    await instance.post('review/unlike', body);
   } catch (error) {
     if (Axios.isAxiosError(error)) {
       const err = error as AxiosError;
@@ -221,9 +309,13 @@ export {
   createReviewApi,
   deleteReviewApi,
   updateReviewApi,
+  createReplyApi,
+  deleteReplyApi,
   signinApi,
   signupApi,
   requestMailApi,
+  likeApi,
+  unlikeApi,
   updateProfileApi,
   myreviewApi,
 };

@@ -21,9 +21,11 @@ import AnimationIcon from '@mui/icons-material/Animation';
 import ProfileWithNickname from 'components/ProfileWithNickname';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { SyntheticEvent, useState } from 'react';
-import { createReviewApi } from 'utils/api';
+import { searchWorkApi, createReviewApi } from 'utils/api';
 import useSystemStore from 'stores/system';
 import Router from 'next/router';
+import { useRef } from 'react';
+import useReviewAction from 'stores/review';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -71,47 +73,53 @@ const Circle = styled.div`
 `;
 
 interface WorkProps {
+  id: number;
   name: string;
   category: string;
 }
-
-const WorkList: Array<WorkProps> = [
-  { name: '인터스텔라', category: 'movie' },
-  { name: '인터누텔라', category: 'game' },
-  { name: '인터폰', category: 'animation' },
-  { name: '인터라텔라', category: 'movie' },
-  { name: '안티스텔라', category: 'game' },
-  { name: '잉테스텔라', category: 'movie' },
-  { name: '누텔라', category: 'movie' },
-  { name: '해리포터 : 마법사의 돌', category: 'movie' },
-  { name: '해리포터 : 비밀의 방', category: 'book' },
-  { name: '해리포터 : 아즈카반의 죄수', category: 'book' },
-  { name: '해리포터 : 불의 잔', category: 'animation' },
-  { name: '해리포터 : 불사조 기사단', category: 'drama' },
-  { name: '해리포터 : 혼혈 왕자', category: 'drama' },
-  { name: '해리포터 : 죽음의 성물', category: 'movie' },
-  { name: '해리포터 : 저주받은 아이', category: 'animation' },
-  { name: '해리포터 : ', category: 'drama' },
-  { name: '해리포터 : ', category: 'book' },
-  { name: '원신', category: 'game' },
-];
 
 const newReview = () => {
   const { startLoadingAction, endLoadingAction } = useSystemStore(
     (state) => state,
   );
+  const { createReviewAction } = useReviewAction((state) => state);
+
   const { uid, nickname, profile } = useUserStore((state) => state);
 
   const [comment, onChangeComment] = useInput('');
+  const [works, setWorks] = useState<Array<WorkProps>>([]);
   const [workName, setWorkName] = useState<string | null>('');
   const [workCategory, setWorkCategory] = useState<string | null>('');
   const [rating, onChangeRating] = useInput(0);
   const [spoiler, setSpoiler] = useInput(false);
 
+  const timerId = useRef<any>();
+
   const onChangeSpoiler = () => {
     setSpoiler((prev: boolean) => !prev);
   };
 
+  //작품 검색의 input값이 바뀔 때
+  const onChangeWorkInput = (
+    e: SyntheticEvent<Element, Event>,
+    value: string,
+  ) => {
+    if (timerId) {
+      clearTimeout(timerId.current);
+    }
+    if (value !== '') {
+      timerId.current = setTimeout(async () => {
+        try {
+          const response = await searchWorkApi(value);
+          setWorks(response);
+        } catch (error) {
+          alert(error);
+        }
+      }, 150);
+    }
+  };
+
+  //작품 검색에서 작품을 선택하였을 때
   const onChangeWork = (
     e: SyntheticEvent<Element, Event>,
     value: WorkProps | null,
@@ -129,7 +137,7 @@ const newReview = () => {
     e.preventDefault();
     startLoadingAction();
     try {
-      await createReviewApi(
+      const reviewId = await createReviewApi(
         uid!,
         comment,
         workName!,
@@ -137,13 +145,24 @@ const newReview = () => {
         rating!,
         spoiler,
       );
-      endLoadingAction();
-      alert('리뷰가 성공적으로 등록되었습니다');
+      alert(`리뷰가 성공적으로 등록되었습니다`);
+      createReviewAction(
+        reviewId,
+        uid!,
+        nickname!,
+        profile,
+        workName!,
+        workCategory!,
+        comment,
+        rating,
+        [],
+        spoiler,
+      );
       Router.push('/home');
     } catch (error) {
-      endLoadingAction();
       alert(error);
     }
+    endLoadingAction();
   };
 
   return (
@@ -188,24 +207,34 @@ const newReview = () => {
               id="work"
               size="medium"
               autoHighlight
-              options={WorkList}
+              // options={WorkList}
+              options={works}
               getOptionLabel={(option) => option.name}
               onChange={(e, value) => onChangeWork(e, value)}
+              onInputChange={(e, value) => onChangeWorkInput(e, value)}
               renderOption={(props, option) => (
-                <Box
-                  key={option.category + '_' + option.name}
-                  component="li"
-                  {...props}
-                >
+                <Box {...props} key={option.id} component="li">
                   {option.name}
-                  {option.category === 'movie' && <LocalMoviesIcon />}
-                  {option.category === 'book' && <MenuBookIcon />}
-                  {option.category === 'drama' && <LiveTvIcon />}
-                  {option.category === 'animation' && <AnimationIcon />}
-                  {option.category === 'game' && <SportsEsportsIcon />}
+                  {option.category === 'movie' && (
+                    <LocalMoviesIcon key={option.id} />
+                  )}
+                  {option.category === 'book' && (
+                    <MenuBookIcon key={option.id} />
+                  )}
+                  {option.category === 'drama' && (
+                    <LiveTvIcon key={option.id} />
+                  )}
+                  {option.category === 'animation' && (
+                    <AnimationIcon key={option.id} />
+                  )}
+                  {option.category === 'game' && (
+                    <SportsEsportsIcon key={option.id} />
+                  )}
                 </Box>
               )}
-              renderInput={(params) => <TextField {...params} label="작품" />}
+              renderInput={(params) => (
+                <TextField {...params} label="작품 검색" />
+              )}
             />
           </WorkWrapper>
           <br />

@@ -1,6 +1,6 @@
 import useColorStore from 'stores/color';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Navigation from './Navigation';
 import Trend from './Trend';
