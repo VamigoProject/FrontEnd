@@ -6,7 +6,6 @@ import ReviewPost from 'components/ReviewPost';
 import Empty from 'components/Empty';
 import useSystemStore from 'stores/system';
 import useReviewStore from 'stores/review';
-import { Review, User } from 'utils/types';
 
 const myreview = () => {
   const uid = useUserStore((state) => state.uid);

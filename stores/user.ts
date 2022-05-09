@@ -2,6 +2,7 @@ import { USER_STORE } from 'utils/statics';
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import { User } from 'utils/types';
+import { kleeImage, testImage } from 'utils/statics';
 
 interface UserStore {
   isLoggedIn: boolean; //로그인 되어있는지 여부
@@ -26,6 +27,11 @@ interface UserStore {
     profile: string | null,
     introduce: string | null,
   ) => void; //프로필 업데이트 액션
+
+  follower: Array<User>; //나를 팔로우하는 사람
+  following: Array<User>; //내가 팔로우하는 사람
+  setFollower: (follower: Array<User>) => void;
+  setFollowing: (following: Array<User>) => void;
 }
 
 const useUserStore = create<UserStore>(
@@ -74,6 +80,19 @@ const useUserStore = create<UserStore>(
           nickname,
           profile,
           introduce,
+        });
+      },
+
+      follower: [],
+      following: [],
+      setFollower: (follower) => {
+        set({
+          follower,
+        });
+      },
+      setFollowing: (following) => {
+        set({
+          following,
         });
       },
     }),

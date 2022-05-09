@@ -52,9 +52,7 @@ const Index: NextPage = () => {
     <Container>
       <LeftSide>
         <Logo src={'/logo.png'} />
-        <h2>
-          Vamigo에서 전세계에 있는 친구, 가족, 지인들과 함께 리뷰를 나눠보세요.
-        </h2>
+        <h2>Vamigo에서 리뷰를 나눠 보세요</h2>
       </LeftSide>
 
       <RightSide>

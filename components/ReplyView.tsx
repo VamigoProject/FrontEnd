@@ -71,7 +71,7 @@ const ReplyView = ({ reviewId, reply }: Props) => {
   const onClickDeleteReply = async () => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      // await deleteReplyApi(reviewId, myUid!, replyId);
+      await deleteReplyApi(reviewId, myUid!, replyId);
       deleteReplyAction(reviewId, replyId);
     } catch (error) {
       alert(error);
@@ -90,43 +90,41 @@ const ReplyView = ({ reviewId, reply }: Props) => {
                 profile={profile}
                 size="small"
               />
-              {myUid === uid && (
-                <>
-                  <IconButton
-                    id="list-button"
-                    aria-controls={open ? 'list-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={onClickList}
-                  >
-                    <FormatListBulletedIcon fontSize="small" />
-                  </IconButton>
-                  <Menu
-                    id="list-menu"
-                    anchorEl={anchorElement}
-                    aria-labelledby="list-button"
-                    open={open}
-                    onClose={onClose}
-                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                    transformOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'center',
-                    }}
-                    disableScrollLock={true}
-                  >
-                    <MenuItem>
-                      <ReportIcon style={{ marginRight: '0.5rem' }} />
-                      신고
-                    </MenuItem>
-                    {uid === myUid && (
-                      <MenuItem onClick={onClickDeleteReply}>
-                        <DeleteIcon style={{ marginRight: '0.5rem' }} />
-                        삭제
-                      </MenuItem>
-                    )}
-                  </Menu>
-                </>
-              )}
+              <IconButton
+                id="list-button"
+                aria-controls={open ? 'list-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={onClickList}
+              >
+                <FormatListBulletedIcon fontSize="small" />
+              </IconButton>
+              <Menu
+                id="list-menu"
+                anchorEl={anchorElement}
+                aria-labelledby="list-button"
+                open={open}
+                onClose={onClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                transformOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                disableScrollLock={true}
+              >
+                <MenuItem>uid: {uid}</MenuItem>
+                <MenuItem>replyId: {replyId}</MenuItem>
+                <MenuItem>
+                  <ReportIcon style={{ marginRight: '0.5rem' }} />
+                  신고
+                </MenuItem>
+                {uid === myUid && (
+                  <MenuItem onClick={onClickDeleteReply}>
+                    <DeleteIcon style={{ marginRight: '0.5rem' }} />
+                    삭제
+                  </MenuItem>
+                )}
+              </Menu>
             </HeaderLine>
             {reply.comment}
           </Padder>

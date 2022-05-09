@@ -1,6 +1,6 @@
 import instance from './myAxios';
 import Axios, { AxiosError } from 'axios';
-import { Review } from 'utils/types';
+import { Reply, Review } from 'utils/types';
 
 interface LoginData {
   uid: number;
@@ -196,7 +196,8 @@ const createReplyApi = async (
 ) => {
   try {
     const body = { reviewId, uid, comment };
-    console.log(body);
+    const response = await instance.post('/review/reply/create', body);
+    return response.data;
   } catch (error) {
     if (Axios.isAxiosError(error)) {
       const err = error as AxiosError;
@@ -214,7 +215,7 @@ const deleteReplyApi = async (
 ) => {
   try {
     const body = { reviewId, uid, replyId };
-    console.log(body);
+    await instance.post('/review/reply/delete', body);
   } catch (error) {
     if (Axios.isAxiosError(error)) {
       const err = error as AxiosError;
@@ -231,7 +232,7 @@ const likeApi = async (reviewId: number, uid: number) => {
       reviewId,
       uid,
     };
-    await instance.post('review/like', body);
+    await instance.post('/review/like', body);
   } catch (error) {
     if (Axios.isAxiosError(error)) {
       const err = error as AxiosError;
@@ -248,7 +249,7 @@ const unlikeApi = async (reviewId: number, uid: number) => {
       reviewId,
       uid,
     };
-    await instance.post('review/unlike', body);
+    await instance.post('/review/unlike', body);
   } catch (error) {
     if (Axios.isAxiosError(error)) {
       const err = error as AxiosError;
@@ -288,10 +289,20 @@ const myreviewApi = async (uid: number): Promise<Array<Review>> => {
     const body = {
       uid,
     };
+    console.log(body);
     const response = await instance.post('/member/profile/myreview', body);
+    console.log(response.data);
     if (response.data === 'None') {
       return [];
     } else {
+      response.data.forEach((review: Review) => {
+        review.reply.forEach((reply: Reply) => {
+          if (reply.user.profile === 'NoImage') {
+            reply.user.profile = null;
+          }
+        });
+      });
+
       return response.data;
     }
   } catch (error) {

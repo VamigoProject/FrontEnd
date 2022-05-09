@@ -70,6 +70,7 @@ const EditProfile = () => {
       updateAction(afterNickname, afterProfile, afterIntroduce);
       endLoadingAction();
       alert('성공적으로 업데이트 하였습니다');
+      window.location.href = '/member/profile';
     } catch (err) {
       endLoadingAction();
       alert(err);

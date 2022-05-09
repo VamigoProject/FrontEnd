@@ -206,7 +206,6 @@ const useReviewStore = create<ReviewStore>(
         );
       },
       createReplyAction: (reviewId, replyId, user, comment) => {
-        console.log(reviewId, replyId, user, comment);
         set(
           produce((draft) => {
             const selectedReview: Review = draft.reviewData.find(

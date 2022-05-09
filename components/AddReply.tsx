@@ -32,12 +32,12 @@ const AddReply = ({ reviewId }: Props) => {
     setComment(e.target.value);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     try {
-      //const replyId =  await createReplyApi(reviewId, uid!, comment);
+      const replyId: number = await createReplyApi(reviewId, myId!, comment);
       createReplyAction(
         reviewId,
-        Math.floor(Math.random() * 100000 + 1),
+        replyId,
         { uid: myId!, nickname: nickname!, profile: profile },
         comment,
       );
@@ -55,7 +55,7 @@ const AddReply = ({ reviewId }: Props) => {
         profile={profile}
       />
       <Box
-        component="form"
+        // component="form"
         style={{
           width: '100%',
           height: '100%',

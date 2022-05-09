@@ -82,15 +82,15 @@ const signup: NextPage = () => {
   const timerId = useRef<any>();
   const intervalId = useRef<any>();
 
-  const onClickCode = async() => {
+  const onClickCode = async () => {
+    alert(`메일이 도착하기까지 시간이 걸릴 수 있습니다`);
     try {
       await requestMailApi(mail);
-      alert(`${mail}로 메일이 도착하기까지 시간이 걸릴 수 있습니다`);
       timerId.current = setTimeout(() => {
         clearTimer();
         setCodeButton('코드요청');
       }, 61000);
-      setCodeButton("60");
+      setCodeButton('60');
       intervalId.current = setInterval(() => {
         setCodeButton((prev) => String(parseInt(prev) - 1));
       }, 1000);

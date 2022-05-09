@@ -8,7 +8,7 @@ import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import AnimationIcon from '@mui/icons-material/Animation';
-import ReplyIcon from '@mui/icons-material/Reply';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React, { useState } from 'react';
@@ -216,21 +216,21 @@ const ReviewPost = ({ review }: Props) => {
     }
   };
 
-  let icon;
-  switch (workCategory) {
-    case 'movie':
-      icon = <LocalMoviesIcon />;
-      break;
-    case 'book':
-      icon = <MenuBookIcon />;
-      break;
-    case 'drama':
-      icon = <LiveTvIcon />;
-      break;
-    case 'animation':
-      icon = <AnimationIcon />;
-      break;
-  }
+  // let icon;
+  // switch (workCategory) {
+  //   case 'movie':
+  //     icon = <LocalMoviesIcon />;
+  //     break;
+  //   case 'book':
+  //     icon = <MenuBookIcon />;
+  //     break;
+  //   case 'drama':
+  //     icon = <LiveTvIcon />;
+  //     break;
+  //   case 'animation':
+  //     icon = <AnimationIcon />;
+  //     break;
+  // }
 
   return (
     <Container>
@@ -270,14 +270,25 @@ const ReviewPost = ({ review }: Props) => {
                 <br />
               </>
             )}
-            <Chip label={workName} size="small" icon={icon} />
+            {workCategory === 'book' && (
+              <Chip label={workName} size="small" icon={<MenuBookIcon />} />
+            )}
+            {workCategory === 'movie' && (
+              <Chip label={workName} size="small" icon={<LocalMoviesIcon />} />
+            )}
+            {workCategory === 'drama' && (
+              <Chip label={workName} size="small" icon={<LiveTvIcon />} />
+            )}
+            {workCategory === 'animation' && (
+              <Chip label={workName} size="small" icon={<AnimationIcon />} />
+            )}
           </Padder>
           <FooterWrapper>
             <IconWrapper>
               <IconButton onClick={onClickReply}>
-                {!isReplyOpened && <ReplyIcon fontSize="large" />}
+                {!isReplyOpened && <ChatBubbleIcon fontSize="medium" />}
                 {isReplyOpened && (
-                  <ReplyIcon fontSize="large" color="primary" />
+                  <ChatBubbleIcon fontSize="medium" color="primary" />
                 )}
               </IconButton>
               {reply.length <= 9999 && reply.length}
