@@ -9,9 +9,12 @@ import useUserStore from 'stores/user';
 import { useEffect } from 'react';
 import Loading from 'components/Loading';
 import AppLayout from 'components/AppLayout';
+import useTrendStore from 'stores/trend';
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const { setTrend } = useTrendStore((state) => state);
+
   const { themeMode, isLoading } = useSystemStore((state) => state);
   const styledtheme = themeMode === 'light' ? light : dark;
   const theme = themeMode === 'light' ? lightTheme : darkTheme;
@@ -38,7 +41,8 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
         location.href = '/';
       }
     }
-  });
+    setTrend([]);
+  }, []);
 
   if (withoutAppLayoutPath.includes(appProps.router.pathname)) {
     return (

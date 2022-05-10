@@ -26,6 +26,7 @@ import useSystemStore from 'stores/system';
 import Router from 'next/router';
 import { useRef } from 'react';
 import useReviewAction from 'stores/review';
+import { Work } from 'utils/types';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -72,12 +73,6 @@ const Circle = styled.div`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 4px 6px rgb(0, 0, 0, 0.05);
 `;
 
-interface WorkProps {
-  id: number;
-  name: string;
-  category: string;
-}
-
 const newReview = () => {
   const { startLoadingAction, endLoadingAction } = useSystemStore(
     (state) => state,
@@ -87,7 +82,7 @@ const newReview = () => {
   const { uid, nickname, profile } = useUserStore((state) => state);
 
   const [comment, onChangeComment] = useInput('');
-  const [works, setWorks] = useState<Array<WorkProps>>([]);
+  const [works, setWorks] = useState<Array<Work>>([]);
   const [workName, setWorkName] = useState<string | null>('');
   const [workCategory, setWorkCategory] = useState<string | null>('');
   const [rating, onChangeRating] = useInput(0);
@@ -122,7 +117,7 @@ const newReview = () => {
   //작품 검색에서 작품을 선택하였을 때
   const onChangeWork = (
     e: SyntheticEvent<Element, Event>,
-    value: WorkProps | null,
+    value: Work | null,
   ) => {
     if (value === null) {
       setWorkName(null);

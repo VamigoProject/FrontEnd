@@ -27,3 +27,9 @@ export interface Review {
   isLiked: boolean;
   spoiler: boolean;
 }
+
+export interface Work {
+  id: number; //작품의 id
+  name: string; //작품의 이름
+  category: 'animation' | 'book' | 'drama' | 'movie'; //작품의 종류
+}

@@ -112,8 +112,6 @@ const ReplyView = ({ reviewId, reply }: Props) => {
                 }}
                 disableScrollLock={true}
               >
-                <MenuItem>uid: {uid}</MenuItem>
-                <MenuItem>replyId: {replyId}</MenuItem>
                 <MenuItem>
                   <ReportIcon style={{ marginRight: '0.5rem' }} />
                   신고
