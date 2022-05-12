@@ -1,6 +1,8 @@
 import instance from './myAxios';
 import Axios, { AxiosError } from 'axios';
 import { Reply, Review } from 'utils/types';
+import { kleeImage, testImage } from 'utils/statics';
+import { responseSymbol } from 'next/dist/server/web/spec-compliant/fetch-event';
 
 interface LoginData {
   uid: number;
@@ -232,6 +234,7 @@ const likeApi = async (reviewId: number, uid: number) => {
       reviewId,
       uid,
     };
+    console.log('like Api:', body);
     await instance.post('/review/like', body);
   } catch (error) {
     if (Axios.isAxiosError(error)) {
@@ -315,6 +318,100 @@ const myreviewApi = async (uid: number): Promise<Array<Review>> => {
   }
 };
 
+interface SearchProps {
+  uid: number;
+  nickname: string;
+  profile: string | null;
+  isFollower: boolean;
+  isFollowing: boolean;
+}
+const searchMemberApi = async (
+  uid: number,
+  nickname: string,
+): Promise<Array<SearchProps>> => {
+  try {
+    const body = {
+      uid,
+      nickname,
+    };
+    const response = await instance.post('/member/search', body);
+    if (response.data.length !== 0) {
+      response.data.forEach((member: SearchProps) => {
+        if (member.profile === 'NoImage') {
+          member.profile = null;
+        }
+      });
+    }
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
+const followApi = async (myUid: number, targetUid: number) => {
+  try {
+    const body = {
+      myUid,
+      targetUid,
+    };
+
+    await instance.post('/member/follow', body);
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
+const unfollowApi = async (myUid: number, targetUid: number) => {
+  try {
+    const body = {
+      myUid,
+      targetUid,
+    };
+
+    await instance.post('/member/unfollow', body);
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
+const timelineApi = async (uid: number): Promise<Array<Review>> => {
+  try {
+    const body = {
+      uid,
+    };
+
+    const response = await instance.post('/home', body);
+    if (response.data === 'None') {
+      return [];
+    } else {
+      return response.data;
+    }
+  } catch (error) {
+    if (Axios.isAxiosError(error)) {
+      const err = error as AxiosError;
+      throw err.response?.data;
+    } else {
+      throw 'Something Error';
+    }
+  }
+};
+
 export {
   searchWorkApi,
   createReviewApi,
@@ -329,4 +426,8 @@ export {
   unlikeApi,
   updateProfileApi,
   myreviewApi,
+  searchMemberApi,
+  followApi,
+  unfollowApi,
+  timelineApi,
 };

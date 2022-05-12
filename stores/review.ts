@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { MY_REVIEW_STORE } from 'utils/statics';
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -39,79 +40,10 @@ interface ReviewStore {
   deleteReplyAction: (reviewId: number, replyId: number) => void;
 }
 
-import { kleeImage, testImage } from 'utils/statics';
-
-const user1: User = { uid: 1, nickname: 'Parkjun', profile: null };
-const user2: User = { uid: 2, nickname: 'DongHo Ryu', profile: null };
-const user3: User = { uid: 3, nickname: 'GyeungHwan Lee', profile: testImage };
-const user4: User = { uid: 4, nickname: 'UCheol Lee', profile: null };
-
-const dummy: Array<Review> = [
-  {
-    reviewId: 1,
-    uid: 2,
-    nickname: 'Parkjun',
-    profile: null,
-    time: new Date(2022, 4, 24, 10, 40, 0),
-    workName: '인터스텔라',
-    workCategory: 'movie',
-    comment:
-      '인터스텔라는 ㄹㅇ 신이다. 내가 알던 그 영화가 맞냐? 가슴이 웅장해진다',
-    rating: 5,
-    image: [],
-    reply: [
-      {
-        replyId: 1,
-        time: new Date(2022, 4, 25, 10, 40, 0),
-        user: user2,
-        comment: '인정합니다',
-      },
-      {
-        replyId: 2,
-        time: new Date(2022, 4, 25, 10, 40, 0),
-        user: user3,
-        comment: '솔직히 노인정',
-      },
-    ],
-    likes: 34500,
-    isLiked: true,
-    spoiler: false,
-  },
-  {
-    reviewId: 2,
-    uid: 2,
-    nickname: 'Parkjun',
-    profile: null,
-    time: new Date(2022, 4, 24, 10, 40, 0),
-    workName: '잉태',
-    workCategory: 'movie',
-    comment: '잉태잉태',
-    rating: 5,
-    image: [],
-    reply: [
-      {
-        replyId: 1,
-        time: new Date(2022, 4, 25, 10, 40, 0),
-        user: user2,
-        comment: '잉태입니다',
-      },
-      {
-        replyId: 2,
-        time: new Date(2022, 4, 25, 10, 40, 0),
-        user: user3,
-        comment: '잉태인듯',
-      },
-    ],
-    likes: 34500,
-    isLiked: true,
-    spoiler: false,
-  },
-];
-
 const useReviewStore = create<ReviewStore>(
   persist(
     (set, get) => ({
-      reviewData: dummy,
+      reviewData: [],
       setReviewAction: (reviews) => {
         set(
           produce((draft) => {
@@ -122,7 +54,7 @@ const useReviewStore = create<ReviewStore>(
       resetReviewAction: () => {
         set(
           produce((draft) => {
-            draft.reviewData = dummy;
+            draft.reviewData = [];
           }),
         );
       },
@@ -224,7 +156,7 @@ const useReviewStore = create<ReviewStore>(
                 },
               ];
             } else {
-              selectedReview.reply.unshift({
+              selectedReview.reply.push({
                 replyId: replyId,
                 time: new Date(),
                 user: user,

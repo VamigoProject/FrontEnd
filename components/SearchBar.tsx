@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Paper, InputBase, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import useInput from 'hooks/useInput';
+import Router from 'next/router';
 
 const SearchBar = () => {
   const [width, setWidth] = useState<string>('7rem');
@@ -15,6 +16,17 @@ const SearchBar = () => {
       setWidth('7rem');
     }
   };
+  const onClickSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (search !== '') {
+      Router.push({
+        pathname: '/member/search',
+        query: { nickname: search },
+      });
+    } else {
+      alert('검색어를 입력해주세요');
+    }
+  };
 
   return (
     <Paper
@@ -26,6 +38,7 @@ const SearchBar = () => {
         height: '2.2rem',
         borderRadius: '1rem',
       }}
+      onSubmit={(e: React.FormEvent) => onClickSearch(e)}
     >
       <InputBase
         sx={{

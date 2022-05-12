@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import useTrendStore from 'stores/trend';
 import { Work } from 'utils/types';
-import { Chip } from '@mui/material';
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LiveTvIcon from '@mui/icons-material/LiveTv';

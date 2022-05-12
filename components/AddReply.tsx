@@ -33,17 +33,22 @@ const AddReply = ({ reviewId }: Props) => {
   };
 
   const onSubmit = async () => {
-    try {
-      const replyId: number = await createReplyApi(reviewId, myId!, comment);
-      createReplyAction(
-        reviewId,
-        replyId,
-        { uid: myId!, nickname: nickname!, profile: profile },
-        comment,
-      );
-      setComment('');
-    } catch (error) {
-      alert(error);
+    if (comment === '') {
+      alert('댓글을 작성해주세요');
+    } else {
+      try {
+        const replyId: number = await createReplyApi(reviewId, myId!, comment);
+        alert('댓글이 성공적으로 작성되었습니다');
+        createReplyAction(
+          reviewId,
+          replyId,
+          { uid: myId!, nickname: nickname!, profile: profile },
+          comment,
+        );
+        setComment('');
+      } catch (error) {
+        alert(error);
+      }
     }
   };
 

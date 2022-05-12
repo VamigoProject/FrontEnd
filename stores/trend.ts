@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { TREND_STORE } from 'utils/statics';
 import create from 'zustand';
 import { persist } from 'zustand/middleware';

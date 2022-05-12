@@ -205,10 +205,10 @@ const ReviewPost = ({ review }: Props) => {
   const onClickLike = async () => {
     try {
       if (isLiked) {
-        await unlikeApi(reviewId, uid);
+        await unlikeApi(reviewId, myUid!);
         unLikeAction(reviewId);
       } else {
-        await likeApi(reviewId, uid);
+        await likeApi(reviewId, myUid!);
         likeAction(reviewId);
       }
     } catch (error) {

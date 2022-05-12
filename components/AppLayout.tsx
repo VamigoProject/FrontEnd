@@ -1,5 +1,3 @@
-import useColorStore from 'stores/color';
-
 import React from 'react';
 import styled from 'styled-components';
 import Navigation from './Navigation';
