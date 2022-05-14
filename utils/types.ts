@@ -33,3 +33,11 @@ export interface Work {
   name: string; //작품의 이름
   category: 'animation' | 'book' | 'drama' | 'movie'; //작품의 종류
 }
+
+export interface SearchMember {
+  uid: number;
+  nickname: string;
+  profile: string | null;
+  isFollower: boolean;
+  isFollowing: boolean;
+}
