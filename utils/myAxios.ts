@@ -37,7 +37,12 @@ instance.interceptors.response.use(
   async (error: AxiosError) => {
     //status가 200이 아닌 경우
     //.catch()으로 이어짐
-    // const { config, response } = error;
+    const { config, response } = error;
+    if (response !== undefined) {
+      if (response.status === 400) {
+        throw response?.data || '무언가 잘못 된거같습니다';
+      }
+    }
     // if (response !== undefined) {
     //   if (response.status === 401) {
     //     // AccessToken 만료로 인한 401에러
