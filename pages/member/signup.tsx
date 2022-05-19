@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { NextPage } from 'next';
-import useInput from 'hooks/useInput';
+import { useInput } from 'hooks';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { TextField, Select, InputLabel, MenuItem, Button } from '@mui/material';
-import { requestMailApi, signupApi } from 'utils/api';
+import { requestMailApi, signupApi, signupMailCheckApi } from 'utils/api';
 import Router from 'next/router';
-import { useAuthStore } from 'stores/user';
-import useSystemStore from 'stores/system';
+import { useSystemStore } from 'stores';
 
 const Background = styled.div`
   display: flex;
@@ -59,28 +58,42 @@ interface Item {
 
 const signup: NextPage = () => {
   const clearTimer = () => {
-    clearTimeout(timerId.current);
-    clearInterval(intervalId.current);
+    timerId.current ?? clearTimeout(timerId.current);
+    intervalId.current ?? clearInterval(intervalId.current);
   };
 
   useEffect(() => {
     return clearTimer;
   }, []);
 
-  const { setMailAction } = useAuthStore((state) => state);
   const { startLoadingAction, endLoadingAction } = useSystemStore(
     (state) => state,
   );
 
-  const [mail, onChangeMail] = useInput('wc421@naver.com');
+  const [mail, onChangeMail] = useInput<string>('', (e) => {
+    setIsMailChecked(false);
+    return e.target.value;
+  });
   const regEmail =
     // eslint-disable-next-line no-useless-escape
     /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 
-  const [code, onChangeCode] = useInput('');
+  const [isMailChecked, setIsMailChecked] = useState<boolean>(false);
+
+  const onClickCheck = async () => {
+    try {
+      await signupMailCheckApi(mail);
+      alert('사용가능한 메일입니다');
+      setIsMailChecked(true);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const [code, onChangeCode] = useInput<string>('');
   const [codeButton, setCodeButton] = useState<string>('코드요청');
-  const timerId = useRef<any>();
-  const intervalId = useRef<any>();
+  const timerId = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const intervalId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const onClickCode = async () => {
     alert(`메일이 도착하기까지 시간이 걸릴 수 있습니다`);
@@ -99,11 +112,11 @@ const signup: NextPage = () => {
     }
   };
 
-  const [nickname, onChangeNickname] = useInput('LWC421');
-  const [password, onChangePassword] = useInput('123');
-  const [passwordCheck, onChangePasswordCheck] = useInput('123');
+  const [nickname, onChangeNickname] = useInput<string>('');
+  const [password, onChangePassword] = useInput<string>('');
+  const [passwordCheck, onChangePasswordCheck] = useInput<string>('');
 
-  const [mbti, onChangeMbti] = useInput('None');
+  const [mbti, onChangeMbti] = useInput<string>('None');
   const mbtiList: Array<string> = [
     'ISTJ',
     'ISFJ',
@@ -124,7 +137,7 @@ const signup: NextPage = () => {
     'None',
   ];
 
-  const [sex, onChangeSex] = useInput('secret');
+  const [sex, onChangeSex] = useInput<string>('secret');
   const sexList: Array<Item> = [
     { value: 'female', display: '여자' },
     { value: 'male', display: '남자' },
@@ -133,7 +146,7 @@ const signup: NextPage = () => {
 
   const now = new Date();
   const currentYear = now.getFullYear();
-  const [year, onChangeYear] = useInput(currentYear - 1);
+  const [year, onChangeYear] = useInput<number>(currentYear - 1);
   const yearList: Array<number> = [...Array(100)].map(
     (_, index) => currentYear - index - 1,
   );
@@ -180,8 +193,6 @@ const signup: NextPage = () => {
         category,
         genre,
       );
-
-      setMailAction(mail);
       endLoadingAction();
       alert('회원가입을 축하합니다');
       Router.push('/');
@@ -202,6 +213,7 @@ const signup: NextPage = () => {
         <Form onSubmit={onSubmit} noValidate>
           <CustomTextField
             id="mail"
+            style={{ width: '77%' }}
             helperText="사용가능한 이메일을 입력해주세요"
             label="메일"
             value={mail}
@@ -212,6 +224,14 @@ const signup: NextPage = () => {
             required
             variant="outlined"
           />
+          <Button
+            style={{ width: '23%' }}
+            variant="contained"
+            onClick={onClickCheck}
+            disabled={!regEmail.test(mail)}
+          >
+            중복체크
+          </Button>
           <br />
           <div>
             <CustomTextField
@@ -227,9 +247,13 @@ const signup: NextPage = () => {
             />
             <Button
               style={{ width: '23%' }}
-              variant="outlined"
+              variant="contained"
               onClick={onClickCode}
-              disabled={codeButton !== '코드요청' || !regEmail.test(mail)}
+              disabled={
+                codeButton !== '코드요청' ||
+                !regEmail.test(mail) ||
+                !isMailChecked
+              }
             >
               {codeButton !== '코드요청' && codeButton}
               {codeButton === '코드요청' && '코드요청'}
@@ -353,7 +377,18 @@ const signup: NextPage = () => {
           </CustomSelect>
           <br />
           <br />
-          <SignupButton type="submit" color="primary" variant="contained">
+          <SignupButton
+            style={{ marginBottom: '1rem' }}
+            type="submit"
+            color="primary"
+            variant="contained"
+            disabled={
+              !isMailChecked ||
+              password !== passwordCheck ||
+              nickname === '' ||
+              code === ''
+            }
+          >
             회원가입
           </SignupButton>
         </Form>

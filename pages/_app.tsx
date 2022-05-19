@@ -2,13 +2,13 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import * as mui from '@mui/material/styles';
-import useSystemStore from '../stores/system';
+import { useSystemStore } from 'stores';
 import { lightTheme, darkTheme } from 'styles/muiTheme';
 import { light, dark } from 'styles/theme';
 import useUserStore from 'stores/user';
 import { useEffect } from 'react';
-import Loading from 'components/Loading';
-import AppLayout from 'components/AppLayout';
+import { Loading } from 'components';
+import { AppLayout } from 'components/layout';
 import useTrendStore from 'stores/trend';
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {

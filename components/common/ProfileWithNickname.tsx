@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ProfileAvatar from 'components/ProfileAvatar';
+import ProfileAvatar from 'components/common/ProfileAvatar';
 
 const ProfileWrapper = styled.div`
   display: flex;

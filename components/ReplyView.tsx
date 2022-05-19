@@ -1,15 +1,12 @@
-import { Reply } from 'utils/types';
-import ProfileWithNickname from 'components/ProfileWithNickname';
-import ContentBox from 'components/ContentBox';
+import { ProfileWithNickname, ContentBox } from 'components/common';
 import styled, { createGlobalStyle } from 'styled-components';
-import useUserStore from 'stores/user';
+import { useUserStore, useReviewStore } from 'stores';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { useState } from 'react';
 import ReportIcon from '@mui/icons-material/Report';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteReplyApi } from 'utils/api';
-import useReviewStore from 'stores/review';
 
 interface Props {
   reviewId: number;

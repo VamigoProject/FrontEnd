@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Navigation from './Navigation';
-import Trend from './Trend';
-import Header from 'components/Header';
+import { Header, Navigation, Trend } from 'components/layout';
 
 interface LayoutProps {
   children: React.ReactNode;

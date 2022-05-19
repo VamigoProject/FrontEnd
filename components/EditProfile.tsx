@@ -3,7 +3,7 @@ import Resizer from 'react-image-file-resizer';
 import { FileUploader } from 'react-drag-drop-files';
 import { Button, TextField } from '@mui/material';
 import styled from 'styled-components';
-import ProfileAvatar from './ProfileAvatar';
+import ProfileAvatar from './common/ProfileAvatar';
 import useUserStore from 'stores/user';
 import useSystemStore from 'stores/system';
 import { useState } from 'react';

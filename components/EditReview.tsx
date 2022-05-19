@@ -9,8 +9,8 @@ interface Props {
 }
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import ContentBox from 'components/ContentBox';
-import useInput from 'hooks/useInput';
+import { ContentBox } from 'components/common';
+import { useInput } from 'hooks';
 import {
   Box,
   Rating,
@@ -21,19 +21,10 @@ import {
 } from '@mui/material';
 import { green } from '@mui/material/colors';
 import styled from 'styled-components';
-import useUserStore from 'stores/user';
 import EditIcon from '@mui/icons-material/Edit';
-import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import LiveTvIcon from '@mui/icons-material/LiveTv';
-import AnimationIcon from '@mui/icons-material/Animation';
-import ProfileWithNickname from 'components/ProfileWithNickname';
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { SyntheticEvent, useState } from 'react';
+import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import { updateReviewApi } from 'utils/api';
-import useSystemStore from 'stores/system';
-import useReviewStore from 'stores/review';
-import Router from 'next/router';
+import { useSystemStore, useReviewStore, useUserStore } from 'stores';
 
 const Wrapper = styled.div`
   width: 100%;

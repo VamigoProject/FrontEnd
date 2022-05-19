@@ -18,7 +18,7 @@ import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import AnimationIcon from '@mui/icons-material/Animation';
-import ProfileWithNickname from 'components/ProfileWithNickname';
+import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { SyntheticEvent, useState } from 'react';
 import { searchWorkApi, createReviewApi } from 'utils/api';

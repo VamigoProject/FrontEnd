@@ -1,4 +1,4 @@
-import AddReply from 'components/AddReply';
+import { AddReply } from 'components';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import styled from 'styled-components';
 

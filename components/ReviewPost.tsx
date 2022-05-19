@@ -1,9 +1,8 @@
 /* eslint-disable prefer-const */
 import styled, { createGlobalStyle } from 'styled-components';
-import ProfileWithNickname from 'components/ProfileWithNickname';
+import { ProfileWithNickname, ContentBox, Dialog } from 'components/common';
 import { Rating, Chip, IconButton, Menu, MenuItem } from '@mui/material';
 import { Review } from 'utils/types';
-import ContentBox from 'components/ContentBox';
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
@@ -12,16 +11,12 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React, { useState } from 'react';
-import ReviewReply from 'components/ReviewReply';
-import EmptyReply from 'components/EmptyReply';
-import useUserStore from 'stores/user';
+import { ReviewReply, EmptyReply, EditReview } from 'components';
+import { useUserStore, useReviewStore } from 'stores';
 import ReportIcon from '@mui/icons-material/Report';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { deleteReviewApi, likeApi, unlikeApi } from 'utils/api';
-import Dialog from 'components/Dialog';
-import EditReview from 'components/EditReview';
-import useReviewStore from 'stores/review';
 
 interface Props {
   review: Review;

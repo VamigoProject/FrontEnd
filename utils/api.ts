@@ -1,8 +1,5 @@
 import instance from './myAxios';
-import Axios, { AxiosError } from 'axios';
 import { Reply, Review, SearchMember, User } from 'utils/types';
-import { kleeImage, testImage } from 'utils/statics';
-import { responseSymbol } from 'next/dist/server/web/spec-compliant/fetch-event';
 
 interface LoginData {
   uid: number;
@@ -37,6 +34,13 @@ const signinApi = async (
   // await wait(1000);
 
   return { uid, nickname, profile, introduce, accessToken, refreshToken };
+};
+
+const signupMailCheckApi = async (mail: string) => {
+  const body = {
+    mail,
+  };
+  await instance.post('/member/check', body);
 };
 
 const signupApi = async (
@@ -187,6 +191,7 @@ const myreviewApi = async (uid: number): Promise<Array<Review>> => {
   if (response.data === 'None') {
     return [];
   } else {
+    response.data = response.data.reverse();
     response.data.forEach((review: Review) => {
       review.reply.forEach((reply: Reply) => {
         if (reply.user.profile === 'NoImage') {
@@ -280,6 +285,7 @@ export {
   createReplyApi,
   deleteReplyApi,
   signinApi,
+  signupMailCheckApi,
   signupApi,
   requestMailApi,
   likeApi,

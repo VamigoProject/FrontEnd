@@ -1,13 +1,12 @@
 import React from 'react';
-import useInput from 'hooks/useInput';
+import { useInput } from 'hooks';
 import { useCallback } from 'react';
-import useUserStore from 'stores/user';
+import { useUserStore, useSystemStore } from 'stores';
 import styled from 'styled-components';
 import { signinApi } from 'utils/api';
 import Router from 'next/router';
 import Link from 'next/link';
 import { Button, Box, TextField } from '@mui/material';
-import useSystemStore from 'stores/system';
 
 const CustomTextField = styled(TextField)`
   margin-bottom: 0.5rem;
@@ -42,8 +41,8 @@ const LoginForm = () => {
   );
   const loginAction = useUserStore((state) => state.loginAction);
 
-  const [mail, onChangeMail] = useInput('');
-  const [password, onChangePassword] = useInput('');
+  const [mail, onChangeMail] = useInput<string>('');
+  const [password, onChangePassword] = useInput<string>('');
 
   const onSubmitLogin = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {

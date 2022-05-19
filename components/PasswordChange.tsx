@@ -1,9 +1,9 @@
-import useInput from 'hooks/useInput';
+import { useInput } from 'hooks';
 import React from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import styled from 'styled-components';
 import { changePasswordApi } from 'utils/api';
-import useUserStore from 'stores/user';
+import { useUserStore } from 'stores';
 
 interface PasswordChangeTypes {
   onClose: () => void;

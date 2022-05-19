@@ -6,7 +6,7 @@ import useUserStore from 'stores/user';
 import { searchMemberApi, followApi, unfollowApi } from 'utils/api';
 import ContentBox from 'components/ContentBox';
 import styled from 'styled-components';
-import ProfileWithNickname from 'components/ProfileWithNickname';
+import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import { Button } from '@mui/material';
 import { SearchMember } from 'utils/types';
 

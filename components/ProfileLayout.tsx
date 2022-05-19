@@ -1,16 +1,12 @@
 import React from 'react';
-import useUserStore from 'stores/user';
-import ContentBox from 'components/ContentBox';
-import ProfileAvatar from 'components/ProfileAvatar';
+import { useUserStore } from 'stores';
 import styled from 'styled-components';
-import { Badge, Button } from '@mui/material';
+import { Badge } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState } from 'react';
-import EditProfile from 'components/EditProfile';
-import Dialog from 'components/Dialog';
+import { EditProfile } from 'components';
+import { ContentBox, Dialog, ProfileAvatar } from 'components/common';
 import Router from 'next/router';
-import useReviewStore from 'stores/review';
-import { searchWorkApi } from 'utils/api';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -78,8 +74,6 @@ interface Props {
 }
 
 const ProfileLayout = ({ children }: Props) => {
-  const { resetReviewAction } = useReviewStore((state) => state);
-
   const [open, setOpen] = useState<boolean>(false);
   const onClickOpen = () => {
     setOpen(true);

@@ -1,5 +1,5 @@
 import DraftsIcon from '@mui/icons-material/Drafts';
-import ContentBox from './ContentBox';
+import { ContentBox } from 'components/common';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`

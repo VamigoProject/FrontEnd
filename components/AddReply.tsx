@@ -1,7 +1,7 @@
 import { TextField, Box, Button } from '@mui/material';
 import styled from 'styled-components';
 import useInput from 'hooks/useInput';
-import ProfileWithNickname from 'components/ProfileWithNickname';
+import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import useUserStore from 'stores/user';
 import { createReplyApi } from 'utils/api';
 import { User } from 'utils/types';

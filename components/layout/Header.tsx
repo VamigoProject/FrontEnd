@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import Router from 'next/router';
 import SearchBar from 'components/SearchBar';
-import useColorSotre from 'stores/color';
 
 const HeaderWrapper = styled.div`
   width: 100%;
@@ -23,7 +22,6 @@ const Logo = styled.h2`
 `;
 
 const Header = () => {
-  // const { headerColor } = useColorSotre((state) => state);
   const headerColor = '#4CAF50';
 
   const goHome = () => {

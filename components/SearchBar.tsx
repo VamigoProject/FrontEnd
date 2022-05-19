@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Paper, InputBase, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import useInput from 'hooks/useInput';
+import { useInput } from 'hooks';
 import Router from 'next/router';
 
 const SearchBar = () => {
   const [width, setWidth] = useState<string>('7rem');
-  const [search, onChangeSearch] = useInput('');
+  const [search, onChangeSearch] = useInput<string>('');
 
   const onFocus = () => {
     setWidth('12rem');

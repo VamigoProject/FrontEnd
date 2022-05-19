@@ -21,7 +21,6 @@ const Home = () => {
     try {
       const response = await timelineApi(uid!);
       setReviewAction(response);
-      console.log(response);
     } catch (error) {
       alert(error);
     }

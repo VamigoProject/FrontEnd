@@ -1,7 +1,7 @@
 import ProfileLayout from 'components/ProfileLayout';
 import ContentBox from 'components/ContentBox';
 import useUserStore from 'stores/user';
-import ProfileWithNickname from 'components/ProfileWithNickname';
+import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import styled from 'styled-components';
 import { useEffect, useState, useRef } from 'react';
 import { myFriendApi } from 'utils/api';
@@ -90,6 +90,7 @@ const FollowBody = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
 
   width: 100%;
   height: 37rem;
@@ -110,6 +111,7 @@ const FollowBody = styled.div`
 `;
 
 const ProfileWrapper = styled.div`
+  height: 5rem;
   &:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.1);
@@ -152,7 +154,7 @@ const friend = () => {
               <h2>팔로워</h2>
             </FollowHeader>
             <FollowBody>
-              {follower.length === 0 && '팔로워 중인 사람이 없습니다'}
+              {follower.length === 0 && '팔로워가 없습니다'}
               {follower.map((f, i) => (
                 <ProfileWrapper key={f.uid + '_' + i}>
                   <ProfileWithNickname
