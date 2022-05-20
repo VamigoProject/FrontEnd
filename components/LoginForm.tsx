@@ -32,6 +32,7 @@ const CustomA = styled.a`
   color: gray;
   &:hover {
     color: rgba(26, 13, 171, 0.75);
+    cursor: pointer;
   }
 `;
 

@@ -13,7 +13,7 @@ const ProfileWrapper = styled.div`
 interface Props {
   nickname: string;
   profile: string | null;
-  size: 'small' | 'medium' | 'large';
+  size: 'small' | 'medium' | 'large' | 'xLarge';
 }
 
 const ProfileWithNickname = ({ nickname, profile, size = 'medium' }: Props) => {
@@ -24,7 +24,11 @@ const ProfileWithNickname = ({ nickname, profile, size = 'medium' }: Props) => {
 
   return (
     <ProfileWrapper>
-      <ProfileAvatar nickname={nickname!} profile={profile} size={size} />
+      <ProfileAvatar
+        nickname={nickname ?? 'Nickname'}
+        profile={profile}
+        size={size}
+      />
       <span style={{ marginLeft: '0.5rem', fontSize: fontSize }}>
         {nickname}
       </span>

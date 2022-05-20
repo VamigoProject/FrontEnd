@@ -86,6 +86,7 @@ const signup: NextPage = () => {
       alert('사용가능한 메일입니다');
       setIsMailChecked(true);
     } catch (error) {
+      console.log(error);
       alert(error);
     }
   };
@@ -98,7 +99,6 @@ const signup: NextPage = () => {
   const onClickCode = async () => {
     alert(`메일이 도착하기까지 시간이 걸릴 수 있습니다`);
     try {
-      await requestMailApi(mail);
       timerId.current = setTimeout(() => {
         clearTimer();
         setCodeButton('코드요청');
@@ -107,6 +107,7 @@ const signup: NextPage = () => {
       intervalId.current = setInterval(() => {
         setCodeButton((prev) => String(parseInt(prev) - 1));
       }, 1000);
+      await requestMailApi(mail);
     } catch (error) {
       alert(error);
     }
@@ -244,6 +245,7 @@ const signup: NextPage = () => {
               required
               variant="outlined"
               autoComplete="off"
+              disabled={!isMailChecked || codeButton === '코드요청'}
             />
             <Button
               style={{ width: '23%' }}
@@ -279,6 +281,7 @@ const signup: NextPage = () => {
             value={password}
             onChange={onChangePassword}
             inputProps={{ maxLength: 20 }}
+            helperText="패스워드는 8자리 이상이여야합니다"
             size="small"
             type="password"
             required
@@ -376,7 +379,6 @@ const signup: NextPage = () => {
             ))}
           </CustomSelect>
           <br />
-          <br />
           <SignupButton
             style={{ marginBottom: '1rem' }}
             type="submit"
@@ -385,6 +387,7 @@ const signup: NextPage = () => {
             disabled={
               !isMailChecked ||
               password !== passwordCheck ||
+              password.length < 8 ||
               nickname === '' ||
               code === ''
             }

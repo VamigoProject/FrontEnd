@@ -1,61 +1,10 @@
-import ProfileLayout from 'components/ProfileLayout';
-import ContentBox from 'components/ContentBox';
-import useUserStore from 'stores/user';
+import { ProfileLayout } from 'components/';
+import { ContentBox } from 'components/common';
+import { useUserStore, useSystemStore } from 'stores';
 import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import styled from 'styled-components';
 import { useEffect, useState, useRef } from 'react';
 import { myFriendApi } from 'utils/api';
-import useSystemStore from 'stores/system';
-
-// const user10: User = { uid: 10, nickname: '10번유저', profile: kleeImage };
-// const user11: User = { uid: 11, nickname: '유저11', profile: testImage };
-// const user12: User = { uid: 12, nickname: '12번유저', profile: kleeImage };
-// const user13: User = { uid: 13, nickname: '13번유저', profile: testImage };
-// const user14: User = { uid: 14, nickname: '유저 넘버14', profile: null };
-// const user15: User = {
-//   uid: 15,
-//   nickname: '유저인데 15번임',
-//   profile: kleeImage,
-// };
-
-// const dummyFollower = [
-//   user10,
-//   user11,
-//   user13,
-//   user15,
-//   user10,
-//   user11,
-//   user13,
-//   user15,
-//   user10,
-//   user11,
-//   user13,
-//   user15,
-//   user14,
-//   user10,
-//   user11,
-//   user14,
-//   user10,
-//   user11,
-//   user14,
-//   user10,
-//   user11,
-//   user14,
-//   user10,
-//   user11,
-// ];
-// const dummyFollowing = [
-//   user10,
-//   user11,
-//   user12,
-//   user14,
-//   user10,
-//   user11,
-//   user13,
-//   user15,
-//   user11,
-//   user13,
-// ];
 
 const Wrapper = styled.div`
   display: flex;

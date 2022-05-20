@@ -1,11 +1,10 @@
-import useUserStore from 'stores/user';
 import styled from 'styled-components';
-import Empty from 'components/Empty';
+import { Empty } from 'components';
 import { Review, User } from 'utils/types';
-import ReviewPost from 'components/ReviewPost';
+import { ReviewPost } from 'components';
 import { timelineApi } from 'utils/api';
 import { useEffect, useRef, useState } from 'react';
-import useReviewStore from 'stores/review';
+import { useReviewStore, useUserStore } from 'stores';
 
 const now = new Date();
 

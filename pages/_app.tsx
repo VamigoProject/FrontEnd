@@ -2,16 +2,18 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import * as mui from '@mui/material/styles';
-import { useSystemStore } from 'stores';
+import { useSystemStore, useUserStore, useTrendStore } from 'stores';
 import { lightTheme, darkTheme } from 'styles/muiTheme';
 import { light, dark } from 'styles/theme';
-import useUserStore from 'stores/user';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Loading } from 'components';
-import { AppLayout } from 'components/layout';
-import useTrendStore from 'stores/trend';
+import { AppLayout, FullPageLoading } from 'components/layout';
+import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
+  const router = useRouter();
+  const [isAppLoading, setIsAppLoading] = useState<boolean>(true);
+
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const { setTrend } = useTrendStore((state) => state);
 
@@ -34,38 +36,41 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
     '/404',
   ];
 
-  useEffect(() => {
-    if (publicPath.indexOf(window.location.pathname) === -1) {
-      //public이 아닌 경우
-      if (!isLoggedIn) {
-        location.href = '/';
-      }
-    }
-    setTrend([]);
-  }, []);
+  const isPrivate = publicPath.indexOf(router.pathname) === -1;
 
-  if (withoutAppLayoutPath.includes(appProps.router.pathname)) {
+  useEffect(() => {
+    if (!isAppLoading && isPrivate && !isLoggedIn) router.push('/');
+    if (!isAppLoading && !isPrivate && isLoggedIn) router.push('/home');
+    setIsAppLoading(false);
+    setTrend([]);
+  }, [isAppLoading, isPrivate, isLoggedIn]);
+
+  if ((isAppLoading || !isLoggedIn) && isPrivate) {
+    return <FullPageLoading />;
+  } else {
+    if (withoutAppLayoutPath.includes(appProps.router.pathname)) {
+      return (
+        <mui.ThemeProvider theme={theme}>
+          <ThemeProvider theme={styledtheme}>
+            {isLoading && <Loading />}
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </mui.ThemeProvider>
+      );
+    }
     return (
-      <mui.ThemeProvider theme={theme}>
-        <ThemeProvider theme={styledtheme}>
-          {isLoading && <Loading />}
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </mui.ThemeProvider>
+      <>
+        <mui.ThemeProvider theme={theme}>
+          <ThemeProvider theme={styledtheme}>
+            {isLoading && <Loading />}
+            <AppLayout>
+              <Component {...pageProps} />
+            </AppLayout>
+          </ThemeProvider>
+        </mui.ThemeProvider>
+      </>
     );
   }
-  return (
-    <>
-      <mui.ThemeProvider theme={theme}>
-        <ThemeProvider theme={styledtheme}>
-          {isLoading && <Loading />}
-          <AppLayout>
-            <Component {...pageProps} />
-          </AppLayout>
-        </ThemeProvider>
-      </mui.ThemeProvider>
-    </>
-  );
 }
 
 export default MyApp;

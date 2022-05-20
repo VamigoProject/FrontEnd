@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import ContentBox from 'components/ContentBox';
-import useInput from 'hooks/useInput';
+import { ContentBox } from 'components/common';
+import { useInput } from 'hooks';
 import {
   Autocomplete,
   Box,
@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { green } from '@mui/material/colors';
 import styled from 'styled-components';
-import useUserStore from 'stores/user';
+import { useUserStore, useSystemStore, useReviewStore } from 'stores';
 import EditIcon from '@mui/icons-material/Edit';
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -22,10 +22,8 @@ import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { SyntheticEvent, useState } from 'react';
 import { searchWorkApi, createReviewApi } from 'utils/api';
-import useSystemStore from 'stores/system';
 import Router from 'next/router';
 import { useRef } from 'react';
-import useReviewAction from 'stores/review';
 import { Work } from 'utils/types';
 
 const Wrapper = styled.div`
@@ -77,7 +75,7 @@ const newReview = () => {
   const { startLoadingAction, endLoadingAction } = useSystemStore(
     (state) => state,
   );
-  const { createReviewAction } = useReviewAction((state) => state);
+  const { createReviewAction } = useReviewStore((state) => state);
 
   const { uid, nickname, profile } = useUserStore((state) => state);
 
@@ -86,7 +84,7 @@ const newReview = () => {
   const [workName, setWorkName] = useState<string | null>('');
   const [workCategory, setWorkCategory] = useState<string | null>('');
   const [rating, onChangeRating] = useInput(0);
-  const [spoiler, setSpoiler] = useInput(false);
+  const [spoiler, setSpoiler] = useState<boolean>(false);
 
   const timerId = useRef<any>();
 

@@ -26,13 +26,6 @@ const signinApi = async (
   const { uid, nickname, profile, introduce, accessToken, refreshToken } =
     response.data;
 
-  // /* Test용 코드 */
-  // const nickname = `클레`;
-  // const profile = kleeImage;
-  // const accessToken = `accessToken`;
-  // const refreshToken = `refreshToken`;
-  // await wait(1000);
-
   return { uid, nickname, profile, introduce, accessToken, refreshToken };
 };
 
@@ -277,6 +270,25 @@ const changePasswordApi = async (
   await instance.post('/password/update', body);
 };
 
+const passwordMailCheckApi = async (mail: string) => {
+  const body = { mail };
+  await instance.post('/password/check', body);
+};
+
+const passwordMailAuthApi = async (mail: string) => {
+  const body = { mail };
+  await instance.post('/password/mailauth', body);
+};
+
+const passwordForgetApi = async (
+  mail: string,
+  password: string,
+  code: string,
+) => {
+  const body = { mail, password, code };
+  await instance.post('/password/forget', body);
+};
+
 export {
   searchWorkApi,
   createReviewApi,
@@ -298,4 +310,7 @@ export {
   unfollowApi,
   timelineApi,
   changePasswordApi,
+  passwordMailCheckApi,
+  passwordMailAuthApi,
+  passwordForgetApi,
 };

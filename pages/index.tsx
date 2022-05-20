@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
 import { useEffect } from 'react';
-import useUserStore from 'stores/user';
+import { useUserStore } from 'stores';
 import styled from 'styled-components';
 import Router from 'next/router';
-import LoginForm from 'components/LoginForm';
+import { LoginForm } from 'components';
 
 const Container = styled.div`
   display: flex;

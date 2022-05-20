@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useState } from 'react';
-import useSystemStore from 'stores/system';
-import useUserStore from 'stores/user';
+import { useSystemStore, useUserStore } from 'stores';
 import { searchMemberApi, followApi, unfollowApi } from 'utils/api';
-import ContentBox from 'components/ContentBox';
+import { ContentBox } from 'components/common';
 import styled from 'styled-components';
 import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import { Button } from '@mui/material';
