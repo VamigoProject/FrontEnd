@@ -40,23 +40,22 @@ const NavigationRow = styled.div`
   }
 `;
 
-const Navigation = () => {
+interface NavigationTypes {
+  handler?: (e: boolean) => void;
+}
+
+const Navigation = ({ handler }: NavigationTypes) => {
   const logoutAction = useUserStore((state) => state.logoutAction);
   const { startLoadingAction, endLoadingAction } = useSystemStore(
     (state) => state,
   );
+  const closeMobileNavigation = () => {
+    handler ? handler(false) : null;
+  };
 
-  const onClickHome = () => {
-    Router.push('/home');
-  };
-  const onClickReview = () => {
-    Router.push('/review/new');
-  };
-  const onClickProfile = () => {
-    Router.push('/member/profile');
-  };
-  const onClickSetting = () => {
-    Router.push('/setting');
+  const onClick = (path: string) => {
+    Router.push(path);
+    closeMobileNavigation();
   };
 
   const onClickLogout = async () => {
@@ -70,18 +69,18 @@ const Navigation = () => {
     <>
       <GlobalStyle />
       <NavigationWrapper>
-        <NavigationRow onClick={onClickHome}>
+        <NavigationRow onClick={() => onClick('/home')}>
           <HomeIcon className="icon" sx={{ fontSize: 32 }} />홈
         </NavigationRow>
-        <NavigationRow onClick={onClickReview}>
+        <NavigationRow onClick={() => onClick('/review/new')}>
           <EditIcon className="icon" sx={{ fontSize: 32 }} />
           리뷰작성
         </NavigationRow>
-        <NavigationRow onClick={onClickProfile}>
+        <NavigationRow onClick={() => onClick('/member/profile')}>
           <AccountBoxIcon className="icon" sx={{ fontSize: 32 }} />
           프로필
         </NavigationRow>
-        <NavigationRow onClick={onClickSetting}>
+        <NavigationRow onClick={() => onClick('/setting')}>
           <SettingsIcon className="icon" sx={{ fontSize: 32 }} />
           설정
         </NavigationRow>

@@ -204,6 +204,13 @@ const myFriendApi = async (
     uid,
   };
   const response = await instance.post('/member/profile/myfriend', body);
+  response.data.follower.forEach((user: User) => {
+    user.profile === 'NoImage' ? null : user.profile;
+  });
+  response.data.following.forEach((user: User) => {
+    user.profile === 'NoImage' ? null : user.profile;
+  });
+
   return response.data;
 };
 

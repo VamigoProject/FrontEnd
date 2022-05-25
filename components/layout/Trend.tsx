@@ -34,10 +34,11 @@ const TextBox = styled.span`
 
 const Trend = () => {
   const { trendData } = useTrendStore((state) => state);
+  const temp = [];
 
   return (
     <Wrapper>
-      {trendData.map((trend: Work, index) => (
+      {temp.map((trend: Work, index) => (
         <TrendWrapper key={trend.id + '_' + index}>
           {trend.category === 'book' && <MenuBookIcon />}
           {trend.category === 'movie' && <LocalMoviesIcon />}

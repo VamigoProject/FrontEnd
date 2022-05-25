@@ -2,7 +2,6 @@ import { USER_STORE } from 'utils/statics';
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import { User } from 'utils/types';
-import { kleeImage, testImage } from 'utils/statics';
 
 interface UserStore {
   isLoggedIn: boolean; //로그인 되어있는지 여부

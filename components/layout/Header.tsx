@@ -5,7 +5,6 @@ import SearchBar from 'components/SearchBar';
 const HeaderWrapper = styled.div`
   width: 100%;
   height: 100%;
-  background-color: ${(props) => props.color};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,14 +21,12 @@ const Logo = styled.h2`
 `;
 
 const Header = () => {
-  const headerColor = '#4CAF50';
-
   const goHome = () => {
     Router.push('/home');
   };
 
   return (
-    <HeaderWrapper color={headerColor}>
+    <HeaderWrapper>
       <Logo onClick={goHome}>Vamigo</Logo>
       <SearchBar />
     </HeaderWrapper>
