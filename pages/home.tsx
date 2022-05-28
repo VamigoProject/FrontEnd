@@ -1,28 +1,14 @@
 import styled from 'styled-components';
 import { Empty } from 'components';
-import { Review, User } from 'utils/types';
+import { Review } from 'utils/types';
 import { ReviewPost } from 'components';
 import { timelineApi } from 'utils/api';
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect } from 'react';
 import { useReviewStore, useUserStore } from 'stores';
-import { GetServerSideProps } from 'next';
 
-const now = new Date();
-
-interface HomeTypes {
-  test: any;
-  reviews: Array<Review>;
-}
-
-const Home = ({ test, reviews }: HomeTypes) => {
-  const { uid, nickname, accessToken, refreshToken } = useUserStore(
-    (state) => state,
-  );
+const Home = () => {
+  const { uid } = useUserStore((state) => state);
   const { reviewData, setReviewAction } = useReviewStore((state) => state);
-
-  // useEffect(() => {
-  //   setReviewAction(reviews);
-  // });
 
   const fetch = async () => {
     try {
@@ -33,7 +19,7 @@ const Home = ({ test, reviews }: HomeTypes) => {
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetch();
   }, []);
 
@@ -47,12 +33,5 @@ const Home = ({ test, reviews }: HomeTypes) => {
     </>
   );
 };
-
-// export async function getServerSideProps() {
-//   const test = useUserStore.getState().nickname;
-//   const reviews = await timelineApi(1);
-
-//   return { props: { test: test, reviews: reviews } };
-// }
 
 export default Home;

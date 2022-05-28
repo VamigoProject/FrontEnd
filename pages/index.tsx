@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useUserStore } from 'stores';
 import styled from 'styled-components';
 import Router from 'next/router';
@@ -42,7 +42,7 @@ const RightSide = styled.div`
 const Index: NextPage = () => {
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isLoggedIn) {
       Router.push('/home');
     }

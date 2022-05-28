@@ -5,12 +5,15 @@ import * as mui from '@mui/material/styles';
 import { useSystemStore, useUserStore, useTrendStore } from 'stores';
 import { lightTheme, darkTheme } from 'styles/muiTheme';
 import { light, dark } from 'styles/theme';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loading } from 'components';
 import { AppLayout, FullPageLoading } from 'components/layout';
 import { useRouter } from 'next/router';
+import createContext from 'zustand/context';
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
+  // const { Provider: Provider1, useStore: useUserStore } = createContext();
+
   const router = useRouter();
   const [isAppLoading, setIsAppLoading] = useState<boolean>(true);
 
@@ -45,30 +48,29 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
     setTrend([]);
   }, [isAppLoading, isPrivate, isLoggedIn]);
 
-  if ((isAppLoading || !isLoggedIn) && isPrivate) {
-    return <FullPageLoading />;
-  } else {
-    if (withoutAppLayoutPath.includes(appProps.router.pathname)) {
-      return (
-        <mui.ThemeProvider theme={theme}>
-          <ThemeProvider theme={styledtheme}>
-            {isLoading && <Loading />}
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </mui.ThemeProvider>
-      );
-    }
+  const CommonLayout = (children: React.ReactNode) => {
     return (
       <>
         <mui.ThemeProvider theme={theme}>
           <ThemeProvider theme={styledtheme}>
             {isLoading && <Loading />}
-            <AppLayout>
-              <Component {...pageProps} />
-            </AppLayout>
+            {children}
           </ThemeProvider>
         </mui.ThemeProvider>
       </>
+    );
+  };
+
+  if ((isAppLoading || !isLoggedIn) && isPrivate) {
+    return <FullPageLoading />;
+  }
+  if (withoutAppLayoutPath.includes(appProps.router.pathname)) {
+    return CommonLayout(<Component {...pageProps} />);
+  } else {
+    return CommonLayout(
+      <AppLayout>
+        <Component {...pageProps} />
+      </AppLayout>,
     );
   }
 }

@@ -3,19 +3,21 @@ import { ContentBox } from 'components/common';
 import { useUserStore, useSystemStore } from 'stores';
 import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import styled from 'styled-components';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect } from 'react';
 import { myFriendApi } from 'utils/api';
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 1rem;
 `;
 
 const FollowWrapper = styled.div`
-  width: 50%;
+  width: 100%;
   height: 40rem;
+  min-width: 20rem;
 `;
 
 const FollowHeader = styled.div`
@@ -39,7 +41,8 @@ const FollowBody = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 1rem;
 
   width: 100%;
   height: 37rem;
