@@ -121,9 +121,10 @@ const AppLayout = ({ children }: LayoutProps) => {
 
   return (
     <Background color={bodyColor}>
-      {isMobileNavigationOpen && (
-        <MobileNavigation handler={setIsMobileNavigationOpen} />
-      )}
+      <MobileNavigation
+        handler={setIsMobileNavigationOpen}
+        isOpen={isMobileNavigationOpen}
+      />
       <HeaderDiv color={headerColor}>
         <MobileArea onClick={onClickMobile}>
           <DensityMediumIcon style={{ width: '2rem', height: '2rem' }} />

@@ -30,61 +30,18 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-interface BackgroundProps {
-  width: string;
-  height: string;
-}
-const Background = styled.div<BackgroundProps>`
+const Background = styled.div`
   position: fixed;
-  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   left: 0px;
   top: 0px;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.25);
-  z-index: 100000;
-  grid-template-columns: calc(50vw - ${(props) => props.width} / 2) ${(props) =>
-      props.width} calc(50vw - ${(props) => props.width} / 2);
-  grid-template-rows: calc(50vh - ${(props) => props.height} / 2) ${(props) =>
-      props.height} calc(50vh - ${(props) => props.height} / 2);
+  z-index: 9999;
 `;
 
-const LeftUp = styled.div`
-  grid-column: 1;
-  grid-row: 1;
-`;
-const CenterUp = styled.div`
-  grid-column: 2;
-  grid-row: 1;
-`;
-const RightUp = styled.div`
-  grid-column: 3;
-  gird-row: 1;
-`;
-const LeftCenter = styled.div`
-  grid-column: 1;
-  gird-row: 2;
-`;
-const CenterCenter = styled.div`
-  grid-column: 2;
-  grid-row: 2;
-`;
-const RightCenter = styled.div`
-  grid-column: 3;
-  grid-row: 2;
-`;
-const LeftBottom = styled.div`
-  grid-column: 1;
-  gird-row: 3;
-`;
-const CenterBottom = styled.div`
-  grid-column: 2;
-  grid-row: 3;
-`;
-const RightBottom = styled.div`
-  grid-column: 3;
-  grid-row: 3;
-`;
 interface BoxProps {
   width: string;
   height: string;
@@ -96,6 +53,8 @@ const Box = styled.div<BoxProps>`
   background-color: white;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  max-width: 100vw;
+  max-height: 100vh;
 `;
 
 const Title = styled.h2`
@@ -123,8 +82,8 @@ const Wrapper = styled.div`
 interface Props {
   children?: React.ReactNode;
   onClose: () => void;
-  width: string | '10rem' | '100px';
-  height: string | '10rem' | '100px';
+  width: string;
+  height: string;
   title?: string;
 }
 
@@ -137,27 +96,18 @@ const Dialog = ({ children, onClose, width, height, title = '' }: Props) => {
 
   return (
     <>
-      <Background width={width} height={height}>
-        <LeftUp onClick={closeFunction}></LeftUp>
-        <CenterUp onClick={closeFunction}></CenterUp>
-        <RightUp onClick={closeFunction}></RightUp>
-        <LeftCenter onClick={closeFunction}></LeftCenter>
-        <CenterCenter>
-          <Box
-            className={animation}
-            width={width}
-            height={height}
-            title={title}
-          >
-            {title && <Title>{title}</Title>}
-            <Line />
-            <Wrapper>{children}</Wrapper>
-          </Box>
-        </CenterCenter>
-        <RightCenter onClick={closeFunction}></RightCenter>
-        <LeftBottom onClick={closeFunction}></LeftBottom>
-        <CenterBottom onClick={closeFunction}></CenterBottom>
-        <RightBottom onClick={closeFunction}></RightBottom>
+      <Background onClick={closeFunction}>
+        <Box
+          className={animation}
+          width={width}
+          height={height}
+          title={title}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {title && <Title>{title}</Title>}
+          <Line />
+          <Wrapper>{children}</Wrapper>
+        </Box>
       </Background>
       <GlobalStyle />
     </>

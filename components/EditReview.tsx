@@ -25,6 +25,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import { updateReviewApi } from 'utils/api';
 import { useSystemStore, useReviewStore, useUserStore } from 'stores';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -86,10 +87,10 @@ const EditReview = ({
 
   const { uid, nickname, profile } = useUserStore((state) => state);
 
-  const [afterComment, onChangeComment] = useInput(comment);
-  const [afterRating, onChangeRating] = useInput(rating);
-  const [afterImage, onChangeImage] = useInput(image);
-  const [afterSpoiler, setSpoiler] = useInput(spoiler);
+  const [afterComment, onChangeComment] = useInput<string>(comment);
+  const [afterRating, onChangeRating] = useInput<number>(rating);
+  const [afterImage, onChangeImage] = useInput<Array<string>>(image);
+  const [afterSpoiler, setSpoiler] = useState<boolean>(spoiler);
 
   const onChangeSpoiler = () => {
     setSpoiler((prev: boolean) => !prev);

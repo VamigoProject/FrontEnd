@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { Empty } from 'components';
 import { Review } from 'utils/types';
 import { ReviewPost } from 'components';

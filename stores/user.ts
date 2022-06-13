@@ -102,6 +102,8 @@ const useUserStore = create<UserStore>(
   ),
 );
 
+export const createUserStore = () => useUserStore();
+
 interface Auth {
   mail: string | null;
   setMailAction: (mail: string) => void;

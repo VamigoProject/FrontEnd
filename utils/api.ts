@@ -69,7 +69,7 @@ const requestMailApi = async (mail: string) => {
 interface SearchWorkProps {
   id: number;
   name: string;
-  category: string;
+  category: category;
 }
 const searchWorkApi = async (name: string) => {
   const body = { fields: ['name'], searchTerm: name, size: 10 };
@@ -91,16 +91,21 @@ const searchWorkApi = async (name: string) => {
 const createReviewApi = async (
   uid: number,
   comment: string,
-  workName: string,
-  workCategory: string,
+  workId: number | null,
+  // workName: string,
+  // workCategory: string,
   rating: number,
   spoiler: boolean,
 ) => {
+  if (comment === '' || workId === null || rating === 0) {
+    throw '데이터를 제대로 입력해주세요';
+  }
   const body = {
     uid,
     comment,
-    workName,
-    workCategory,
+    workId,
+    // workName,
+    // workCategory,
     rating,
     spoiler,
   };
@@ -117,7 +122,7 @@ const updateReviewApi = async (
   uid: number,
   reviewId: number,
   rating: number,
-  comment: number,
+  comment: string,
   image: Array<string>,
   spoiler: boolean,
 ) => {
@@ -149,7 +154,6 @@ const likeApi = async (reviewId: number, uid: number) => {
     reviewId,
     uid,
   };
-  console.log('like Api:', body);
   await instance.post('/review/like', body);
 };
 

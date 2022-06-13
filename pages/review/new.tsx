@@ -24,7 +24,6 @@ import { SyntheticEvent, useState } from 'react';
 import { searchWorkApi, createReviewApi } from 'utils/api';
 import Router from 'next/router';
 import { useRef } from 'react';
-import { Work } from 'utils/types';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -81,6 +80,7 @@ const newReview = () => {
 
   const [comment, onChangeComment] = useInput('');
   const [works, setWorks] = useState<Array<Work>>([]);
+  const [workId, setWorkId] = useState<number | null>(null);
   const [workName, setWorkName] = useState<string | null>('');
   const [workCategory, setWorkCategory] = useState<string | null>('');
   const [rating, onChangeRating] = useInput(0);
@@ -118,9 +118,11 @@ const newReview = () => {
     value: Work | null,
   ) => {
     if (value === null) {
+      setWorkId(null);
       setWorkName(null);
       setWorkCategory(null);
     } else {
+      setWorkId(value.id);
       setWorkName(value.name);
       setWorkCategory(value.category);
     }
@@ -133,8 +135,9 @@ const newReview = () => {
       const reviewId = await createReviewApi(
         uid!,
         comment,
-        workName!,
-        workCategory!,
+        workId!,
+        // workName!,
+        // workCategory!,
         rating!,
         spoiler,
       );

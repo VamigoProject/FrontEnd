@@ -1,3 +1,5 @@
+type category = 'animation' | 'book' | 'drama' | 'movie' | 'game';
+
 interface User {
   uid: number; //유저의 id
   nickname: string; //유저의 닉네임
@@ -18,7 +20,7 @@ interface Review {
   nickname: string;
   profile: string | null;
   workName: string;
-  workCategory: 'animation' | 'book' | 'drama' | 'movie';
+  workCategory: category;
   comment: string;
   rating: number;
   image: Array<string>;
@@ -31,7 +33,7 @@ interface Review {
 interface Work {
   id: number; //작품의 id
   name: string; //작품의 이름
-  category: 'animation' | 'book' | 'drama' | 'movie'; //작품의 종류
+  category: category;
 }
 
 interface SearchMember {

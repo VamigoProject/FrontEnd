@@ -2,7 +2,12 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import * as mui from '@mui/material/styles';
-import { useSystemStore, useUserStore, useTrendStore } from 'stores';
+import {
+  useSystemStore,
+  useUserStore,
+  useTrendStore,
+  createUserStore,
+} from 'stores';
 import { lightTheme, darkTheme } from 'styles/muiTheme';
 import { light, dark } from 'styles/theme';
 import React, { useEffect, useState } from 'react';
@@ -12,7 +17,7 @@ import { useRouter } from 'next/router';
 import createContext from 'zustand/context';
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
-  // const { Provider: Provider1, useStore: useUserStore } = createContext();
+  const { Provider: Provider1, useStore: userStore } = createContext();
 
   const router = useRouter();
   const [isAppLoading, setIsAppLoading] = useState<boolean>(true);
@@ -51,12 +56,14 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const CommonLayout = (children: React.ReactNode) => {
     return (
       <>
+        {/* <Provider1 createStore={createUserStore}> */}
         <mui.ThemeProvider theme={theme}>
           <ThemeProvider theme={styledtheme}>
             {isLoading && <Loading />}
             {children}
           </ThemeProvider>
         </mui.ThemeProvider>
+        {/* </Provider1> */}
       </>
     );
   };
