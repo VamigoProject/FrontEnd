@@ -2,28 +2,25 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import * as mui from '@mui/material/styles';
-import {
-  useSystemStore,
-  useUserStore,
-  useTrendStore,
-  createUserStore,
-} from 'stores';
+import { useSystemStore, useUserStore, useTrendStore } from 'stores';
 import { lightTheme, darkTheme } from 'styles/muiTheme';
 import { light, dark } from 'styles/theme';
 import React, { useEffect, useState } from 'react';
 import { Loading } from 'components';
 import { AppLayout, FullPageLoading } from 'components/layout';
 import { useRouter } from 'next/router';
-import createContext from 'zustand/context';
+// import createContext from 'zustand/context';
+import { trendApi } from 'utils/api';
+import { useInterval } from 'hooks';
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
-  const { Provider: Provider1, useStore: userStore } = createContext();
+  // const { Provider: Provider1, useStore: userStore } = createContext();
 
   const router = useRouter();
   const [isAppLoading, setIsAppLoading] = useState<boolean>(true);
 
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-  const { setTrend } = useTrendStore((state) => state);
+  const { setTrend, clearTrend } = useTrendStore((state) => state);
 
   const { themeMode, isLoading } = useSystemStore((state) => state);
   const styledtheme = themeMode === 'light' ? light : dark;
@@ -46,12 +43,40 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
 
   const isPrivate = publicPath.indexOf(router.pathname) === -1;
 
+  const fetch = async () => {
+    try {
+      const trends = await trendApi();
+      let index = 0;
+      const timerId = setInterval(() => {
+        if (index === 10) {
+          clearInterval(timerId);
+          return;
+        }
+        if (trends[index] !== undefined) {
+          setTrend(undefined, index);
+          setTrend(trends[index], index);
+        } else {
+          setTrend(undefined, index);
+        }
+        index = index + 1;
+      }, 400);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   useEffect(() => {
     if (!isAppLoading && isPrivate && !isLoggedIn) router.push('/');
     if (!isAppLoading && !isPrivate && isLoggedIn) router.push('/home');
     setIsAppLoading(false);
-    setTrend([]);
   }, [isAppLoading, isPrivate, isLoggedIn]);
+
+  useEffect(() => {
+    if (isPrivate && isLoggedIn) {
+      clearTrend();
+      fetch();
+    }
+  }, []);
 
   const CommonLayout = (children: React.ReactNode) => {
     return (

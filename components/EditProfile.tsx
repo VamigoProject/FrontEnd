@@ -83,7 +83,7 @@ const EditProfile = () => {
         handleChange={onChangeFile}
         name="file"
         types={['png', 'PNG']}
-        maxSize={1}
+        maxSize={20}
       />
       <PreviewWrapper>
         <ProfileAvatar

@@ -10,14 +10,22 @@ const Wrapper = styled.div`
   padding-bottom: 1rem;
 `;
 
-const Empty = () => {
+interface EmptyTypes {
+  message?: string;
+  size?: number;
+}
+
+const Empty = ({
+  message = '표시가능한 리뷰가 없습니다',
+  size = 50,
+}: EmptyTypes) => {
   return (
     <ContentBox>
       <Wrapper>
         <div>
-          <DraftsIcon sx={{ fontSize: 50 }} />
+          <DraftsIcon sx={{ fontSize: size }} />
         </div>
-        <strong>표시가능한 리뷰가 없습니다</strong>
+        <strong>{message}</strong>
       </Wrapper>
     </ContentBox>
   );

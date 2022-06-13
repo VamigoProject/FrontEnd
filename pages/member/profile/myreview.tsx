@@ -1,11 +1,8 @@
-import ProfileLayout from 'components/ProfileLayout';
-import { useState, useEffect } from 'react';
-import useUserStore from 'stores/user';
+import { ProfileLayout } from 'components/layout';
+import { useEffect } from 'react';
+import { useUserStore, useSystemStore, useReviewStore } from 'stores';
 import { myreviewApi } from 'utils/api';
-import ReviewPost from 'components/ReviewPost';
-import Empty from 'components/Empty';
-import useSystemStore from 'stores/system';
-import useReviewStore from 'stores/review';
+import { ReviewPost, Empty } from 'components';
 
 const myreview = () => {
   const uid = useUserStore((state) => state.uid);

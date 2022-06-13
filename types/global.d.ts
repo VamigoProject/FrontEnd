@@ -33,7 +33,8 @@ interface Review {
 interface Work {
   id: number; //작품의 id
   name: string; //작품의 이름
-  category: category;
+  category: category; //작품의 카테고리
+  image?: string; //작품의 이미지
 }
 
 interface SearchMember {

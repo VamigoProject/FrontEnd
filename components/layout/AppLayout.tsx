@@ -15,7 +15,7 @@ const Background = styled.div`
 
 //Header가 들어갈 부분
 const HeaderDiv = styled.div`
-  position: sticky;
+  position: fixed;
   top: 0px;
   height: 3.5rem;
   width: 100%;
@@ -30,7 +30,9 @@ const HeaderDiv = styled.div`
 
 //Header를 제외한 전체
 const BodyRow = styled.div`
+  position: relative;
   display: flex;
+  top: 3.5rem;
   flex-wrap: wrap;
   min-height: calc(100vh - 3.5rem);
   width: 100%;

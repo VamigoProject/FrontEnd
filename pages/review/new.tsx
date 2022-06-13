@@ -136,8 +136,8 @@ const newReview = () => {
         uid!,
         comment,
         workId!,
-        // workName!,
-        // workCategory!,
+        workName!,
+        workCategory!,
         rating!,
         spoiler,
       );

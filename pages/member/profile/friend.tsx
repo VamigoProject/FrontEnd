@@ -1,7 +1,7 @@
-import { ProfileLayout } from 'components/';
-import { ContentBox } from 'components/common';
+import { ProfileLayout } from 'components/layout';
+import { ContentBox, ProfileWithNickname } from 'components/common';
+import { Empty } from 'components';
 import { useUserStore, useSystemStore } from 'stores';
-import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import styled from 'styled-components';
 import { useEffect } from 'react';
 import { myFriendApi } from 'utils/api';
@@ -45,7 +45,7 @@ const FollowBody = styled.div`
   padding: 1rem;
 
   width: 100%;
-  height: 37rem;
+  max-height: 37rem;
   overflow: scroll;
   &::-webkit-scrollbar {
     width: 6px;
@@ -106,7 +106,7 @@ const friend = () => {
               <h2>팔로워</h2>
             </FollowHeader>
             <FollowBody>
-              {follower.length === 0 && '팔로워가 없습니다'}
+              {follower.length === 0 && <Empty message="팔로워가 없습니다" />}
               {follower.map((f, i) => (
                 <ProfileWrapper key={f.uid + '_' + i}>
                   <ProfileWithNickname
@@ -124,7 +124,9 @@ const friend = () => {
               <h2>팔로잉</h2>
             </FollowHeader>
             <FollowBody>
-              {following.length === 0 && '팔로우하고 있는 사람이 없습니다'}
+              {following.length === 0 && (
+                <Empty message="팔로우하고 있는 사람이 없습니다" />
+              )}
               {following.map((f, i) => (
                 <ProfileWrapper key={f.uid + '_' + i}>
                   <ProfileWithNickname

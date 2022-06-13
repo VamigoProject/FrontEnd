@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useUserStore } from 'stores';
 import styled from 'styled-components';
 import { Badge } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { useState } from 'react';
 import { EditProfile } from 'components';
 import { ContentBox, Dialog, ProfileAvatar } from 'components/common';
 import Router from 'next/router';

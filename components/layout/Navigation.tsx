@@ -70,23 +70,24 @@ const Navigation = ({ handler }: NavigationTypes) => {
       <GlobalStyle />
       <NavigationWrapper>
         <NavigationRow onClick={() => onClick('/home')}>
-          <HomeIcon className="icon" sx={{ fontSize: 32 }} />홈
+          <HomeIcon className="icon" sx={{ fontSize: 32 }} />
+          <strong>홈</strong>
         </NavigationRow>
         <NavigationRow onClick={() => onClick('/review/new')}>
           <EditIcon className="icon" sx={{ fontSize: 32 }} />
-          리뷰작성
+          <strong>리뷰작성</strong>
         </NavigationRow>
         <NavigationRow onClick={() => onClick('/member/profile')}>
           <AccountBoxIcon className="icon" sx={{ fontSize: 32 }} />
-          프로필
+          <strong>프로필</strong>
         </NavigationRow>
         <NavigationRow onClick={() => onClick('/setting')}>
           <SettingsIcon className="icon" sx={{ fontSize: 32 }} />
-          설정
+          <strong>설정</strong>
         </NavigationRow>
         <NavigationRow onClick={onClickLogout}>
           <LogoutIcon className="icon" sx={{ fontSize: 32 }} />
-          로그아웃
+          <strong>로그아웃</strong>
         </NavigationRow>
       </NavigationWrapper>
     </>

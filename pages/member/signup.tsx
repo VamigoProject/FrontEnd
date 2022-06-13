@@ -58,8 +58,8 @@ interface Item {
 
 const signup: NextPage = () => {
   const clearTimer = () => {
-    timerId.current ?? clearTimeout(timerId.current);
-    intervalId.current ?? clearInterval(intervalId.current);
+    timerId.current ?? clearTimeout(timerId.current!);
+    intervalId.current ?? clearInterval(intervalId.current!);
   };
 
   useEffect(() => {

@@ -4,7 +4,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useInput } from 'hooks';
 import Router from 'next/router';
 import styled, { keyframes } from 'styled-components';
-import { ContentBox } from 'components/common';
 
 const SearchBar = () => {
   const [width, setWidth] = useState<string>('7rem');
@@ -36,7 +35,7 @@ const SearchBar = () => {
     if (search.charAt(0) === '#') {
       Router.push({
         pathname: '/work',
-        query: { name: search.slice(1) },
+        query: { workName: search.slice(1) },
       });
     }
   };

@@ -5,6 +5,7 @@ interface Props {
   opacity?: number;
   padding?: string;
   children?: React.ReactNode;
+  [x: string]: any;
 }
 
 const Box = styled.div<Props>`
@@ -19,9 +20,14 @@ const Box = styled.div<Props>`
   padding: ${(props) => props.padding};
 `;
 
-const ContentBox = ({ opacity = 0.1, padding = '0', children }: Props) => {
+const ContentBox = ({
+  opacity = 0.1,
+  padding = '0',
+  children,
+  ...rest
+}: Props) => {
   return (
-    <Box opacity={opacity!} padding={padding}>
+    <Box opacity={opacity!} padding={padding} {...rest}>
       {children}
     </Box>
   );

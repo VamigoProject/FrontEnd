@@ -12,7 +12,7 @@ export { default as Loading } from './common/Loading';
 export { default as LoginForm } from './LoginForm';
 export { default as Navigation } from './layout/Navigation';
 export { default as ProfileAvatar } from './common/ProfileAvatar';
-export { default as ProfileLayout } from './ProfileLayout';
+export { default as ProfileLayout } from './layout/ProfileLayout';
 export { default as ProfileWithNickname } from './common/ProfileWithNickname';
 export { default as ReplyView } from './ReplyView';
 export { default as ReviewMoreCategory } from './ReviewMoreCategory';

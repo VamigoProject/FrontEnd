@@ -1,8 +1,7 @@
 import { Empty } from 'components';
-import { Review } from 'utils/types';
 import { ReviewPost } from 'components';
 import { timelineApi } from 'utils/api';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useReviewStore, useUserStore } from 'stores';
 
 const Home = () => {
@@ -18,7 +17,7 @@ const Home = () => {
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     fetch();
   }, []);
 

@@ -4,6 +4,7 @@ import { MouseEvent, useEffect, useState } from 'react';
 import { useSystemStore, useUserStore } from 'stores';
 import { searchMemberApi, followApi, unfollowApi } from 'utils/api';
 import { ContentBox } from 'components/common';
+import { Empty } from 'components';
 import styled from 'styled-components';
 import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import { Button } from '@mui/material';
@@ -89,7 +90,7 @@ const search = () => {
   };
 
   const onClickUnfollow = async (
-    e: MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: MouseEvent<HTMLButtonElement, MouseEvent<Element, MouseEvent>>,
     myUid: number,
     targetUid: number,
   ) => {
@@ -111,53 +112,59 @@ const search = () => {
   };
 
   return (
-    <ContentBox padding="1rem">
+    <>
       {isQueryEmpty && <div>검색어가 없습니다, 다시 검색해주세요</div>}
-      {!isQueryEmpty &&
-        memberList.map((member) => (
-          <MemberWrapper key={JSON.stringify(member)}>
-            <ProfileWrapper>
-              <ProfileWithNickname
-                nickname={member.nickname}
-                profile={member.profile}
-                size="medium"
-              />
-              {member.isFollower && '당신을 팔로우하고 있습니다'}
-            </ProfileWrapper>
-            <div>
-              {member.isFollowing && (
-                <Button
-                  variant="outlined"
-                  sx={{
-                    width: '4.5rem',
-                    fontSize: '0.8rem',
-                    padding: '0.2rem',
-                  }}
-                  onClick={(e) => onClickUnfollow(e, myUid!, member.uid)}
-                >
-                  언팔로우
-                </Button>
-              )}
-              {!member.isFollowing && (
-                <Button
-                  variant="contained"
-                  sx={{
-                    width: '4.5rem',
-                    fontSize: '0.8rem',
-                    padding: '0.2rem',
-                  }}
-                  onClick={(e) => onClickFollow(e, myUid, member.uid)}
-                >
-                  팔로우
-                </Button>
-              )}
-            </div>
-          </MemberWrapper>
-        ))}
-      {!isQueryEmpty && memberList.length === 0 && (
-        <div>검색결과가 없습니다</div>
+      {!isQueryEmpty && memberList.length !== 0 && (
+        <ContentBox padding="1rem">
+          {memberList.map((member) => (
+            <MemberWrapper key={JSON.stringify(member)}>
+              <ProfileWrapper>
+                <ProfileWithNickname
+                  nickname={member.nickname}
+                  profile={member.profile}
+                  size="medium"
+                />
+                {member.isFollower && '당신을 팔로우하고 있습니다'}
+              </ProfileWrapper>
+              <div>
+                {member.isFollowing && (
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      width: '4.5rem',
+                      fontSize: '0.8rem',
+                      padding: '0.2rem',
+                    }}
+                    onClick={(e) => onClickUnfollow(e, myUid!, member.uid)}
+                  >
+                    언팔로우
+                  </Button>
+                )}
+                {!member.isFollowing && (
+                  <Button
+                    variant="contained"
+                    sx={{
+                      width: '4.5rem',
+                      fontSize: '0.8rem',
+                      padding: '0.2rem',
+                    }}
+                    onClick={(e) => onClickFollow(e, myUid, member.uid)}
+                  >
+                    팔로우
+                  </Button>
+                )}
+              </div>
+            </MemberWrapper>
+          ))}
+        </ContentBox>
       )}
-    </ContentBox>
+
+      {!isQueryEmpty && memberList.length === 0 && (
+        <div>
+          <Empty message="검색된 사용자가 없습니다" />
+        </div>
+      )}
+    </>
   );
 };
 

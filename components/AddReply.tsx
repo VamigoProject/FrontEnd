@@ -1,10 +1,8 @@
 import { TextField, Box, Button } from '@mui/material';
 import styled from 'styled-components';
-import useInput from 'hooks/useInput';
 import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import useUserStore from 'stores/user';
 import { createReplyApi } from 'utils/api';
-import { User } from 'utils/types';
 import useReviewStore from 'stores/review';
 import { useState } from 'react';
 
@@ -30,6 +28,12 @@ const AddReply = ({ reviewId }: Props) => {
   const [comment, setComment] = useState<string>('');
   const onChangeComment = (e: any) => {
     setComment(e.target.value);
+  };
+
+  const onPressEnter = (e) => {
+    if (e.key === 'Enter') {
+      onSubmit();
+    }
   };
 
   const onSubmit = async () => {
@@ -80,6 +84,7 @@ const AddReply = ({ reviewId }: Props) => {
             borderRadius: 2,
           }}
           spellCheck={false}
+          onKeyPress={(e) => onPressEnter(e)}
         />
         <Button variant="contained" onClick={onSubmit}>
           입력

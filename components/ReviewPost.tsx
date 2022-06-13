@@ -2,7 +2,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import { ProfileWithNickname, ContentBox, Dialog } from 'components/common';
 import { Rating, Chip, IconButton, Menu, MenuItem } from '@mui/material';
-import { Review } from 'utils/types';
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LiveTvIcon from '@mui/icons-material/LiveTv';

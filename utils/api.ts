@@ -92,8 +92,8 @@ const createReviewApi = async (
   uid: number,
   comment: string,
   workId: number | null,
-  // workName: string,
-  // workCategory: string,
+  workName: string,
+  workCategory: string,
   rating: number,
   spoiler: boolean,
 ) => {
@@ -104,8 +104,8 @@ const createReviewApi = async (
     uid,
     comment,
     workId,
-    // workName,
-    // workCategory,
+    workName,
+    workCategory,
     rating,
     spoiler,
   };
@@ -300,6 +300,17 @@ const passwordForgetApi = async (
   await instance.post('/password/forget', body);
 };
 
+const trendApi = async (): Promise<Array<Work>> => {
+  const response = await instance.get('/trend');
+  return response.data;
+};
+
+const workReviewApi = async (uid: number, workId: number) => {
+  const body = { uid, workId };
+  const response = await instance.post('/work/search', body);
+  return response.data;
+};
+
 export {
   searchWorkApi,
   createReviewApi,
@@ -324,4 +335,6 @@ export {
   passwordMailCheckApi,
   passwordMailAuthApi,
   passwordForgetApi,
+  trendApi,
+  workReviewApi,
 };
