@@ -99,7 +99,7 @@ const Helper = styled.div`
   width: 10rem;
   height: 4rem;
   animation: ${PopUp} 0.75s ease-in-out;
-  background-color: rgba(250, 250, 250, 0.9);
+  background-color: rgba(250, 250, 250, 0.95);
   border-radius: 0.25rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 6px rgb(0, 0, 0, 0.1);
   padding: 0.5rem;

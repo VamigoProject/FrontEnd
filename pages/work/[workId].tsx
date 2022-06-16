@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { ContentBox, Empty, ReviewPost } from 'components';
 import { workReviewApi } from 'utils/api';
-import { useUserStore } from 'stores';
+import { useUserStore, useOtherReviewStore, useSystemStore } from 'stores';
 import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
@@ -55,6 +55,9 @@ const Title = styled.div`
 `;
 
 const detail = () => {
+  const { startLoadingAction, endLoadingAction } = useSystemStore(
+    (state) => state,
+  );
   const { uid } = useUserStore((state) => state);
   const router = useRouter();
   const { workId } = router.query;
@@ -63,23 +66,25 @@ const detail = () => {
   const [workImage, setWorkImage] = useState<string | undefined>(undefined);
   const [workCategory, setWorkCategory] = useState<string>('');
 
-  const [reviews, setReviews] = useState<Array<Review>>([]);
+  const { reviewData, setReviewAction } = useOtherReviewStore((state) => state);
 
   const fetch = async () => {
     try {
       if (Array.isArray(workId) || workId === undefined) {
         throw 'Something was wrong';
       } else {
+        startLoadingAction();
         const response = await workReviewApi(uid!, parseInt(workId));
         const { workInfo, reviews } = response;
         setWorkName(workInfo.name);
         setWorkCategory(workInfo.category);
         workInfo.image ? setWorkImage(workInfo.image) : setWorkImage(undefined);
-        setReviews(reviews);
+        setReviewAction(reviews);
       }
     } catch (error) {
       alert(error);
     }
+    endLoadingAction();
   };
 
   useEffect(() => {
@@ -105,10 +110,14 @@ const detail = () => {
         </RightSize>
       </WorkWrapper>
 
-      {reviews.length === 0 && <Empty />}
-      {reviews.length !== 0 &&
-        reviews.map((review: Review) => (
-          <ReviewPost key={review.reviewId} review={review} />
+      {reviewData.length === 0 && <Empty />}
+      {reviewData.length !== 0 &&
+        reviewData.map((review: Review) => (
+          <ReviewPost
+            key={review.reviewId}
+            review={review}
+            store={useOtherReviewStore}
+          />
         ))}
     </>
   );

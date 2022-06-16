@@ -1,5 +1,5 @@
 import instance from './myAxios';
-import { Reply, Review, SearchMember, User } from 'utils/types';
+import { SearchMember } from 'utils/types';
 
 interface LoginData {
   uid: number;
@@ -261,7 +261,9 @@ const timelineApi = async (uid: number): Promise<Array<Review>> => {
   };
 
   const response = await instance.post('/home', body);
-  if (response.data === 'None') {
+  console.log(response);
+  console.log('??');
+  if (response.data === 'None' || response.data === null) {
     return [];
   } else {
     return response.data;
@@ -308,6 +310,11 @@ const trendApi = async (): Promise<Array<Work>> => {
 const workReviewApi = async (uid: number, workId: number) => {
   const body = { uid, workId };
   const response = await instance.post('/work/search', body);
+
+  if (response.data.reviews === null) {
+    response.data.reviews = [];
+  }
+
   return response.data;
 };
 

@@ -1,6 +1,6 @@
 import { ProfileLayout } from 'components/layout';
 import { useEffect } from 'react';
-import { useUserStore, useSystemStore, useReviewStore } from 'stores';
+import { useUserStore, useSystemStore, useOtherReviewStore } from 'stores';
 import { myreviewApi } from 'utils/api';
 import { ReviewPost, Empty } from 'components';
 
@@ -10,7 +10,7 @@ const myreview = () => {
     (state) => state,
   );
 
-  const { reviewData, setReviewAction } = useReviewStore((state) => state);
+  const { reviewData, setReviewAction } = useOtherReviewStore((state) => state);
 
   const fetch = async () => {
     startLoadingAction();
@@ -44,7 +44,11 @@ const myreview = () => {
       {reviewData.length === 0 && <Empty />}
       {reviewData.length !== 0 &&
         reviewData.map((review) => (
-          <ReviewPost key={review.reviewId} review={review} />
+          <ReviewPost
+            key={review.reviewId}
+            review={review}
+            store={useOtherReviewStore}
+          />
         ))}
     </ProfileLayout>
   );

@@ -9,12 +9,14 @@ const Row = styled.div`
 
 interface Props {
   reviewId: number;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  store: Function;
 }
 
-const EmptyReply = ({ reviewId }: Props) => {
+const EmptyReply = ({ reviewId, store }: Props) => {
   return (
     <div>
-      <AddReply reviewId={reviewId} />
+      <AddReply reviewId={reviewId} store={store} />
       <Row>
         <DraftsIcon sx={{ fontSize: 25 }} />
         <span>댓글이 존재하지 않습니다</span>

@@ -6,6 +6,7 @@ interface Props {
   spoiler: boolean;
   // eslint-disable-next-line @typescript-eslint/ban-types
   onClose: Function;
+  store: Function;
 }
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -79,11 +80,12 @@ const EditReview = ({
   image,
   spoiler,
   onClose,
+  store,
 }: Props) => {
   const { startLoadingAction, endLoadingAction } = useSystemStore(
     (state) => state,
   );
-  const { updateReviewAction } = useReviewStore((state) => state);
+  const { updateReviewAction } = store((state) => state);
 
   const { uid, nickname, profile } = useUserStore((state) => state);
 

@@ -11,7 +11,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React, { useState } from 'react';
 import { ReviewReply, EmptyReply, EditReview } from 'components';
-import { useUserStore, useReviewStore } from 'stores';
+import { useUserStore } from 'stores';
 import ReportIcon from '@mui/icons-material/Report';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -20,6 +20,8 @@ import { useRouter } from 'next/router';
 
 interface Props {
   review: Review;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  store: Function;
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -120,7 +122,7 @@ const WorkWrapper = styled.span`
   }
 `;
 
-const ReviewPost = ({ review }: Props) => {
+const ReviewPost = ({ review, store }: Props) => {
   const router = useRouter();
   let {
     reviewId,
@@ -156,7 +158,7 @@ const ReviewPost = ({ review }: Props) => {
   }
 
   const myUid = useUserStore((state) => state.uid);
-  const { likeAction, unLikeAction, deleteReviewAction } = useReviewStore(
+  const { likeAction, unLikeAction, deleteReviewAction } = store(
     (state) => state,
   );
 
@@ -344,6 +346,7 @@ const ReviewPost = ({ review }: Props) => {
                       image={image}
                       spoiler={spoiler}
                       onClose={onCloseEdit}
+                      store={store}
                     />
                   </Dialog>
                 )}
@@ -359,13 +362,13 @@ const ReviewPost = ({ review }: Props) => {
           </FooterWrapper>
           <Padder>
             {isReplyOpened && reply?.length !== 0 && (
-              <ReviewReply reviewId={reviewId} reply={reply} />
+              <ReviewReply reviewId={reviewId} reply={reply} store={store} />
             )}
             {isReplyOpened && reply?.length === 0 && (
-              <EmptyReply reviewId={reviewId} />
+              <EmptyReply reviewId={reviewId} store={store} />
             )}
             {isReplyOpened && reply === null && (
-              <EmptyReply reviewId={reviewId} />
+              <EmptyReply reviewId={reviewId} store={store} />
             )}
           </Padder>
         </Wrapper>

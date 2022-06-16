@@ -17,6 +17,7 @@ export interface Review {
   uid: number;
   nickname: string;
   profile: string | null;
+  workdId: number;
   workName: string;
   workCategory: 'animation' | 'book' | 'drama' | 'movie';
   comment: string;

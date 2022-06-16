@@ -25,8 +25,12 @@ const Home = () => {
     <>
       {reviewData.length === 0 && <Empty></Empty>}
       {reviewData.length !== 0 &&
-        reviewData.map((review: Review) => (
-          <ReviewPost key={review.reviewId} review={review} />
+        reviewData.map((review) => (
+          <ReviewPost
+            key={review.reviewId}
+            review={review}
+            store={useReviewStore}
+          />
         ))}
     </>
   );

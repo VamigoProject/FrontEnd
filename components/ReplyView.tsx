@@ -11,6 +11,7 @@ import { deleteReplyApi } from 'utils/api';
 interface Props {
   reviewId: number;
   reply: any;
+  store: Function;
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -55,7 +56,7 @@ const TimeWrapper = styled.div`
   font-size: 0.75rem;
 `;
 
-const ReplyView = ({ reviewId, reply }: Props) => {
+const ReplyView = ({ reviewId, reply, store }: Props) => {
   const myUid = useUserStore((state) => state.uid);
 
   const { replyId, createDate, user, comment } = reply;
@@ -67,7 +68,7 @@ const ReplyView = ({ reviewId, reply }: Props) => {
   }
   const { uid, nickname, profile } = user;
 
-  const { deleteReplyAction } = useReviewStore((state) => state);
+  const { deleteReplyAction } = store((state) => state);
 
   const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState<boolean>(false);

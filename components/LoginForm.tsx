@@ -1,7 +1,12 @@
 import React from 'react';
 import { useInput } from 'hooks';
 import { useCallback } from 'react';
-import { useUserStore, useSystemStore } from 'stores';
+import {
+  useUserStore,
+  useSystemStore,
+  useOtherReviewStore,
+  useReviewStore,
+} from 'stores';
 import styled from 'styled-components';
 import { signinApi } from 'utils/api';
 import Router from 'next/router';
@@ -45,6 +50,11 @@ const LoginForm = () => {
   const [mail, onChangeMail] = useInput<string>('');
   const [password, onChangePassword] = useInput<string>('');
 
+  const { resetReviewAction } = useReviewStore((state) => state);
+  const resetOtherReviewAction = useOtherReviewStore(
+    (state) => state.resetReviewAction,
+  );
+
   const onSubmitLogin = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -72,8 +82,10 @@ const LoginForm = () => {
             refreshToken,
           );
         }
+        resetReviewAction();
+        resetOtherReviewAction();
         endLoadingAction();
-        Router.push('/home');
+        location.replace('/home');
       } catch (err) {
         endLoadingAction();
         alert(err);

@@ -2,7 +2,6 @@
 import { MY_REVIEW_STORE } from 'utils/statics';
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
-// import { Reply, Review, User } from 'utils/types';
 import produce from 'immer';
 
 interface ReviewStore {
@@ -40,7 +39,7 @@ interface ReviewStore {
   deleteReplyAction: (reviewId: number, replyId: number) => void;
 }
 
-const useReviewStore = create<ReviewStore>(
+const useOtherReviewStore = create<ReviewStore>(
   persist(
     (set, get) => ({
       reviewData: [],
@@ -186,4 +185,4 @@ const useReviewStore = create<ReviewStore>(
   ),
 );
 
-export default useReviewStore;
+export default useOtherReviewStore;

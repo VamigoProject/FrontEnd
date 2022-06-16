@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { TextField, Box, Button } from '@mui/material';
 import styled from 'styled-components';
 import ProfileWithNickname from 'components/common/ProfileWithNickname';
@@ -17,10 +18,11 @@ const ReplyField = styled(TextField)`
 
 interface Props {
   reviewId: number;
+  store: Function;
 }
 
-const AddReply = ({ reviewId }: Props) => {
-  const createReplyAction = useReviewStore((state) => state.createReplyAction);
+const AddReply = ({ reviewId, store }: Props) => {
+  const createReplyAction = store((state: any) => state.createReplyAction);
 
   const { profile, nickname } = useUserStore((state) => state);
   const myId = useUserStore((state) => state.uid);
