@@ -44,19 +44,25 @@ const TrendWrapper = styled.div<{ animation: ReturnType<typeof keyframes> }>`
   animation: ${(props) => props.animation} 0.75s ease-in-out 0s 1 normal;
 `;
 
+const Rating = styled.span`
+  font-size: 1.25rem;
+  width: 1.5rem;
+  color: #4caf50;
+`;
+
 const TextBox = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-left: 0.25rem;
-  font-size: 1.2rem;
+  color: rgb(92, 92, 92);
 `;
 
 const Trend = () => {
   const { trendData } = useTrendStore((state) => state);
   return (
     <Wrapper>
-      {trendData.map((trend: Work | undefined) => {
+      {trendData.map((trend: Work | undefined, index) => {
         if (!trend) {
           return <></>;
         } else {
@@ -64,13 +70,14 @@ const Trend = () => {
             <Link href={`/work/${trend.id}`} key={trend.id}>
               <a>
                 <TrendWrapper animation={PopUp}>
+                  <Rating>
+                    <strong>{index + 1}</strong>
+                  </Rating>
                   {trend.category === 'book' && <MenuBookIcon />}
                   {trend.category === 'movie' && <LocalMoviesIcon />}
                   {trend.category === 'drama' && <LiveTvIcon />}
                   {trend.category === 'animation' && <AnimationIcon />}
-                  <TextBox>
-                    <strong>{trend.name}</strong>
-                  </TextBox>
+                  <TextBox>{trend.name}</TextBox>
                 </TrendWrapper>
               </a>
             </Link>

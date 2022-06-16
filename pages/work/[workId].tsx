@@ -4,6 +4,10 @@ import { useRouter } from 'next/router';
 import { ContentBox, Empty, ReviewPost } from 'components';
 import { workReviewApi } from 'utils/api';
 import { useUserStore } from 'stores';
+import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import LiveTvIcon from '@mui/icons-material/LiveTv';
+import AnimationIcon from '@mui/icons-material/Animation';
 
 const Image = ({ src }: { src: string | undefined }) => {
   const [imageSrc, setImageSrc] = useState('');
@@ -15,9 +19,19 @@ const Image = ({ src }: { src: string | undefined }) => {
     if (src !== undefined) {
       setImageSrc(src);
     }
-  }, []);
+  }, [src]);
 
-  return <img src={imageSrc} onError={onError} width="128" />;
+  return (
+    <img
+      src={`data:image/png;base64, ${imageSrc}`}
+      onError={onError}
+      width="128"
+    />
+  );
+};
+
+const NoImage = () => {
+  return <img src={'/noImage.png'} width="128"></img>;
 };
 
 const WorkWrapper = styled(ContentBox)`
@@ -31,6 +45,13 @@ const LeftSize = styled.div`
 
 const RightSize = styled.div`
   padding: 8px;
+`;
+
+const Title = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
 `;
 
 const detail = () => {
@@ -50,7 +71,11 @@ const detail = () => {
         throw 'Something was wrong';
       } else {
         const response = await workReviewApi(uid!, parseInt(workId));
-        console.log(response);
+        const { workInfo, reviews } = response;
+        setWorkName(workInfo.name);
+        setWorkCategory(workInfo.category);
+        workInfo.image ? setWorkImage(workInfo.image) : setWorkImage(undefined);
+        setReviews(reviews);
       }
     } catch (error) {
       alert(error);
@@ -59,19 +84,24 @@ const detail = () => {
 
   useEffect(() => {
     if (!router.isReady) return;
-    setWorkName('테스트용');
-    setWorkImage(undefined);
+    fetch();
   }, [router.isReady, router.query.workId]);
 
   return (
     <>
       <WorkWrapper padding="4px">
         <LeftSize>
-          <Image src={workImage} />
+          {workImage ? <Image src={workImage} /> : <NoImage />}
         </LeftSize>
 
         <RightSize>
-          <h3>{workName}</h3>
+          <Title>
+            {workCategory === 'book' && <MenuBookIcon />}
+            {workCategory === 'movie' && <LocalMoviesIcon />}
+            {workCategory === 'drama' && <LiveTvIcon />}
+            {workCategory === 'animation' && <AnimationIcon />}
+            {workName}
+          </Title>
         </RightSize>
       </WorkWrapper>
 

@@ -210,7 +210,6 @@ const newReview = () => {
               onInputChange={(e, value) => onChangeWorkInput(e, value)}
               renderOption={(props, option) => (
                 <Box {...props} key={option.id} component="li">
-                  {option.name}
                   {option.category === 'movie' && (
                     <LocalMoviesIcon key={option.id} />
                   )}
@@ -226,6 +225,7 @@ const newReview = () => {
                   {option.category === 'game' && (
                     <SportsEsportsIcon key={option.id} />
                   )}
+                  {option.name}
                 </Box>
               )}
               renderInput={(params) => (

@@ -16,6 +16,7 @@ import ReportIcon from '@mui/icons-material/Report';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { deleteReviewApi, likeApi, unlikeApi } from 'utils/api';
+import { useRouter } from 'next/router';
 
 interface Props {
   review: Review;
@@ -113,13 +114,21 @@ const RightSpan = styled.span`
   width: 10%;
 `;
 
+const WorkWrapper = styled.span`
+  & > div {
+    cursor: pointer;
+  }
+`;
+
 const ReviewPost = ({ review }: Props) => {
+  const router = useRouter();
   let {
     reviewId,
     time,
     uid,
     nickname,
     profile,
+    workId,
     workName,
     workCategory,
     comment,
@@ -210,22 +219,6 @@ const ReviewPost = ({ review }: Props) => {
     }
   };
 
-  // let icon;
-  // switch (workCategory) {
-  //   case 'movie':
-  //     icon = <LocalMoviesIcon />;
-  //     break;
-  //   case 'book':
-  //     icon = <MenuBookIcon />;
-  //     break;
-  //   case 'drama':
-  //     icon = <LiveTvIcon />;
-  //     break;
-  //   case 'animation':
-  //     icon = <AnimationIcon />;
-  //     break;
-  // }
-
   return (
     <Container>
       <GlobalStyle />
@@ -264,18 +257,28 @@ const ReviewPost = ({ review }: Props) => {
                 <br />
               </>
             )}
-            {workCategory === 'book' && (
-              <Chip label={workName} size="small" icon={<MenuBookIcon />} />
-            )}
-            {workCategory === 'movie' && (
-              <Chip label={workName} size="small" icon={<LocalMoviesIcon />} />
-            )}
-            {workCategory === 'drama' && (
-              <Chip label={workName} size="small" icon={<LiveTvIcon />} />
-            )}
-            {workCategory === 'animation' && (
-              <Chip label={workName} size="small" icon={<AnimationIcon />} />
-            )}
+            <WorkWrapper
+              onClick={(e) => {
+                router.push(`/work/${workId}`);
+              }}
+            >
+              {workCategory === 'book' && (
+                <Chip label={workName} size="small" icon={<MenuBookIcon />} />
+              )}
+              {workCategory === 'movie' && (
+                <Chip
+                  label={workName}
+                  size="small"
+                  icon={<LocalMoviesIcon />}
+                />
+              )}
+              {workCategory === 'drama' && (
+                <Chip label={workName} size="small" icon={<LiveTvIcon />} />
+              )}
+              {workCategory === 'animation' && (
+                <Chip label={workName} size="small" icon={<AnimationIcon />} />
+              )}
+            </WorkWrapper>
           </Padder>
           <FooterWrapper>
             <IconWrapper>

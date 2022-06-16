@@ -19,6 +19,7 @@ interface Review {
   uid: number;
   nickname: string;
   profile: string | null;
+  workId: string;
   workName: string;
   workCategory: category;
   comment: string;
