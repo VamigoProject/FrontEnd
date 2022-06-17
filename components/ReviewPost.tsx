@@ -60,6 +60,12 @@ const HeaderLine = styled.div`
   justify-content: space-between;
 `;
 
+const ProfileWrapper = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const TimeSpan = styled.span`
   width: 12rem;
   text-align: right;
@@ -228,11 +234,13 @@ const ReviewPost = ({ review, store }: Props) => {
         <Wrapper>
           <Padder>
             <HeaderLine>
-              <ProfileWithNickname
-                nickname={nickname}
-                profile={profile}
-                size="medium"
-              />
+              <ProfileWrapper onClick={(e) => router.push(`/member/${uid}`)}>
+                <ProfileWithNickname
+                  nickname={nickname}
+                  profile={profile}
+                  size="medium"
+                />
+              </ProfileWrapper>
               <TimeSpan>
                 {[
                   time.getFullYear(),

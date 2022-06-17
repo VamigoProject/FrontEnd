@@ -64,12 +64,12 @@ const Trend = () => {
     <Wrapper>
       {trendData.map((trend: Work | undefined, index) => {
         if (!trend) {
-          return <></>;
+          return <div key={index}></div>;
         } else {
           return (
             <Link href={`/work/${trend.id}`} key={trend.id}>
               <a>
-                <TrendWrapper animation={PopUp}>
+                <TrendWrapper animation={PopUp} key={trend.id}>
                   <Rating>
                     <strong>{index + 1}</strong>
                   </Rating>

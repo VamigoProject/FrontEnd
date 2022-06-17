@@ -1,4 +1,4 @@
-import { ProfileLayout } from 'components/layout';
+import { MyProfileLayout } from 'components/layout';
 import { ContentBox, ProfileWithNickname } from 'components/common';
 import { Empty } from 'components';
 import { useUserStore, useSystemStore } from 'stores';
@@ -98,7 +98,7 @@ const friend = () => {
   }, []);
 
   return (
-    <ProfileLayout>
+    <MyProfileLayout>
       <ContentBox padding="1rem">
         <Wrapper>
           <FollowWrapper>
@@ -141,7 +141,7 @@ const friend = () => {
           </FollowWrapper>
         </Wrapper>
       </ContentBox>
-    </ProfileLayout>
+    </MyProfileLayout>
   );
 };
 

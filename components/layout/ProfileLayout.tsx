@@ -69,36 +69,26 @@ const NavigationMenu = styled.span`
 `;
 
 interface Props {
+  targetId: number;
+  nickname: string;
+  profile: string | null;
+  introduce: string;
   children?: React.ReactNode;
 }
 
-const ProfileLayout = ({ children }: Props) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const onClickOpen = () => {
-    setOpen(true);
-  };
-
-  const onClickClose = () => {
-    setOpen(false);
-  };
-
-  //profile 에디트 둥근 부분
-  const EditBadge = () => {
-    return (
-      <EditCircle onClick={onClickOpen}>
-        <EditIcon />
-      </EditCircle>
-    );
-  };
-
-  const { nickname, profile, introduce } = useUserStore((state) => state);
-
+const ProfileLayout = ({
+  targetId,
+  nickname,
+  profile,
+  introduce,
+  children,
+}: Props) => {
   const onClickReview = () => {
-    Router.push('/member/profile/myreview');
+    Router.push(`/member/${targetId}/review`);
   };
 
   const onClickFriend = () => {
-    Router.push('/member/profile/friend');
+    Router.push(`/member/${targetId}/friend`);
   };
 
   return (
@@ -109,7 +99,6 @@ const ProfileLayout = ({ children }: Props) => {
             <Badge
               overlap="circular"
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              badgeContent={<EditBadge />}
             >
               <ProfileAvatar
                 size="xLarge"
@@ -137,16 +126,6 @@ const ProfileLayout = ({ children }: Props) => {
         </ContentBox>
       </Wrapper>
       <Body>{children}</Body>
-      {open && (
-        <Dialog
-          onClose={onClickClose}
-          width="25rem"
-          height="25rem"
-          title="프로필 수정"
-        >
-          <EditProfile />
-        </Dialog>
-      )}
     </>
   );
 };

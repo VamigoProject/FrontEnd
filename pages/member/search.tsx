@@ -6,9 +6,8 @@ import { searchMemberApi, followApi, unfollowApi } from 'utils/api';
 import { ContentBox } from 'components/common';
 import { Empty } from 'components';
 import styled from 'styled-components';
-import ProfileWithNickname from 'components/common/ProfileWithNickname';
+import { ProfileWithNickname } from 'components/common';
 import { Button } from '@mui/material';
-import { SearchMember } from 'utils/types';
 
 const MemberWrapper = styled.div`
   display: flex;
@@ -25,6 +24,9 @@ const ProfileWrapper = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 0.5rem;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const search = () => {
@@ -117,8 +119,12 @@ const search = () => {
       {!isQueryEmpty && memberList.length !== 0 && (
         <ContentBox padding="1rem">
           {memberList.map((member) => (
-            <MemberWrapper key={JSON.stringify(member)}>
-              <ProfileWrapper>
+            <MemberWrapper key={member.uid}>
+              <ProfileWrapper
+                onClick={(e) => {
+                  router.push(`/member/${member.uid}`);
+                }}
+              >
                 <ProfileWithNickname
                   nickname={member.nickname}
                   profile={member.profile}

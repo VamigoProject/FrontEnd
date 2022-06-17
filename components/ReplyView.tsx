@@ -7,10 +7,12 @@ import { useState } from 'react';
 import ReportIcon from '@mui/icons-material/Report';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteReplyApi } from 'utils/api';
+import { useRouter } from 'next/router';
 
 interface Props {
   reviewId: number;
   reply: any;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   store: Function;
 }
 
@@ -46,6 +48,12 @@ const HeaderLine = styled.div`
   justify-content: space-between;
 `;
 
+const ProfileWrapper = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const TimeIconWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -58,6 +66,7 @@ const TimeWrapper = styled.div`
 
 const ReplyView = ({ reviewId, reply, store }: Props) => {
   const myUid = useUserStore((state) => state.uid);
+  const router = useRouter();
 
   const { replyId, createDate, user, comment } = reply;
   let time;
@@ -99,11 +108,13 @@ const ReplyView = ({ reviewId, reply, store }: Props) => {
         <ContentBox opacity={0.3}>
           <Padder>
             <HeaderLine>
-              <ProfileWithNickname
-                nickname={nickname}
-                profile={profile}
-                size="small"
-              />
+              <ProfileWrapper onClick={(e) => router.push(`/member/${uid}`)}>
+                <ProfileWithNickname
+                  nickname={nickname}
+                  profile={profile}
+                  size="small"
+                />
+              </ProfileWrapper>
               <TimeIconWrapper>
                 <TimeWrapper>
                   {[

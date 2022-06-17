@@ -1,4 +1,4 @@
-import { ProfileLayout } from 'components/layout';
+import { MyProfileLayout } from 'components/layout';
 import { useEffect } from 'react';
 import { useUserStore, useSystemStore, useOtherReviewStore } from 'stores';
 import { myreviewApi } from 'utils/api';
@@ -33,14 +33,14 @@ const myreview = () => {
 
   if (!reviewData) {
     return (
-      <ProfileLayout>
+      <MyProfileLayout>
         <Empty />
-      </ProfileLayout>
+      </MyProfileLayout>
     );
   }
 
   return (
-    <ProfileLayout>
+    <MyProfileLayout>
       {reviewData.length === 0 && <Empty />}
       {reviewData.length !== 0 &&
         reviewData.map((review) => (
@@ -50,7 +50,7 @@ const myreview = () => {
             store={useOtherReviewStore}
           />
         ))}
-    </ProfileLayout>
+    </MyProfileLayout>
   );
 };
 

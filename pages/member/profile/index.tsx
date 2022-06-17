@@ -1,7 +1,7 @@
-import { ProfileLayout } from 'components/layout';
+import { MyProfileLayout } from 'components/layout';
 
 const index = () => {
-  return <ProfileLayout />;
+  return <MyProfileLayout />;
 };
 
 export default index;
