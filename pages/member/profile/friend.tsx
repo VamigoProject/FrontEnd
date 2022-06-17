@@ -5,6 +5,7 @@ import { useUserStore, useSystemStore } from 'stores';
 import styled from 'styled-components';
 import { useEffect } from 'react';
 import { myFriendApi } from 'utils/api';
+import { useRouter } from 'next/router';
 
 const Wrapper = styled.div`
   display: flex;
@@ -71,6 +72,8 @@ const ProfileWrapper = styled.div`
 `;
 
 const friend = () => {
+  const router = useRouter();
+
   const { uid } = useUserStore((state) => state);
   const { startLoadingAction, endLoadingAction } = useSystemStore(
     (state) => state,
@@ -108,7 +111,12 @@ const friend = () => {
             <FollowBody>
               {follower.length === 0 && <Empty message="팔로워가 없습니다" />}
               {follower.map((f, i) => (
-                <ProfileWrapper key={f.uid + '_' + i}>
+                <ProfileWrapper
+                  key={f.uid + '_' + i}
+                  onClick={(e) => {
+                    router.push(`/member/${f.uid}`);
+                  }}
+                >
                   <ProfileWithNickname
                     key={f.uid + '_' + i}
                     nickname={f.nickname}
@@ -128,7 +136,12 @@ const friend = () => {
                 <Empty message="팔로우하고 있는 사람이 없습니다" />
               )}
               {following.map((f, i) => (
-                <ProfileWrapper key={f.uid + '_' + i}>
+                <ProfileWrapper
+                  key={f.uid + '_' + i}
+                  onClick={(e) => {
+                    router.push(`/member/${f.uid}`);
+                  }}
+                >
                   <ProfileWithNickname
                     key={f.uid + '_' + i}
                     nickname={f.nickname}

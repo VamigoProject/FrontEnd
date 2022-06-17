@@ -70,7 +70,10 @@ const search = () => {
   }, [router.isReady, router.query.nickname]);
 
   const onClickFollow = async (
-    e: MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: MouseEvent<
+      HTMLButtonElement,
+      MouseEvent<Element, MouseEvent<Element, MouseEvent>>
+    >,
     myUid: number,
     targetUid: number,
   ) => {
@@ -92,7 +95,10 @@ const search = () => {
   };
 
   const onClickUnfollow = async (
-    e: MouseEvent<HTMLButtonElement, MouseEvent<Element, MouseEvent>>,
+    e: MouseEvent<
+      HTMLButtonElement,
+      MouseEvent<Element, MouseEvent<Element, MouseEvent>>
+    >,
     myUid: number,
     targetUid: number,
   ) => {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { MY_REVIEW_STORE } from 'utils/statics';
+import { OTHER_REVIEW_STORE } from 'utils/statics';
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import produce from 'immer';
@@ -179,7 +179,7 @@ const useOtherReviewStore = create<ReviewStore>(
       },
     }),
     {
-      name: MY_REVIEW_STORE,
+      name: OTHER_REVIEW_STORE,
       getStorage: () => localStorage,
     },
   ),

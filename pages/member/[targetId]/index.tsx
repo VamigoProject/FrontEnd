@@ -1,53 +1,57 @@
 import { useUserStore } from 'stores';
 import { useRouter } from 'next/router';
-import { ProfileLayout } from 'components';
-import { NextPageContext } from 'next';
-import { useEffect } from 'react';
+import { ProfileLayout } from 'components/layout';
+import { useEffect, useState, useRef } from 'react';
+import { memberProfileApi } from 'utils/api';
 
-interface MemberTypes {
-  user: {
-    targetId: number;
-    nickname: string;
-    profile: string | null;
-    introduce: string;
-  };
-}
-
-const member = ({ user }: MemberTypes) => {
-  const { uid } = useUserStore((state) => state);
+const member = () => {
   const router = useRouter();
+
+  const { uid } = useUserStore((state) => state);
+  const [targetId, setTargetId] = useState<number>(0);
+  const [nickname, setNickname] = useState<string>('');
+  const [profile, setProfile] = useState<string | null>('');
+  const [introduce, setIntroduce] = useState<string>('');
+  const [isFollower, setIsFollower] = useState<boolean>(false);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+
+  const fetch = async (targetId: number) => {
+    try {
+      const response = await memberProfileApi(uid!, targetId);
+      setNickname(response.nickname);
+      setProfile(response.profile);
+      setIntroduce(response.introduce);
+      setIsFollower(response.isFollower);
+      setIsFollowing(response.isFollowing);
+      setTargetId(targetId);
+    } catch (error) {
+      alert(error);
+      router.replace('/home');
+    }
+  };
 
   useEffect(() => {
     if (!router.isReady) return;
-    if (
-      typeof router.query.targetId === 'string' &&
-      uid === parseInt(router.query.targetId)
-    ) {
-      router.replace(`/member/profile`);
+    if (typeof router.query.targetId === 'string') {
+      if (uid === parseInt(router.query.targetId)) {
+        router.replace(`/member/profile`);
+      } else {
+        fetch(parseInt(router.query.targetId));
+      }
     }
-  }, [router.isReady, router.query.targetID]);
+  }, [router.isReady, router.query.targetId]);
 
   return (
     <ProfileLayout
-      targetId={user.targetId}
-      nickname={user.nickname}
-      profile={user.profile}
-      introduce={user.introduce}
+      targetId={targetId}
+      nickname={nickname}
+      profile={profile}
+      introduce={introduce}
+      isFollower={isFollower}
+      isFollowing={isFollowing}
+      setIsFollowing={setIsFollowing}
     />
   );
 };
-
-export async function getServerSideProps(context: NextPageContext) {
-  const { targetId } = context.query;
-
-  const user = {
-    targetId: targetId,
-    nickname: `테스트 닉네임 - ${targetId}`,
-    profile: null,
-    introduce: '테스트용 자기소개',
-  };
-
-  return { props: { user } };
-}
 
 export default member;

@@ -261,8 +261,6 @@ const timelineApi = async (uid: number): Promise<Array<Review>> => {
   };
 
   const response = await instance.post('/home', body);
-  console.log(response);
-  console.log('??');
   if (response.data === 'None' || response.data === null) {
     return [];
   } else {
@@ -318,6 +316,27 @@ const workReviewApi = async (uid: number, workId: number) => {
   return response.data;
 };
 
+const memberProfileApi = async (uid: number, targetId: number) => {
+  const body = { uid };
+  const response = await instance.post(`/member/${targetId}/profile`, body);
+
+  return response.data;
+};
+
+const memberFriendApi = async(uid:number, targetId: number) => {
+  const body = {uid}
+  const response = await instance.post(`/member/${targetId}/friend`, body)
+
+  return response.data
+}
+
+const memberReviewApi = async (uid: number, targetId: number) => {
+  const body = { uid };
+  const response = await instance.post(`/member/${targetId}/review`, body);
+
+  return response.data;
+};
+
 export {
   searchWorkApi,
   createReviewApi,
@@ -344,4 +363,7 @@ export {
   passwordForgetApi,
   trendApi,
   workReviewApi,
+  memberProfileApi,
+  memberFriendApi,
+  memberReviewApi,
 };
