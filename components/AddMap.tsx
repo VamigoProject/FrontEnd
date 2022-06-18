@@ -50,6 +50,7 @@ const AddMap = ({
         setLat(e.coord.x);
         setLng(e.coord.y);
         setIsLocationAdded(true);
+        alert('위치정보가 저장되었습니다');
       });
     };
     initMap();

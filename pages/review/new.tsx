@@ -104,6 +104,7 @@ const newReview = () => {
   };
   const onClickRemoveLocation = () => {
     setIsLocationAdded(false);
+    alert('위치정보가 삭제되었습니다');
   };
 
   const onChangeSpoiler = () => {

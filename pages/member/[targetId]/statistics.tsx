@@ -64,19 +64,24 @@ const statistics = () => {
       isFollowing={isFollowing}
       setIsFollowing={setIsFollowing}
     >
-      <IndividualStatistics>
-        <ContentBox padding="1rem">
-          <h3 style={{ margin: '0' }}>개인 통계</h3>
-          <ResponsivePie
-            data={individual}
-            margin={{ top: 20, right: 20, bottom: 50, left: 20 }}
-            sortByValue={true}
-            innerRadius={0.05}
-            padAngle={1}
-            cornerRadius={2}
-          />
-        </ContentBox>
-      </IndividualStatistics>
+      {individual.length === 0 && (
+        <Empty message="통계를 낼 데이터가 존재하지 않습니다" />
+      )}
+      {individual.length !== 0 && (
+        <IndividualStatistics>
+          <ContentBox padding="1rem">
+            <h3 style={{ margin: '0' }}>개인 통계</h3>
+            <ResponsivePie
+              data={individual}
+              margin={{ top: 20, right: 20, bottom: 50, left: 20 }}
+              sortByValue={true}
+              innerRadius={0.05}
+              padAngle={1}
+              cornerRadius={2}
+            />
+          </ContentBox>
+        </IndividualStatistics>
+      )}
     </ProfileLayout>
   );
 };
