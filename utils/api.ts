@@ -227,8 +227,8 @@ const myFriendApi = async (
 
 const mylikeApi = async (uid: number) => {
   const body = { uid };
-  const response = await instance.post('/member/profile/mylike', body);
-  return response.data;
+  const response = await instance.post('/member/profile/like', body);
+  return response.data.reviews;
 };
 
 const searchMemberApi = async (

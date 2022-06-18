@@ -10,8 +10,7 @@ import { Loading } from 'components';
 import { AppLayout, FullPageLoading } from 'components/layout';
 import { useRouter } from 'next/router';
 // import createContext from 'zustand/context';
-import { trendApi } from 'utils/api';
-import { useInterval } from 'hooks';
+import { trendApi, myProfileApi } from 'utils/api';
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   // const { Provider: Provider1, useStore: userStore } = createContext();
@@ -19,7 +18,7 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   const router = useRouter();
   const [isAppLoading, setIsAppLoading] = useState<boolean>(true);
 
-  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const { isLoggedIn, uid, updateAction } = useUserStore((state) => state);
   const { setTrend, clearTrend } = useTrendStore((state) => state);
 
   const { themeMode, isLoading } = useSystemStore((state) => state);
@@ -77,6 +76,19 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
       fetch();
     }
   }, []);
+
+  const updateFetch = async () => {
+    try {
+      const { nickname, profile, introduce } = await myProfileApi(uid!);
+      updateAction(nickname, profile, introduce);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  useEffect(() => {
+    updateFetch();
+  }, [router.pathname]);
 
   const CommonLayout = (children: React.ReactNode) => {
     return (
