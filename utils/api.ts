@@ -180,6 +180,13 @@ const updateProfileApi = async (
   await instance.post('/member/profile/update', body);
 };
 
+const myProfileApi = async (uid: number) => {
+  const body = { uid };
+  const response = await instance.post('/member/profile/myprofile', body);
+
+  return response.data;
+};
+
 const myreviewApi = async (uid: number): Promise<Array<Review>> => {
   const body = {
     uid,
@@ -343,12 +350,12 @@ const memberReviewApi = async (uid: number, targetId: number) => {
   return response.data;
 };
 
-const memberLikeApi = async(uid: number, targetId: number) => {
-  const body = {uid}
-  const response = await instance.post(`/member/${targetId}/like`, body)
+const memberLikeApi = async (uid: number, targetId: number) => {
+  const body = { uid };
+  const response = await instance.post(`/member/${targetId}/like`, body);
 
   return response.data;
-}
+};
 
 export {
   searchWorkApi,
@@ -364,6 +371,7 @@ export {
   likeApi,
   unlikeApi,
   updateProfileApi,
+  myProfileApi,
   myreviewApi,
   myFriendApi,
   mylikeApi,
@@ -380,5 +388,5 @@ export {
   memberProfileApi,
   memberFriendApi,
   memberReviewApi,
-  memberLikeApi
+  memberLikeApi,
 };
