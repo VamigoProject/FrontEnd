@@ -33,14 +33,14 @@ const like = () => {
 
   if (!reviewData) {
     return (
-      <MyProfileLayout>
+      <MyProfileLayout current={2}>
         <Empty />
       </MyProfileLayout>
     );
   }
 
   return (
-    <MyProfileLayout>
+    <MyProfileLayout current={2}>
       {reviewData.length === 0 && <Empty />}
       {reviewData.length !== 0 &&
         reviewData.map((review) => (

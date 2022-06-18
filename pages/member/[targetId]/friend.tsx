@@ -126,6 +126,7 @@ const friend = () => {
       isFollower={isFollower}
       isFollowing={isFollowing}
       setIsFollowing={setIsFollowing}
+      current={0}
     >
       <ContentBox padding="1rem">
         <Wrapper>

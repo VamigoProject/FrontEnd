@@ -33,14 +33,14 @@ const myreview = () => {
 
   if (!reviewData) {
     return (
-      <MyProfileLayout>
+      <MyProfileLayout current={1}>
         <Empty />
       </MyProfileLayout>
     );
   }
 
   return (
-    <MyProfileLayout>
+    <MyProfileLayout current={1}>
       {reviewData.length === 0 && <Empty />}
       {reviewData.length !== 0 &&
         reviewData.map((review) => (

@@ -101,7 +101,7 @@ const friend = () => {
   }, []);
 
   return (
-    <MyProfileLayout>
+    <MyProfileLayout current={0}>
       <ContentBox padding="1rem">
         <Wrapper>
           <FollowWrapper>

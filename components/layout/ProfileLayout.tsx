@@ -53,15 +53,20 @@ const Navigation = styled.div`
   justify-content: space-between;
 `;
 
-const NavigationMenu = styled.span`
+interface NavigationMenuTypes {
+  background: string;
+}
+
+const NavigationMenu = styled.span<NavigationMenuTypes>`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 25%;
   height: 2.8rem;
+  background-color: ${(props) => props.background};
   &:hover {
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(76, 175, 80, 0.5);
   }
 `;
 
@@ -74,6 +79,7 @@ interface Props {
   isFollowing: boolean;
   // eslint-disable-next-line @typescript-eslint/ban-types
   setIsFollowing: Function;
+  current: number;
   children?: React.ReactNode;
 }
 
@@ -85,6 +91,7 @@ const ProfileLayout = ({
   isFollower,
   isFollowing,
   setIsFollowing,
+  current,
   children,
 }: Props) => {
   const router = useRouter();
@@ -187,16 +194,36 @@ const ProfileLayout = ({
             </RightSide>
           </Row>
           <Navigation>
-            <NavigationMenu onClick={onClickFriend}>
+            <NavigationMenu
+              onClick={onClickFriend}
+              background={
+                current === 0 ? 'rgba(76, 175, 80, 0.8)' : 'rgb(255, 255, 255)'
+              }
+            >
               <h4>친구보기</h4>
             </NavigationMenu>
-            <NavigationMenu onClick={onClickReview}>
+            <NavigationMenu
+              onClick={onClickReview}
+              background={
+                current === 1 ? 'rgba(76, 175, 80, 0.8)' : 'rgb(255, 255, 255)'
+              }
+            >
               <h4>리뷰</h4>
             </NavigationMenu>
-            <NavigationMenu onClick={onClickLike}>
+            <NavigationMenu
+              onClick={onClickLike}
+              background={
+                current === 2 ? 'rgba(76, 175, 80, 0.8)' : 'rgb(255, 255, 255)'
+              }
+            >
               <h4>좋아요</h4>
             </NavigationMenu>
-            <NavigationMenu onClick={onClickStatistics}>
+            <NavigationMenu
+              onClick={onClickStatistics}
+              background={
+                current === 3 ? 'rgba(76, 175, 80, 0.8)' : 'rgb(255, 255, 255)'
+              }
+            >
               <h4>통계</h4>
             </NavigationMenu>
           </Navigation>

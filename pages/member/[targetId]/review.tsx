@@ -55,6 +55,7 @@ const review = () => {
       isFollower={isFollower}
       isFollowing={isFollowing}
       setIsFollowing={setIsFollowing}
+      current={1}
     >
       {!reviewData && <Empty />}
       {reviewData && reviewData.length === 0 && <Empty />}

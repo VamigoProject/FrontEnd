@@ -63,6 +63,7 @@ const statistics = () => {
       isFollower={isFollower}
       isFollowing={isFollowing}
       setIsFollowing={setIsFollowing}
+      current={3}
     >
       {individual.length === 0 && (
         <Empty message="통계를 낼 데이터가 존재하지 않습니다" />

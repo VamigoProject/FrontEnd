@@ -29,7 +29,7 @@ const statistics = () => {
   }, []);
 
   return (
-    <MyProfileLayout>
+    <MyProfileLayout current={3}>
       {individual.length === 0 && (
         <Empty message="통계를 낼 데이터가 존재하지 않습니다" />
       )}
