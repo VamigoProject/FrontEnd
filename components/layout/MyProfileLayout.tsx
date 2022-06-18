@@ -101,6 +101,10 @@ const MyProfileLayout = ({ children }: Props) => {
     Router.push('/member/profile/friend');
   };
 
+  const onClickLike = () => {
+    Router.push('/member/profile/like');
+  };
+
   return (
     <>
       <Wrapper>
@@ -130,7 +134,7 @@ const MyProfileLayout = ({ children }: Props) => {
             <NavigationMenu onClick={onClickReview}>
               <h4>리뷰</h4>
             </NavigationMenu>
-            <NavigationMenu>
+            <NavigationMenu onClick={onClickLike}>
               <h4>좋아요</h4>
             </NavigationMenu>
           </Navigation>

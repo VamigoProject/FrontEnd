@@ -218,6 +218,12 @@ const myFriendApi = async (
   return response.data;
 };
 
+const mylikeApi = async (uid: number) => {
+  const body = { uid };
+  const response = await instance.post('/member/profile/mylike', body);
+  return response.data;
+};
+
 const searchMemberApi = async (
   uid: number,
   nickname: string,
@@ -323,12 +329,12 @@ const memberProfileApi = async (uid: number, targetId: number) => {
   return response.data;
 };
 
-const memberFriendApi = async(uid:number, targetId: number) => {
-  const body = {uid}
-  const response = await instance.post(`/member/${targetId}/friend`, body)
+const memberFriendApi = async (uid: number, targetId: number) => {
+  const body = { uid };
+  const response = await instance.post(`/member/${targetId}/friend`, body);
 
-  return response.data
-}
+  return response.data;
+};
 
 const memberReviewApi = async (uid: number, targetId: number) => {
   const body = { uid };
@@ -353,6 +359,7 @@ export {
   updateProfileApi,
   myreviewApi,
   myFriendApi,
+  mylikeApi,
   searchMemberApi,
   followApi,
   unfollowApi,
