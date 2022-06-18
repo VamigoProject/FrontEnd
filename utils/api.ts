@@ -343,6 +343,13 @@ const memberReviewApi = async (uid: number, targetId: number) => {
   return response.data;
 };
 
+const memberLikeApi = async(uid: number, targetId: number) => {
+  const body = {uid}
+  const response = await instance.post(`/member/${targetId}/like`, body)
+
+  return response.data;
+}
+
 export {
   searchWorkApi,
   createReviewApi,
@@ -373,4 +380,5 @@ export {
   memberProfileApi,
   memberFriendApi,
   memberReviewApi,
+  memberLikeApi
 };

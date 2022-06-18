@@ -98,6 +98,10 @@ const ProfileLayout = ({
     router.push(`/member/${targetId}/friend`);
   };
 
+  const onClickLike = () => {
+    router.push(`/member/${targetId}/like`);
+  };
+
   const onClickFollow = async (
     e: MouseEvent<HTMLElement>,
     uid: number,
@@ -185,7 +189,7 @@ const ProfileLayout = ({
             <NavigationMenu onClick={onClickReview}>
               <h4>리뷰</h4>
             </NavigationMenu>
-            <NavigationMenu>
+            <NavigationMenu onClick={onClickLike}>
               <h4>좋아요</h4>
             </NavigationMenu>
           </Navigation>
