@@ -47,3 +47,10 @@ interface SearchMember {
   isFollower: boolean;
   isFollowing: boolean;
 }
+
+interface IndividualStatistics {
+  id: string;
+  label: string;
+  value: number;
+  color?: string;
+}

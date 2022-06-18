@@ -106,7 +106,6 @@ const searchWorkWithImageApi = async (name: string) => {
   return filteredResult;
 };
 
-
 const createReviewApi = async (
   uid: number,
   comment: string,
@@ -254,6 +253,31 @@ const mylikeApi = async (uid: number) => {
   return response.data.reviews;
 };
 
+const myStatisticsApi = async (uid: number) => {
+  const body = { uid };
+  const response = await instance.post('/member/profile/statistics', body);
+
+  const min = Math.ceil(1);
+  const max = Math.ceil(255);
+
+  const pMin = Math.ceil(50);
+  const pMax = Math.ceil(100);
+
+  const { statisticsList } = response.data;
+  const result = statisticsList.map((s: IndividualStatistics) => {
+    return Object.create({
+      id: s.id,
+      label: s.label,
+      value: s.value,
+      color: `hsl(${Math.floor(Math.random() * (max - min)) + min}, ${
+        Math.floor(Math.random() * (pMax - pMin)) + pMin
+      }%, ${Math.floor(Math.random() * (pMax - pMin)) + pMin}%)`,
+    });
+  });
+
+  return result;
+};
+
 const searchMemberApi = async (
   uid: number,
   nickname: string,
@@ -300,7 +324,6 @@ const timelineApi = async (uid: number): Promise<Array<Review>> => {
   if (response.data === 'None' || response.data === null) {
     return [];
   } else {
-    console.log(response.data);
     return response.data;
   }
 };
@@ -381,6 +404,31 @@ const memberLikeApi = async (uid: number, targetId: number) => {
   return response.data;
 };
 
+const memberStatisticsApi = async (uid: number, targetId: number) => {
+  const body = { uid };
+  const response = await instance.post(`/member/${targetId}/statistics`, body);
+
+  const min = Math.ceil(1);
+  const max = Math.ceil(255);
+
+  const pMin = Math.ceil(50);
+  const pMax = Math.ceil(100);
+
+  const { user, statisticsList } = response.data;
+  const result = statisticsList.map((s: IndividualStatistics) => {
+    return Object.create({
+      id: s.id,
+      label: s.label,
+      value: s.value,
+      color: `hsl(${Math.floor(Math.random() * (max - min)) + min}, ${
+        Math.floor(Math.random() * (pMax - pMin)) + pMin
+      }%, ${Math.floor(Math.random() * (pMax - pMin)) + pMin}%)`,
+    });
+  });
+
+  return { user, result };
+};
+
 export {
   searchWorkApi,
   createReviewApi,
@@ -399,6 +447,7 @@ export {
   myreviewApi,
   myFriendApi,
   mylikeApi,
+  myStatisticsApi,
   searchMemberApi,
   searchWorkWithImageApi,
   followApi,
@@ -414,4 +463,5 @@ export {
   memberFriendApi,
   memberReviewApi,
   memberLikeApi,
+  memberStatisticsApi,
 };

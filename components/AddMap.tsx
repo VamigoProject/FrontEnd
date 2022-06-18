@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const MapWrapper = styled.div`
   width: 35rem;
   height: 35rem;
+  max-width: 100vw;
 `;
 
 interface AddMapTypes {

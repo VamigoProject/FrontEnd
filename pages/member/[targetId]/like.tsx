@@ -56,8 +56,10 @@ const review = () => {
       isFollowing={isFollowing}
       setIsFollowing={setIsFollowing}
     >
-      {reviewData.length === 0 && <Empty />}
-      {reviewData.length !== 0 &&
+      {!reviewData && <Empty />}
+      {reviewData && reviewData.length === 0 && <Empty />}
+      {reviewData &&
+        reviewData.length !== 0 &&
         reviewData.map((review) => (
           <ReviewPost
             key={review.reviewId}

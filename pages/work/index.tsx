@@ -28,7 +28,7 @@ const Image = ({ src }: { src: string | undefined }) => {
 };
 
 const NoImage = () => {
-  return <img src={'/noImage.png'} width="128"></img>;
+  return <img src={'/noImage.png'} height="86"></img>;
 };
 
 const WorkWrapper = styled.div`

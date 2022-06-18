@@ -1,10 +1,18 @@
-import { ProfileLayout, ReviewPost, Empty } from 'components';
-import { useUserStore, useOtherReviewStore } from 'stores';
+import { ProfileLayout, Empty } from 'components';
+import { ResponsivePie } from '@nivo/pie';
+import { ContentBox } from 'components';
+import { useUserStore } from 'stores';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { memberReviewApi } from 'utils/api';
+import { memberStatisticsApi } from 'utils/api';
+import styled from 'styled-components';
 
-const review = () => {
+const IndividualStatistics = styled.div`
+  width: 100%;
+  height: 20rem;
+`;
+
+const statistics = () => {
   const router = useRouter();
 
   const { uid } = useUserStore((state) => state);
@@ -15,11 +23,11 @@ const review = () => {
   const [isFollower, setIsFollower] = useState<boolean>(false);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
-  const { reviewData, setReviewAction } = useOtherReviewStore((state) => state);
+  const [individual, setIndividual] = useState<Array<IndividualStatistics>>([]);
 
   const fetch = async (targetId: number) => {
     try {
-      const { user, reviews } = await memberReviewApi(uid!, targetId);
+      const { user, result } = await memberStatisticsApi(uid!, targetId);
 
       setNickname(user.nickname);
       setProfile(user.profile);
@@ -28,7 +36,7 @@ const review = () => {
       setIsFollowing(user.isFollowing);
       setTargetId(targetId);
 
-      setReviewAction(reviews);
+      setIndividual(result);
     } catch (error) {
       alert(error);
       router.replace('/home');
@@ -56,19 +64,21 @@ const review = () => {
       isFollowing={isFollowing}
       setIsFollowing={setIsFollowing}
     >
-      {!reviewData && <Empty />}
-      {reviewData && reviewData.length === 0 && <Empty />}
-      {reviewData &&
-        reviewData.length !== 0 &&
-        reviewData.map((review) => (
-          <ReviewPost
-            key={review.reviewId}
-            review={review}
-            store={useOtherReviewStore}
+      <IndividualStatistics>
+        <ContentBox padding="1rem">
+          <h3 style={{ margin: '0' }}>개인 통계</h3>
+          <ResponsivePie
+            data={individual}
+            margin={{ top: 20, right: 20, bottom: 50, left: 20 }}
+            sortByValue={true}
+            innerRadius={0.05}
+            padAngle={1}
+            cornerRadius={2}
           />
-        ))}
+        </ContentBox>
+      </IndividualStatistics>
     </ProfileLayout>
   );
 };
 
-export default review;
+export default statistics;

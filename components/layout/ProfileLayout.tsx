@@ -57,7 +57,7 @@ const NavigationMenu = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 33%;
+  width: 25%;
   height: 2.8rem;
   &:hover {
     cursor: pointer;
@@ -100,6 +100,10 @@ const ProfileLayout = ({
 
   const onClickLike = () => {
     router.push(`/member/${targetId}/like`);
+  };
+
+  const onClickStatistics = () => {
+    router.push(`/member/${targetId}/statistics`);
   };
 
   const onClickFollow = async (
@@ -191,6 +195,9 @@ const ProfileLayout = ({
             </NavigationMenu>
             <NavigationMenu onClick={onClickLike}>
               <h4>좋아요</h4>
+            </NavigationMenu>
+            <NavigationMenu onClick={onClickStatistics}>
+              <h4>통계</h4>
             </NavigationMenu>
           </Navigation>
         </ContentBox>

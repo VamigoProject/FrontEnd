@@ -60,7 +60,7 @@ const NavigationMenu = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 33%;
+  width: 25%;
   height: 2.8rem;
   &:hover {
     cursor: pointer;
@@ -105,6 +105,10 @@ const MyProfileLayout = ({ children }: Props) => {
     Router.push('/member/profile/like');
   };
 
+  const onClickStatistics = () => {
+    Router.push('/member/profile/statistics');
+  };
+
   return (
     <>
       <Wrapper>
@@ -136,6 +140,9 @@ const MyProfileLayout = ({ children }: Props) => {
             </NavigationMenu>
             <NavigationMenu onClick={onClickLike}>
               <h4>좋아요</h4>
+            </NavigationMenu>
+            <NavigationMenu onClick={onClickStatistics}>
+              <h4>통계</h4>
             </NavigationMenu>
           </Navigation>
         </ContentBox>

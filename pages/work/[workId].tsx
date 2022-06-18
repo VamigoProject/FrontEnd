@@ -8,6 +8,7 @@ import LocalMoviesIcon from '@mui/icons-material/LocalMovies';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import AnimationIcon from '@mui/icons-material/Animation';
+import { Rating } from '@mui/material';
 
 const Image = ({ src }: { src: string | undefined }) => {
   const [imageSrc, setImageSrc] = useState('');
@@ -39,11 +40,11 @@ const WorkWrapper = styled(ContentBox)`
   flex-direction: row;
 `;
 
-const LeftSize = styled.div`
+const LeftSide = styled.div`
   width: 128px;
 `;
 
-const RightSize = styled.div`
+const RightSide = styled.div`
   padding: 8px;
 `;
 
@@ -65,6 +66,7 @@ const detail = () => {
   const [workName, setWorkName] = useState<string>('');
   const [workImage, setWorkImage] = useState<string | undefined>(undefined);
   const [workCategory, setWorkCategory] = useState<string>('');
+  const [workRating, setWorkRating] = useState<number>(0);
 
   const { reviewData, setReviewAction } = useOtherReviewStore((state) => state);
 
@@ -79,6 +81,7 @@ const detail = () => {
         setWorkName(workInfo.name);
         setWorkCategory(workInfo.category);
         workInfo.image ? setWorkImage(workInfo.image) : setWorkImage(undefined);
+        setWorkRating(workInfo.rating);
         setReviewAction(reviews);
       }
     } catch (error) {
@@ -95,11 +98,11 @@ const detail = () => {
   return (
     <>
       <WorkWrapper padding="4px">
-        <LeftSize>
+        <LeftSide>
           {workImage ? <Image src={workImage} /> : <NoImage />}
-        </LeftSize>
+        </LeftSide>
 
-        <RightSize>
+        <RightSide>
           <Title>
             {workCategory === 'book' && <MenuBookIcon />}
             {workCategory === 'movie' && <LocalMoviesIcon />}
@@ -107,7 +110,8 @@ const detail = () => {
             {workCategory === 'animation' && <AnimationIcon />}
             {workName}
           </Title>
-        </RightSize>
+          <Rating name="rating" value={workRating} readOnly precision={0.5} />
+        </RightSide>
       </WorkWrapper>
 
       {reviewData.length === 0 && <Empty />}
