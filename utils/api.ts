@@ -88,12 +88,33 @@ const searchWorkApi = async (name: string) => {
   return filteredResult;
 };
 
+const searchWorkWithImageApi = async (name: string) => {
+  const body = { fields: ['name'], searchTerm: name, size: 10 };
+  const response = await instance.post('/api/movie/image', body);
+  const result: Array<SearchWorkProps> = response.data.map((value: any) =>
+    Object.create({
+      id: value.id,
+      name: value.name,
+      image: value.image,
+      category: value.category,
+    }),
+  );
+
+  const filteredResult = result.filter((element, index) => {
+    return index === result.findIndex((v) => v.id === element.id);
+  });
+  return filteredResult;
+};
+
+
 const createReviewApi = async (
   uid: number,
   comment: string,
   workId: number | null,
   workName: string,
   workCategory: string,
+  lat: number | null,
+  lng: number | null,
   rating: number,
   spoiler: boolean,
 ) => {
@@ -106,6 +127,8 @@ const createReviewApi = async (
     workId,
     workName,
     workCategory,
+    lat,
+    lng,
     rating,
     spoiler,
   };
@@ -277,6 +300,7 @@ const timelineApi = async (uid: number): Promise<Array<Review>> => {
   if (response.data === 'None' || response.data === null) {
     return [];
   } else {
+    console.log(response.data);
     return response.data;
   }
 };
@@ -376,6 +400,7 @@ export {
   myFriendApi,
   mylikeApi,
   searchMemberApi,
+  searchWorkWithImageApi,
   followApi,
   unfollowApi,
   timelineApi,

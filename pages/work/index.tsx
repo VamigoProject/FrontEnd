@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import Router, { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useSystemStore } from 'stores';
-import { searchWorkApi } from 'utils/api';
+import { searchWorkWithImageApi } from 'utils/api';
 import { ContentBox, Empty } from 'components';
 import styled from 'styled-components';
 import Link from 'next/link';
@@ -16,14 +16,24 @@ const Image = ({ src }: { src: string | undefined }) => {
     if (src !== undefined) {
       setImageSrc(src);
     }
-  }, []);
+  }, [src]);
 
-  return <img src={imageSrc} onError={onError} width="64" />;
+  return (
+    <img
+      src={`data:image/png;base64, ${imageSrc}`}
+      onError={onError}
+      height="128"
+    />
+  );
+};
+
+const NoImage = () => {
+  return <img src={'/noImage.png'} width="128"></img>;
 };
 
 const WorkWrapper = styled.div`
   width: 100%;
-  height: 104px;
+  height: 150px;
   padding: 8px;
 
   display: flex;
@@ -74,10 +84,11 @@ const work = () => {
       ) {
         throw '검색어가 잘못 되었습니다';
       } else {
-        const response: Array<Work> = await searchWorkApi(
+        const response: Array<Work> = await searchWorkWithImageApi(
           router.query.workName!,
         );
         setWorkList(response);
+        console.log(response);
       }
     } catch (error) {
       alert(error);
@@ -107,7 +118,7 @@ const work = () => {
               <WorkBox>
                 <WorkWrapper>
                   <LeftSide>
-                    <Image src={work.image} />
+                    {work.image ? <Image src={work.image} /> : <NoImage />}
                   </LeftSide>
 
                   <RightSide>

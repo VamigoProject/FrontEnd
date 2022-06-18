@@ -23,6 +23,8 @@ interface Review {
   workName: string;
   workCategory: category;
   comment: string;
+  lat?: number | null;
+  lng?: number | null;
   rating: number;
   image: Array<string>;
   reply: Array<Reply>;

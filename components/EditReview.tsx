@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/ban-types */
 interface Props {
   reviewId: number;
   rating: number;
   comment: string;
   image: Array<string>;
   spoiler: boolean;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   onClose: Function;
   store: Function;
 }

@@ -1,3 +1,4 @@
+export { default as AddMap } from './AddMap';
 export { default as AddReply } from './AddReply';
 export { default as AppLayout } from './AddReply';
 export { default as ContentBox } from './common/ContentBox';
@@ -9,6 +10,7 @@ export { default as EmptyReply } from './EmptyReply';
 export { default as Header } from './layout/Header';
 export { default as ImageView } from './ImageView';
 export { default as Loading } from './common/Loading';
+export { default as LocationMap } from './LocationMap';
 export { default as LoginForm } from './LoginForm';
 export { default as Navigation } from './layout/Navigation';
 export { default as ProfileAvatar } from './common/ProfileAvatar';

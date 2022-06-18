@@ -10,13 +10,14 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React, { useState } from 'react';
-import { ReviewReply, EmptyReply, EditReview } from 'components';
+import { ReviewReply, EmptyReply, EditReview, LocationMap } from 'components';
 import { useUserStore } from 'stores';
 import ReportIcon from '@mui/icons-material/Report';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { deleteReviewApi, likeApi, unlikeApi } from 'utils/api';
 import { useRouter } from 'next/router';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 interface Props {
   review: Review;
@@ -140,6 +141,8 @@ const ReviewPost = ({ review, store }: Props) => {
     workName,
     workCategory,
     comment,
+    lat,
+    lng,
     rating,
     image,
     reply,
@@ -165,12 +168,14 @@ const ReviewPost = ({ review, store }: Props) => {
 
   const myUid = useUserStore((state) => state.uid);
   const { likeAction, unLikeAction, deleteReviewAction } = store(
-    (state) => state,
+    (state: any) => state,
   );
 
   const [isReplyOpened, setIsReplyOpened] = useState<boolean>(false);
   const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState<boolean>(false);
+
+  const [isMapOpened, setIsMapOpened] = useState<boolean>(false);
 
   const onClickList = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElement(event.currentTarget);
@@ -201,6 +206,11 @@ const ReviewPost = ({ review, store }: Props) => {
 
   const [isSpoiler, setIsSpoiler] = useState<boolean>(spoiler);
 
+  const onClickMap = () => {
+    setIsMapOpened((prev) => {
+      return !prev;
+    });
+  };
   const onClickSpoiler = () => {
     setIsSpoiler(false);
   };
@@ -289,6 +299,15 @@ const ReviewPost = ({ review, store }: Props) => {
                 <Chip label={workName} size="small" icon={<AnimationIcon />} />
               )}
             </WorkWrapper>
+            {lat && lng && (
+              <IconButton onClick={onClickMap}>
+                {!isMapOpened && <LocationOnIcon color="primary" />}
+                {isMapOpened && <LocationOnIcon />}
+              </IconButton>
+            )}
+            {lat && lng && isMapOpened && (
+              <LocationMap lat={lat} lng={lng}></LocationMap>
+            )}
           </Padder>
           <FooterWrapper>
             <IconWrapper>

@@ -9,12 +9,11 @@ import React, { useEffect, useState } from 'react';
 import { Loading } from 'components';
 import { AppLayout, FullPageLoading } from 'components/layout';
 import { useRouter } from 'next/router';
-// import createContext from 'zustand/context';
 import { trendApi, myProfileApi } from 'utils/api';
+import Head from 'next/head';
+import Script from 'next/script';
 
 function MyApp({ Component, pageProps, ...appProps }: AppProps) {
-  // const { Provider: Provider1, useStore: userStore } = createContext();
-
   const router = useRouter();
   const [isAppLoading, setIsAppLoading] = useState<boolean>(true);
 
@@ -87,13 +86,20 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   };
 
   useEffect(() => {
-    updateFetch();
+    if (isPrivate) updateFetch();
   }, [router.pathname]);
 
   const CommonLayout = (children: React.ReactNode) => {
     return (
       <>
-        {/* <Provider1 createStore={createUserStore}> */}
+        <Head>
+          <meta charSet="utf-8" />
+          <title>Vamigo</title>
+        </Head>
+        <Script
+          strategy="beforeInteractive"
+          src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.MAP_API_KEY}`}
+        />
         <mui.ThemeProvider theme={theme}>
           <ThemeProvider theme={styledtheme}>
             {isLoading && <Loading />}
@@ -106,7 +112,19 @@ function MyApp({ Component, pageProps, ...appProps }: AppProps) {
   };
 
   if ((isAppLoading || !isLoggedIn) && isPrivate) {
-    return <FullPageLoading />;
+    return (
+      <>
+        <Head>
+          <meta charSet="utf-8" />
+          <title>Vamigo</title>
+        </Head>
+        <Script
+          strategy="beforeInteractive"
+          src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.MAP_API_KEY}`}
+        />
+        <FullPageLoading />
+      </>
+    );
   }
   if (withoutAppLayoutPath.includes(appProps.router.pathname)) {
     return CommonLayout(<Component {...pageProps} />);

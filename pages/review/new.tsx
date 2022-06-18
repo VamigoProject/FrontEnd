@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ContentBox } from 'components/common';
+import { ContentBox, Dialog } from 'components/common';
 import { useInput } from 'hooks';
 import {
   Autocomplete,
@@ -20,10 +20,12 @@ import LiveTvIcon from '@mui/icons-material/LiveTv';
 import AnimationIcon from '@mui/icons-material/Animation';
 import ProfileWithNickname from 'components/common/ProfileWithNickname';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { SyntheticEvent, useState } from 'react';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import LocationOffIcon from '@mui/icons-material/LocationOff';
+import { SyntheticEvent, useState, useRef } from 'react';
 import { searchWorkApi, createReviewApi } from 'utils/api';
 import Router from 'next/router';
-import { useRef } from 'react';
+import { AddMap } from 'components';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -44,9 +46,10 @@ const CommentField = styled(TextField)`
 `;
 
 const WorkWrapper = styled.div`
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   width: 20rem;
-  height: 4rem;
+  height: 5.5rem;
 `;
 
 const Row = styled.div`
@@ -86,7 +89,22 @@ const newReview = () => {
   const [rating, onChangeRating] = useInput(0);
   const [spoiler, setSpoiler] = useState<boolean>(false);
 
+  const [isMapOpen, setIsMapOpen] = useState<boolean>(false);
+  const [lat, setLat] = useState<number>(0);
+  const [lng, setLng] = useState<number>(0);
+  const [isLocationAdded, setIsLocationAdded] = useState<boolean>(false);
+
   const timerId = useRef<any>();
+
+  const onClickMap = () => {
+    setIsMapOpen(true);
+  };
+  const onCloseMap = () => {
+    setIsMapOpen(false);
+  };
+  const onClickRemoveLocation = () => {
+    setIsLocationAdded(false);
+  };
 
   const onChangeSpoiler = () => {
     setSpoiler((prev: boolean) => !prev);
@@ -138,6 +156,8 @@ const newReview = () => {
         workId!,
         workName!,
         workCategory!,
+        isLocationAdded ? lat : null,
+        isLocationAdded ? lng : null,
         rating!,
         spoiler,
       );
@@ -150,6 +170,8 @@ const newReview = () => {
         workName!,
         workCategory!,
         comment,
+        isLocationAdded ? lat : null,
+        isLocationAdded ? lng : null,
         rating,
         [],
         spoiler,
@@ -198,42 +220,71 @@ const newReview = () => {
           </CommentWrapper>
           <br />
           <WorkWrapper>
-            <Autocomplete
-              disablePortal
-              id="work"
-              size="medium"
-              autoHighlight
-              // options={WorkList}
-              options={works}
-              getOptionLabel={(option) => option.name}
-              onChange={(e, value) => onChangeWork(e, value)}
-              onInputChange={(e, value) => onChangeWorkInput(e, value)}
-              renderOption={(props, option) => (
-                <Box {...props} key={option.id} component="li">
-                  {option.category === 'movie' && (
-                    <LocalMoviesIcon key={option.id} />
-                  )}
-                  {option.category === 'book' && (
-                    <MenuBookIcon key={option.id} />
-                  )}
-                  {option.category === 'drama' && (
-                    <LiveTvIcon key={option.id} />
-                  )}
-                  {option.category === 'animation' && (
-                    <AnimationIcon key={option.id} />
-                  )}
-                  {option.category === 'game' && (
-                    <SportsEsportsIcon key={option.id} />
-                  )}
-                  {option.name}
-                </Box>
+            <div style={{ width: '18rem' }}>
+              <Autocomplete
+                disablePortal
+                id="work"
+                size="medium"
+                autoHighlight
+                // options={WorkList}
+                options={works}
+                getOptionLabel={(option) => option.name}
+                onChange={(e, value) => onChangeWork(e, value)}
+                onInputChange={(e, value) => onChangeWorkInput(e, value)}
+                renderOption={(props, option) => (
+                  <Box {...props} key={option.id} component="li">
+                    {option.category === 'movie' && (
+                      <LocalMoviesIcon key={option.id} />
+                    )}
+                    {option.category === 'book' && (
+                      <MenuBookIcon key={option.id} />
+                    )}
+                    {option.category === 'drama' && (
+                      <LiveTvIcon key={option.id} />
+                    )}
+                    {option.category === 'animation' && (
+                      <AnimationIcon key={option.id} />
+                    )}
+                    {option.category === 'game' && (
+                      <SportsEsportsIcon key={option.id} />
+                    )}
+                    {option.name}
+                  </Box>
+                )}
+                renderInput={(params) => (
+                  <TextField {...params} label="작품 검색" />
+                )}
+              />
+            </div>
+            <div>
+              <IconButton onClick={onClickMap}>
+                <AddLocationAltIcon color="primary" fontSize="large" />
+              </IconButton>
+
+              {isLocationAdded && (
+                <IconButton onClick={onClickRemoveLocation}>
+                  <LocationOffIcon fontSize="large" />
+                </IconButton>
               )}
-              renderInput={(params) => (
-                <TextField {...params} label="작품 검색" />
-              )}
-            />
+            </div>
+            {isMapOpen && (
+              <Dialog
+                onClose={onCloseMap}
+                width="35rem"
+                height="40rem"
+                title="장소추가"
+              >
+                <AddMap
+                  lat={lat}
+                  lng={lng}
+                  setLat={setLat}
+                  setLng={setLng}
+                  isLocationAdded={isLocationAdded}
+                  setIsLocationAdded={setIsLocationAdded}
+                />
+              </Dialog>
+            )}
           </WorkWrapper>
-          <br />
           <Row>
             <span
               style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
@@ -243,6 +294,7 @@ const newReview = () => {
                 value={rating}
                 onChange={onChangeRating}
               />
+
               <FormControlLabel
                 label="스포일러"
                 control={

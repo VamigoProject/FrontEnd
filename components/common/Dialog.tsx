@@ -54,8 +54,8 @@ const Box = styled.div<BoxProps>`
   background-color: white;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  max-width: 100vw;
-  max-height: 100vh;
+  max-width: 85vw;
+  max-height: 85vh;
 `;
 
 const Title = styled.h2`

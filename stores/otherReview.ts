@@ -16,6 +16,8 @@ interface ReviewStore {
     workName: string,
     workCategory: string,
     comment: string,
+    lat: number | null,
+    lng: number | null,
     rating: number,
     image: Array<string>,
     spoiler: boolean,
@@ -65,9 +67,11 @@ const useOtherReviewStore = create<ReviewStore>(
         workName,
         workCategory,
         comment,
-        rating: number,
-        image: Array<string>,
-        spoiler: boolean,
+        lat,
+        lng,
+        rating,
+        image,
+        spoiler,
       ) => {
         set(
           produce((draft) => {
@@ -80,6 +84,8 @@ const useOtherReviewStore = create<ReviewStore>(
               workName: workName,
               workCategory: workCategory,
               comment: comment,
+              lat: lat,
+              lng: lng,
               rating: rating,
               image: image,
               reply: [],
