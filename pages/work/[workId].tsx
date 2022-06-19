@@ -50,7 +50,7 @@ const RightSide = styled.div`
 
 const Title = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   font-size: 1.25rem;
 `;

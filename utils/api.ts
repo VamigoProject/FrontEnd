@@ -404,29 +404,48 @@ const memberLikeApi = async (uid: number, targetId: number) => {
   return response.data;
 };
 
-const memberStatisticsApi = async (uid: number, targetId: number) => {
+interface RadarStatistics {
+  category: string;
+  me: number;
+  you: number;
+}
+
+const memberStatisticsApi = async (
+  uid: number,
+  targetId: number,
+  myNickname: string,
+) => {
   const body = { uid };
   const response = await instance.post(`/member/${targetId}/statistics`, body);
 
-  const min = Math.ceil(1);
-  const max = Math.ceil(255);
-
-  const pMin = Math.ceil(50);
-  const pMax = Math.ceil(100);
-
   const { user, statisticsList } = response.data;
-  const result = statisticsList.map((s: IndividualStatistics) => {
-    return Object.create({
-      id: s.id,
-      label: s.label,
-      value: s.value,
-      color: `hsl(${Math.floor(Math.random() * (max - min)) + min}, ${
-        Math.floor(Math.random() * (pMax - pMin)) + pMin
-      }%, ${Math.floor(Math.random() * (pMax - pMin)) + pMin}%)`,
-    });
+  const result = statisticsList.map((s: RadarStatistics) => {
+    const tmp: any = {};
+    tmp['category'] = s.category;
+    tmp[myNickname] = s.me;
+    tmp[user.nickname] = s.you;
+
+    return tmp;
   });
 
   return { user, result };
+};
+
+const memberDeleteApi = async (uid: number, password: string) => {
+  const body = { uid, password };
+  await instance.post('/member/delete', body);
+};
+
+const reportReviewApi = async (
+  uid: number,
+  reviewId: number,
+  spoiler: boolean,
+  ero: boolean,
+  curse: boolean,
+  etc: boolean,
+) => {
+  const body = { uid, reviewId, spoiler, ero, curse, etc };
+  await instance.post('/review/report', body);
 };
 
 export {
@@ -464,4 +483,6 @@ export {
   memberReviewApi,
   memberLikeApi,
   memberStatisticsApi,
+  memberDeleteApi,
+  reportReviewApi,
 };

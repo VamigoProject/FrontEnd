@@ -1,6 +1,6 @@
 import { ProfileWithNickname, ContentBox } from 'components/common';
 import styled, { createGlobalStyle } from 'styled-components';
-import { useUserStore, useReviewStore } from 'stores';
+import { useUserStore } from 'stores';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { useState } from 'react';

@@ -1,5 +1,5 @@
 import { ProfileLayout, Empty } from 'components';
-import { ResponsivePie } from '@nivo/pie';
+import { ResponsiveRadar } from '@nivo/radar';
 import { ContentBox } from 'components';
 import { useUserStore } from 'stores';
 import { useState, useEffect } from 'react';
@@ -16,6 +16,7 @@ const statistics = () => {
   const router = useRouter();
 
   const { uid } = useUserStore((state) => state);
+  const myNickname = useUserStore((state) => state.nickname);
   const [targetId, setTargetId] = useState<number>(0);
   const [nickname, setNickname] = useState<string>('');
   const [profile, setProfile] = useState<string | null>('');
@@ -23,11 +24,15 @@ const statistics = () => {
   const [isFollower, setIsFollower] = useState<boolean>(false);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
-  const [individual, setIndividual] = useState<Array<IndividualStatistics>>([]);
+  const [individual, setIndividual] = useState<Array<any>>([]);
 
   const fetch = async (targetId: number) => {
     try {
-      const { user, result } = await memberStatisticsApi(uid!, targetId);
+      const { user, result } = await memberStatisticsApi(
+        uid!,
+        targetId,
+        myNickname!,
+      );
 
       setNickname(user.nickname);
       setProfile(user.profile);
@@ -72,13 +77,32 @@ const statistics = () => {
         <IndividualStatistics>
           <ContentBox padding="1rem">
             <h3 style={{ margin: '0' }}>개인 통계</h3>
-            <ResponsivePie
+            <ResponsiveRadar
               data={individual}
-              margin={{ top: 20, right: 20, bottom: 50, left: 20 }}
-              sortByValue={true}
-              innerRadius={0.05}
-              padAngle={1}
-              cornerRadius={2}
+              keys={[myNickname!, nickname!]}
+              margin={{ top: 30, right: 20, bottom: 50, left: 20 }}
+              indexBy="category"
+              legends={[
+                {
+                  anchor: 'top-left',
+                  direction: 'column',
+                  translateX: 0,
+                  translateY: -10,
+                  itemWidth: 80,
+                  itemHeight: 20,
+                  itemTextColor: '#999',
+                  symbolSize: 12,
+                  symbolShape: 'circle',
+                  effects: [
+                    {
+                      on: 'hover',
+                      style: {
+                        itemTextColor: '#000',
+                      },
+                    },
+                  ],
+                },
+              ]}
             />
           </ContentBox>
         </IndividualStatistics>

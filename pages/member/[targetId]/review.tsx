@@ -20,7 +20,6 @@ const review = () => {
   const fetch = async (targetId: number) => {
     try {
       const { user, reviews } = await memberReviewApi(uid!, targetId);
-
       setNickname(user.nickname);
       setProfile(user.profile);
       setIntroduce(user.introduce);

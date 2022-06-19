@@ -7,6 +7,7 @@ import Router from 'next/router';
 import HomeIcon from '@mui/icons-material/Home';
 import EditIcon from '@mui/icons-material/Edit';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 
@@ -37,6 +38,28 @@ const NavigationRow = styled.div`
     transition-timing-function: ease-out;
     cursor: pointer;
     background-color: rgb(0, 0, 0, 0.1);
+  }
+`;
+
+const TrendNavigation = styled.div`
+  display: none;
+  align-items: center;
+  padding: 0.25rem;
+  margin-bottom: 0.25rem;
+  border-radius: 0.1rem;
+
+  transition-property: background-color;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-out;
+  &:hover {
+    transition-property: background-color;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out;
+    cursor: pointer;
+    background-color: rgb(0, 0, 0, 0.1);
+  }
+  @media screen and (max-width: 600px) {
+    display: flex;
   }
 `;
 
@@ -81,6 +104,10 @@ const Navigation = ({ handler }: NavigationTypes) => {
           <AccountBoxIcon className="icon" sx={{ fontSize: 32 }} />
           <strong>프로필</strong>
         </NavigationRow>
+        <TrendNavigation onClick={() => onClick('/trend')}>
+          <TrendingUpIcon className="icon" sx={{ fontSize: 32 }} />
+          <strong>트렌드</strong>
+        </TrendNavigation>
         <NavigationRow onClick={() => onClick('/setting')}>
           <SettingsIcon className="icon" sx={{ fontSize: 32 }} />
           <strong>설정</strong>

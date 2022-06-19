@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Dialog, ContentBox, PasswordChange } from 'components';
+import { Dialog, ContentBox, PasswordChange, DeleteMember } from 'components';
 import styled from 'styled-components';
 import LockResetIcon from '@mui/icons-material/LockReset';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 const HoverWrapper = styled.div`
   &:hover {
@@ -73,8 +74,21 @@ const setting = () => {
     setIsPasswordOpen(true);
   };
 
+  const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
+  const onDeleteClose = () => {
+    setIsDeleteOpen(false);
+  };
+  const onClickDelete = () => {
+    setIsDeleteOpen(true);
+  };
+
   return (
     <>
+      <Row onClick={onClickChangePassword}>
+        <LockResetIcon fontSize="large" />
+        <VerticalLine />
+        비밀번호 변경
+      </Row>
       {isPasswordOpen && (
         <Dialog
           onClose={onPasswordClose}
@@ -85,11 +99,21 @@ const setting = () => {
           <PasswordChange onClose={onPasswordClose} />
         </Dialog>
       )}
-      <Row onClick={onClickChangePassword}>
-        <LockResetIcon fontSize="large" />
+      <Row onClick={onClickDelete}>
+        <PersonRemoveIcon fontSize="large" />
         <VerticalLine />
-        비밀번호 변경
+        계정삭제
       </Row>
+      {isDeleteOpen && (
+        <Dialog
+          onClose={onDeleteClose}
+          width="20rem"
+          height="15rem"
+          title="계정삭제"
+        >
+          <DeleteMember onClose={onDeleteClose} />
+        </Dialog>
+      )}
     </>
   );
 };

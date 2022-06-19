@@ -10,7 +10,13 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import React, { useState } from 'react';
-import { ReviewReply, EmptyReply, EditReview, LocationMap } from 'components';
+import {
+  ReviewReply,
+  EmptyReply,
+  EditReview,
+  LocationMap,
+  ReportReview,
+} from 'components';
 import { useUserStore } from 'stores';
 import ReportIcon from '@mui/icons-material/Report';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -223,6 +229,14 @@ const ReviewPost = ({ review, store }: Props) => {
     }
   };
 
+  const [isReportOpen, setIsReportOpen] = useState<boolean>(false);
+  const onClickReport = () => {
+    setIsReportOpen(true);
+  };
+  const onCloseReport = () => {
+    setIsReportOpen(false);
+  };
+
   const onClickLike = async () => {
     try {
       if (isLiked) {
@@ -349,10 +363,24 @@ const ReviewPost = ({ review, store }: Props) => {
                 transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                 disableScrollLock={true}
               >
-                <MenuItem>
+                <MenuItem onClick={onClickReport}>
                   <ReportIcon style={{ marginRight: '0.5rem' }} />
                   신고
                 </MenuItem>
+                {isReportOpen && (
+                  <Dialog
+                    onClose={onCloseReport}
+                    width="15rem"
+                    height="20rem"
+                    title="신고하기"
+                  >
+                    <ReportReview
+                      onClose={onCloseReport}
+                      spoiler={spoiler}
+                      reviewId={reviewId}
+                    />
+                  </Dialog>
+                )}
                 {uid === myUid && (
                   <MenuItem onClick={onClickEdit}>
                     <EditIcon style={{ marginRight: '0.5rem' }} />

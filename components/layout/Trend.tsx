@@ -46,8 +46,9 @@ const TrendWrapper = styled.div<{ animation: ReturnType<typeof keyframes> }>`
 
 const Rating = styled.span`
   font-size: 1.25rem;
-  width: 1.5rem;
+  text-align: left;
   color: #4caf50;
+  margin-right: 0.5rem;
 `;
 
 const TextBox = styled.span`
