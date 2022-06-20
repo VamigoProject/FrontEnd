@@ -55,6 +55,26 @@ const Title = styled.div`
   font-size: 1.25rem;
 `;
 
+const Selected = styled.h3`
+  display: inline-block;
+  color: #4caf50;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const UnSelected = styled.h3`
+  display: inline-block;
+  color: black;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const detail = () => {
   const { startLoadingAction, endLoadingAction } = useSystemStore(
     (state) => state,
@@ -68,7 +88,68 @@ const detail = () => {
   const [workCategory, setWorkCategory] = useState<string>('');
   const [workRating, setWorkRating] = useState<number>(0);
 
-  const { reviewData, setReviewAction } = useOtherReviewStore((state) => state);
+  const [dateDown, setDateDown] = useState<boolean>(true);
+  const [dateUp, setDateUp] = useState<boolean>(false);
+  const [ratingDown, setRatingDown] = useState<boolean>(false);
+  const [ratingUp, setRatingUp] = useState<boolean>(false);
+
+  const { reviewData, setReviewAction, sortReviewAction } = useOtherReviewStore(
+    (state) => state,
+  );
+
+  const sortByDateUp = (a: Review, b: Review) => {
+    if (a.time > b.time) return 1;
+    if (a.time < b.time) return -1;
+    return 0;
+  };
+  const sortByDateDown = (a: Review, b: Review) => {
+    if (a.time < b.time) return 1;
+    if (a.time > b.time) return -1;
+    return 0;
+  };
+  const sortByRatingUp = (a: Review, b: Review) => {
+    if (a.rating < b.rating) return 1;
+    if (a.rating > b.rating) return -1;
+    return 0;
+  };
+  const sortByRatingDown = (a: Review, b: Review) => {
+    if (a.rating > b.rating) return 1;
+    if (a.rating < b.rating) return -1;
+    return 0;
+  };
+
+  const onClickSort = (
+    method: 'dateDown' | 'dateUp' | 'ratingDown' | 'ratingUp',
+  ) => {
+    if (method === 'dateDown') {
+      setDateDown(true);
+      setDateUp(false);
+      setRatingDown(false);
+      setRatingUp(false);
+      sortReviewAction(sortByDateDown);
+    }
+    if (method === 'dateUp') {
+      setDateDown(false);
+      setDateUp(true);
+      setRatingDown(false);
+      setRatingUp(false);
+      sortReviewAction(sortByDateUp);
+    }
+    if (method === 'ratingDown') {
+      setDateDown(false);
+      setDateUp(false);
+      setRatingDown(true);
+      setRatingUp(false);
+      sortReviewAction(sortByRatingUp);
+    }
+    if (method === 'ratingUp') {
+      setDateDown(false);
+      setDateUp(false);
+      setRatingDown(false);
+      setRatingUp(true);
+      sortReviewAction(sortByRatingDown);
+    }
+  };
 
   const fetch = async () => {
     try {
@@ -114,6 +195,30 @@ const detail = () => {
         </RightSide>
       </WorkWrapper>
 
+      <ContentBox padding="0.25rem">
+        {!dateDown && !dateUp && (
+          <UnSelected onClick={() => onClickSort('dateDown')}>
+            시간순▼
+          </UnSelected>
+        )}
+        {dateDown && (
+          <Selected onClick={() => onClickSort('dateUp')}>시간순▼</Selected>
+        )}
+        {dateUp && (
+          <Selected onClick={() => onClickSort('dateDown')}>시간순▲</Selected>
+        )}
+        {!ratingDown && !ratingUp && (
+          <UnSelected onClick={() => onClickSort('ratingDown')}>
+            별점순▼
+          </UnSelected>
+        )}
+        {ratingDown && (
+          <Selected onClick={() => onClickSort('ratingUp')}>별점순▼</Selected>
+        )}
+        {ratingUp && (
+          <Selected onClick={() => onClickSort('ratingDown')}>별점순▲</Selected>
+        )}
+      </ContentBox>
       {reviewData.length === 0 && <Empty />}
       {reviewData.length !== 0 &&
         reviewData.map((review: Review) => (

@@ -39,6 +39,8 @@ interface ReviewStore {
     comment: string,
   ) => void;
   deleteReplyAction: (reviewId: number, replyId: number) => void;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  sortReviewAction: (sortFunction: Function) => void;
 }
 
 const useOtherReviewStore = create<ReviewStore>(
@@ -180,6 +182,15 @@ const useOtherReviewStore = create<ReviewStore>(
             selectedReview.reply = selectedReview.reply.filter(
               (reply: Reply) => reply.replyId !== replyId,
             );
+          }),
+        );
+      },
+      sortReviewAction: (sortFunction) => {
+        set(
+          produce((draft) => {
+            const sortedReview: Array<Review> =
+              draft.reviewData.sort(sortFunction);
+            draft.reviewData = sortedReview;
           }),
         );
       },
