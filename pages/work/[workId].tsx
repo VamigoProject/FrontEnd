@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
