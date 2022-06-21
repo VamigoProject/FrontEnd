@@ -82,7 +82,7 @@ const EditProfile = () => {
       <FileUploader
         handleChange={onChangeFile}
         name="file"
-        types={['png', 'PNG']}
+        types={['png', 'PNG', 'jpg', 'JPG', 'jpeg', 'JPEG']}
         maxSize={20}
       />
       <PreviewWrapper>
