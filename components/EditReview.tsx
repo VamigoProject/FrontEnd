@@ -33,6 +33,10 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
+const LengthCounting = styled.span`
+  color: gray;
+`;
+
 const CommentWrapper = styled.div`
   position: relative;
   left: 50%;
@@ -89,7 +93,13 @@ const EditReview = ({
 
   const { uid, nickname, profile } = useUserStore((state) => state);
 
-  const [afterComment, onChangeComment] = useInput<string>(comment);
+  const [afterComment, onChangeComment] = useInput<string>(comment, (e) => {
+    if (e.target.value.length > 120) {
+      alert('코멘트의 길이는 120자를 넘길 수 없습니다');
+      return e.target.value.substring(0, 120);
+    }
+    return e.target.value;
+  });
   const [afterRating, onChangeRating] = useInput<number>(rating);
   const [afterImage, onChangeImage] = useInput<Array<string>>(image);
   const [afterSpoiler, setSpoiler] = useState<boolean>(spoiler);
@@ -140,6 +150,7 @@ const EditReview = ({
             profile={profile}
             size="medium"
           />
+          <LengthCounting>{afterComment.length} / 120</LengthCounting>
           <CommentWrapper>
             <CommentField
               id="comment"

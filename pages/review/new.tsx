@@ -32,6 +32,10 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
+const LengthCounting = styled.span`
+  color: gray;
+`;
+
 const CommentWrapper = styled.div`
   position: relative;
   left: 50%;
@@ -81,7 +85,13 @@ const newReview = () => {
 
   const { uid, nickname, profile } = useUserStore((state) => state);
 
-  const [comment, onChangeComment] = useInput('');
+  const [comment, onChangeComment] = useInput<string>('', (e) => {
+    if (e.target.value.length > 120) {
+      alert('코멘트의 길이는 120자를 넘길 수 없습니다');
+      return e.target.value.substring(0, 120);
+    }
+    return e.target.value;
+  });
   const [works, setWorks] = useState<Array<Work>>([]);
   const [workId, setWorkId] = useState<number | null>(null);
   const [workName, setWorkName] = useState<string | null>('');
@@ -188,7 +198,11 @@ const newReview = () => {
     <Wrapper>
       <ContentBox opacity={0.1}>
         <Box
-          style={{ padding: '1rem', width: '100%', height: '100%' }}
+          style={{
+            padding: '1rem',
+            width: '100%',
+            height: '100%',
+          }}
           component="form"
           onSubmit={onSubmit}
         >
@@ -197,6 +211,7 @@ const newReview = () => {
             profile={profile}
             size="medium"
           />
+          <LengthCounting>{comment.length} / 120</LengthCounting>
           <CommentWrapper>
             <CommentField
               id="comment"
