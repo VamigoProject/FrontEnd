@@ -86,10 +86,6 @@ const newReview = () => {
   const { uid, nickname, profile } = useUserStore((state) => state);
 
   const [comment, onChangeComment] = useInput<string>('', (e) => {
-    if (e.target.value.length > 120) {
-      alert('코멘트의 길이는 120자를 넘길 수 없습니다');
-      return e.target.value.substring(0, 120);
-    }
     return e.target.value;
   });
   const [works, setWorks] = useState<Array<Work>>([]);
@@ -227,6 +223,7 @@ const newReview = () => {
                 borderRadius: 1,
               }}
               inputProps={{
+                maxLength: 120,
                 style: {
                   padding: '0.25rem',
                 },

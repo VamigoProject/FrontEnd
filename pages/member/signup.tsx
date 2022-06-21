@@ -224,6 +224,7 @@ const signup: NextPage = () => {
             size="small"
             required
             variant="outlined"
+            inputProps={{ maxLength: 25 }}
           />
           <Button
             style={{ width: '23%' }}
@@ -246,6 +247,7 @@ const signup: NextPage = () => {
               variant="outlined"
               autoComplete="off"
               disabled={!isMailChecked || codeButton === '코드요청'}
+              inputProps={{ maxLength: 9 }}
             />
             <Button
               style={{ width: '23%' }}

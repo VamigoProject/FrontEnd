@@ -114,6 +114,7 @@ const EditProfile = () => {
         size="small"
         fullWidth
         style={{ marginBottom: '1rem' }}
+        inputProps={{ maxLength: 15 }}
       />
       <TextField
         label="자기소개"
@@ -122,6 +123,7 @@ const EditProfile = () => {
         size="small"
         fullWidth
         style={{ marginBottom: '1rem' }}
+        inputProps={{ maxLength: 40 }}
       />
       <UpdateButton variant="contained" onClick={onClickUpdate}>
         업데이트

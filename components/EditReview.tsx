@@ -94,10 +94,6 @@ const EditReview = ({
   const { uid, nickname, profile } = useUserStore((state) => state);
 
   const [afterComment, onChangeComment] = useInput<string>(comment, (e) => {
-    if (e.target.value.length > 120) {
-      alert('코멘트의 길이는 120자를 넘길 수 없습니다');
-      return e.target.value.substring(0, 120);
-    }
     return e.target.value;
   });
   const [afterRating, onChangeRating] = useInput<number>(rating);
@@ -171,6 +167,7 @@ const EditReview = ({
                 },
               }}
               spellCheck={false}
+              inputProps={{ maxLength: 120 }}
             />
           </CommentWrapper>
           <Row>

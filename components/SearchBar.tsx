@@ -66,6 +66,9 @@ const SearchBar = () => {
         placeholder="검색"
         onFocus={onFocus}
         onBlur={onBlur}
+        inputProps={{
+          maxLength: 20,
+        }}
       />
 
       <IconButton type="submit">
