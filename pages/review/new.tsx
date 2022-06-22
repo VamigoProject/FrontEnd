@@ -92,7 +92,7 @@ const newReview = () => {
   const [workId, setWorkId] = useState<number | null>(null);
   const [workName, setWorkName] = useState<string | null>('');
   const [workCategory, setWorkCategory] = useState<string | null>('');
-  const [rating, onChangeRating] = useInput(0);
+  const [rating, onChangeRating] = useInput<number>(0);
   const [spoiler, setSpoiler] = useState<boolean>(false);
 
   const [isMapOpen, setIsMapOpen] = useState<boolean>(false);
@@ -155,7 +155,12 @@ const newReview = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (comment.length > 120) {
+      alert('코멘트는 120글자를 넘길 수 없습니다');
+      return;
+    }
     startLoadingAction();
+
     try {
       const reviewId = await createReviewApi(
         uid!,
@@ -207,7 +212,11 @@ const newReview = () => {
             profile={profile}
             size="medium"
           />
-          <LengthCounting>{comment.length} / 120</LengthCounting>
+          <LengthCounting
+            style={{ color: comment.length > 120 ? 'red' : 'gray' }}
+          >
+            {comment.length} / 120
+          </LengthCounting>
           <CommentWrapper>
             <CommentField
               id="comment"
@@ -223,7 +232,6 @@ const newReview = () => {
                 borderRadius: 1,
               }}
               inputProps={{
-                maxLength: 120,
                 style: {
                   padding: '0.25rem',
                 },

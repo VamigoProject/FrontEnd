@@ -55,9 +55,9 @@ const EditProfile = () => {
     (state) => state,
   );
 
-  const [afterNickname, onChangeAfterNickname] = useInput(nickname);
-  const [afterProfile, setAfterProfile] = useState(profile);
-  const [afterIntroduce, onChangeAfterIntroduce] = useInput(introduce);
+  const [afterNickname, onChangeAfterNickname] = useInput<string>(nickname);
+  const [afterProfile, setAfterProfile] = useState<string>(profile);
+  const [afterIntroduce, onChangeAfterIntroduce] = useInput<string>(introduce);
 
   const onChangeFile = async (f: any) => {
     await resizeFile(f, setAfterProfile);

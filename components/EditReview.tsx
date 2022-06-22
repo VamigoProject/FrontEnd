@@ -106,6 +106,10 @@ const EditReview = ({
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
+    if (afterComment.length > 120) {
+      alert('코멘트는 120글자를 넘길 수 없습니다');
+      return;
+    }
     startLoadingAction();
     try {
       await updateReviewApi(
@@ -146,7 +150,11 @@ const EditReview = ({
             profile={profile}
             size="medium"
           />
-          <LengthCounting>{afterComment.length} / 120</LengthCounting>
+          <LengthCounting
+            style={{ color: afterComment.length > 120 ? 'red' : 'gray' }}
+          >
+            {afterComment.length} / 120
+          </LengthCounting>
           <CommentWrapper>
             <CommentField
               id="comment"
@@ -167,7 +175,6 @@ const EditReview = ({
                 },
               }}
               spellCheck={false}
-              inputProps={{ maxLength: 120 }}
             />
           </CommentWrapper>
           <Row>

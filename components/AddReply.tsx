@@ -88,7 +88,7 @@ const AddReply = ({ reviewId, store }: Props) => {
           spellCheck={false}
           onKeyPress={(e) => onPressEnter(e)}
           inputProps={{
-            maxLength: 120,
+            maxLength: 119,
           }}
         />
         <Button variant="contained" onClick={onSubmit}>
