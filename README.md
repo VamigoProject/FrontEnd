@@ -52,17 +52,32 @@
  - 다른 사용자와의 비교를 위한 통계 제공
 
 ## 구현 화면
-![175320120-763d2346-780c-47f2-96a7-feef8ab243ca](https://user-images.githubusercontent.com/61939201/175322871-12f6b1cc-2344-4af5-8b91-abe4e0769bdd.png)
-![175321850-7b4d1711-a743-48af-8f15-88cd8fdd78c1](https://user-images.githubusercontent.com/61939201/175323045-542d1f7e-1675-4b17-912f-bfc3839d8078.png)
-![175322264-315a0b66-88a5-4a78-91c9-17b7ff63bf6f](https://user-images.githubusercontent.com/61939201/175323054-88d2cd94-b101-427d-9262-109ad7192df9.png)
-![175322299-9a4f618e-7e19-469b-af71-75ad50ee919a](https://user-images.githubusercontent.com/61939201/175323068-58e15b7e-ecce-42e6-8b2e-0c7fe03e5383.png)
-![175320216-a9108909-a9f9-495e-bc5b-5a98cb981823](https://user-images.githubusercontent.com/61939201/175322880-1d3ead88-1caa-4eed-bf6d-8fdeede590f6.png)
-![175320393-238c1ab1-158a-4344-904e-a2c59480658f](https://user-images.githubusercontent.com/61939201/175322895-5acd26f2-0ddc-4c1c-9770-54b05d67ea28.png)
-![175320474-6c913ca0-dcb2-42f1-9f00-5b680d9d8551](https://user-images.githubusercontent.com/61939201/175322911-e15fba46-1630-407a-9f35-317a82b78b8c.png)
-![175320547-28a48b1d-a170-4b62-82fe-68ef1be661dc](https://user-images.githubusercontent.com/61939201/175322918-cbcd76ba-6681-4591-b3d7-cfe42c2b6404.png)
-![175320608-a8e6503a-95bf-49e7-bc90-9ed76d9c511b](https://user-images.githubusercontent.com/61939201/175322921-27a7cec8-29a6-4b23-835d-91f6066c2ea7.png)
-![175320977-ce0b4a69-4986-48a4-a069-bfbaead2e93c](https://user-images.githubusercontent.com/61939201/175322931-d599f0c3-893a-492b-a10a-ae461e112019.png)
-![175321115-ecea9af3-6fe7-4cf5-80bb-768f9fbb7cd1](https://user-images.githubusercontent.com/61939201/175322943-29003f4a-36a5-4d32-8b9b-0cb5108bc2ed.png)
-![175321469-0bcea6be-00a7-43de-aa86-3d02e263bf9f](https://user-images.githubusercontent.com/61939201/175322953-56504dd2-735c-48e6-8983-e6635db0d11b.png)
-![175321540-2ba55911-ca41-4daa-b68a-67e2c746a836](https://user-images.githubusercontent.com/61939201/175322967-0ca29d26-fc84-4d14-b7bd-86a05bc3f251.png)
-![175321596-34425f86-58dc-4ac1-8f4b-e57b95b6d998](https://user-images.githubusercontent.com/61939201/175322980-0b938498-90ab-46ed-a0d6-36e561fd7401.png)
+![image](https://user-images.githubusercontent.com/61939201/175320120-763d2346-780c-47f2-96a7-feef8ab243ca.png)
+로그인 창
+![image](https://user-images.githubusercontent.com/61939201/175320216-a9108909-a9f9-495e-bc5b-5a98cb981823.png)
+회원가입
+![image](https://user-images.githubusercontent.com/61939201/175321850-7b4d1711-a743-48af-8f15-88cd8fdd78c1.png)
+PC에서의 전체적인 레이아웃
+![모바일 메인화면](https://user-images.githubusercontent.com/61939201/175322264-315a0b66-88a5-4a78-91c9-17b7ff63bf6f.png)
+모바일 레이아웃
+![모바일 네비게이션](https://user-images.githubusercontent.com/61939201/175322299-9a4f618e-7e19-469b-af71-75ad50ee919a.png)
+모바일 네비게이션
+![image](https://user-images.githubusercontent.com/61939201/175320393-238c1ab1-158a-4344-904e-a2c59480658f.png)
+리뷰작성
+![image](https://user-images.githubusercontent.com/61939201/175320474-6c913ca0-dcb2-42f1-9f00-5b680d9d8551.png)
+리뷰보기
+![image](https://user-images.githubusercontent.com/61939201/175320547-28a48b1d-a170-4b62-82fe-68ef1be661dc.png)
+프로필 수정
+![image](https://user-images.githubusercontent.com/61939201/175320608-a8e6503a-95bf-49e7-bc90-9ed76d9c511b.png)
+개인통계
+![image](https://user-images.githubusercontent.com/61939201/175320977-ce0b4a69-4986-48a4-a069-bfbaead2e93c.png)
+작품별 리뷰
+![image](https://user-images.githubusercontent.com/61939201/175321115-ecea9af3-6fe7-4cf5-80bb-768f9fbb7cd1.png)
+리뷰에 대한 반응
+![image](https://user-images.githubusercontent.com/61939201/175321469-0bcea6be-00a7-43de-aa86-3d02e263bf9f.png)
+트렌드 표시
+![image](https://user-images.githubusercontent.com/61939201/175321540-2ba55911-ca41-4daa-b68a-67e2c746a836.png)
+사용자 검색
+![image](https://user-images.githubusercontent.com/61939201/175321596-34425f86-58dc-4ac1-8f4b-e57b95b6d998.png)
+작품검색
+
