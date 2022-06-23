@@ -1,5 +1,8 @@
 # Vamigo(리뷰 공유 SNS) Frontend 저장소
 
+
+[BackEnd 저장소](https://github.com/VamigoProject/BackEnd)
+
 ## 사용 기술
 `NEXT.js`, `Zustand`, `mui`, `axios`, `styled-components`
 
