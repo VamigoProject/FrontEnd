@@ -66,6 +66,7 @@ PC에서의 전체적인 레이아웃
 리뷰작성
 ![image](https://user-images.githubusercontent.com/61939201/175320474-6c913ca0-dcb2-42f1-9f00-5b680d9d8551.png)
 리뷰보기
+
 ![image](https://user-images.githubusercontent.com/61939201/175320547-28a48b1d-a170-4b62-82fe-68ef1be661dc.png)
 프로필 수정
 ![image](https://user-images.githubusercontent.com/61939201/175320608-a8e6503a-95bf-49e7-bc90-9ed76d9c511b.png)
